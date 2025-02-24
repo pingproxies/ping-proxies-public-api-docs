@@ -7,7 +7,7 @@
     "light": "#a192ec",
     "dark": "#283680"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://pingproxies.com/favicon.ico",
   "navigation": {
     "tabs": [
       {
