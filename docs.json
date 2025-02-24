@@ -46,7 +46,7 @@
           {
             "group": "Endpoint Examples",
             "pages": [
-              "api-reference/endpoint/get",
+              "api-reference/asn/retrieve-asn",
               "api-reference/endpoint/create",
               "api-reference/endpoint/delete"
             ]
