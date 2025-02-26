@@ -44,15 +44,170 @@
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "ASN",
             "pages": [
               "api-reference/asn/retrieve-asn",
+              "api-reference/asn/search-asn"
+            ]
+          },
+          {
+            "group": "Balance Transaction",
+            "pages": [
+              "api-reference/balance-transaction/retrieve-balance-transaction",
+              "api-reference/balance-transaction/search-balance-transactions"
+            ]
+          },
+          {
+            "group": "Checkout",
+            "pages": [
+              "api-reference/checkout/create-checkout",
+              "api-reference/checkout/generate-checkout-quote",
+              "api-reference/checkout/retrieve-simplified-product-checkout-catalog"
+            ]
+          },
+          {
+            "group": "City",
+            "pages": [
+              "api-reference/city/retrieve-city",
+              "api-reference/city/search-city"
+            ]
+          },
+          {
+            "group": "Continent",
+            "pages": [
+              "api-reference/continent/retrieve-continent",
+              "api-reference/continent/search-continent"
+            ]
+          },
+          {
+            "group": "Country",
+            "pages": [
+              "api-reference/country/retrieve-country",
+              "api-reference/country/search-country"
+            ]
+          },
+          {
+            "group": "Customer",
+            "pages": [
+              "api-reference/customer/retrieve-current-customer"
+            ]
+          },
+          {
+            "group": "Endpoint",
+            "pages": [
               "api-reference/endpoint/create",
-              "api-reference/endpoint/delete"
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/get"
+            ]
+          },
+          {
+            "group": "Invoice",
+            "pages": [
+              "api-reference/invoice/retrieve-invoice",
+              "api-reference/invoice/search-invoices"
+            ]
+          },
+          {
+            "group": "Log",
+            "pages": [
+              "api-reference/log/retrieve-log",
+              "api-reference/log/search-logs"
+            ]
+          },
+          {
+            "group": "Log Summary",
+            "pages": [
+              "api-reference/log-summary/retrieve-log-summary",
+              "api-reference/log-summary/search-log-summary"
+            ]
+          },
+          {
+            "group": "Product",
+            "pages": [
+              "api-reference/product/search-product"
+            ]
+          },
+          {
+            "group": "Proxy",
+            "pages": [
+              "api-reference/proxy/proxy-edit",
+              "api-reference/proxy/retrieve-proxy-list-by-id",
+              "api-reference/proxy/retrieve-proxy-list-by-search",
+              "api-reference/proxy/retrieve-proxy",
+              "api-reference/proxy/search-proxies"
+            ]
+          },
+          {
+            "group": "Proxy Analytics",
+            "pages": [
+              "api-reference/proxy-analytics/graph-proxy-analytics"
+            ]
+          },
+          {
+            "group": "Proxy User",
+            "pages": [
+              "api-reference/proxy-user/create-proxy-user",
+              "api-reference/proxy-user/delete-proxy-user-record",
+              "api-reference/proxy-user/edit-proxy-user",
+              "api-reference/proxy-user/retrieve-proxy-user",
+              "api-reference/proxy-user/search-proxy-users"
+            ]
+          },
+          {
+            "group": "Residential",
+            "pages": [
+              "api-reference/residential/create-residential-list",
+              "api-reference/residential/retrieve-residential-service-summary"
+            ]
+          },
+          {
+            "group": "Residential Ledger",
+            "pages": [
+              "api-reference/residential-ledger/retrieve-residential-ledger",
+              "api-reference/residential-ledger/search-residential-ledger"
+            ]
+          },
+          {
+            "group": "Service",
+            "pages": [
+              "api-reference/service/cancel-service",
+              "api-reference/service/edit-service",
+              "api-reference/service/retrieve-service",
+              "api-reference/service/search-services"
+            ]
+          },
+          {
+            "group": "Service Adjustment",
+            "pages": [
+              "api-reference/service-adjustment/retrieve-service-adjustment",
+              "api-reference/service-adjustment/search-service-adjustments"
+            ]
+          },
+          {
+            "group": "Subdivision",
+            "pages": [
+              "api-reference/subdivision/retrieve-subdivision",
+              "api-reference/subdivision/search-subdivision"
+            ]
+          },
+          {
+            "group": "Transaction",
+            "pages": [
+              "api-reference/transaction/retrieve-transaction",
+              "api-reference/transaction/search-transactions"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "api-reference/utilities/retrieve-ip-address-geolocation",
+              "api-reference/utilities/retrieve-iso-country-codes",
+              "api-reference/utilities/retrieve-iso-language-codes"
             ]
           }
         ]
       }
+      
     ],
     "global": {
       "anchors": [
