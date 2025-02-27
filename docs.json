@@ -51,13 +51,6 @@
             ]
           },
           {
-            "group": "Balance Transaction",
-            "pages": [
-              "api-reference/balance-transaction/retrieve-balance-transaction",
-              "api-reference/balance-transaction/search-balance-transactions"
-            ]
-          },
-          {
             "group": "Checkout",
             "pages": [
               "api-reference/checkout/create-checkout",
@@ -90,21 +83,6 @@
             "group": "Customer",
             "pages": [
               "api-reference/customer/retrieve-current-customer"
-            ]
-          },
-          {
-            "group": "Endpoint",
-            "pages": [
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/get"
-            ]
-          },
-          {
-            "group": "Invoice",
-            "pages": [
-              "api-reference/invoice/retrieve-invoice",
-              "api-reference/invoice/search-invoices"
             ]
           },
           {
@@ -188,13 +166,6 @@
             "pages": [
               "api-reference/subdivision/retrieve-subdivision",
               "api-reference/subdivision/search-subdivision"
-            ]
-          },
-          {
-            "group": "Transaction",
-            "pages": [
-              "api-reference/transaction/retrieve-transaction",
-              "api-reference/transaction/search-transactions"
             ]
           },
           {
