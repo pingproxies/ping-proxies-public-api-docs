@@ -9,6 +9,7 @@
   },
   "favicon": "https://pingproxies.com/favicon.ico",
   "navigation": {
+    "tabs": [
       {
         "tab": "API Reference",
         "groups": [
