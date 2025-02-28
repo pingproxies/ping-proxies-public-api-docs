@@ -10,10 +10,6 @@
   "favicon": "https://pingproxies.com/favicon.ico",
   "navigation": {
     "tabs": [
-      {
-        "tab": "API Reference 2",
-        "openapi": "https://staging.api.pingproxies.com/1.0/public/user/documentation/openapi.json"
-    },
 
       {
         "tab": "API Reference",
