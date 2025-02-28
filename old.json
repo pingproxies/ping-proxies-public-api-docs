@@ -1,0 +1,202 @@
+{
+    "$schema": "https://mintlify.com/docs.json",
+    "theme": "mint",
+    "name": "Ping Proxies API Documentation",
+    "colors": {
+      "primary": "#5547eb",
+      "light": "#a192ec",
+      "dark": "#5547eb"
+    },
+    "favicon": "https://pingproxies.com/favicon.ico",
+    "navigation": {
+      "tabs": [
+        {
+          "tab": "API Reference 2",
+          "openapi": "https://staging.api.pingproxies.com/1.0/public/user/documentation/openapi.json"
+      },
+  
+        {
+          "tab": "API Reference",
+          "groups": [
+            {
+              "group": "API Documentation",
+              "pages": [
+                "api-reference/introduction"
+              ]
+            },
+            {
+              "group": "ASN",
+              "pages": [
+                "api-reference/asn/retrieve-asn",
+                "api-reference/asn/search-asn"
+              ]
+            },
+            {
+              "group": "Checkout",
+              "pages": [
+                "api-reference/checkout/create-checkout",
+                "api-reference/checkout/generate-checkout-quote",
+                "api-reference/checkout/retrieve-simplified-product-checkout-catalog"
+              ]
+            },
+            {
+              "group": "City",
+              "pages": [
+                "api-reference/city/retrieve-city",
+                "api-reference/city/search-city"
+              ]
+            },
+            {
+              "group": "Continent",
+              "pages": [
+                "api-reference/continent/retrieve-continent",
+                "api-reference/continent/search-continent"
+              ]
+            },
+            {
+              "group": "Country",
+              "pages": [
+                "api-reference/country/retrieve-country",
+                "api-reference/country/search-country"
+              ]
+            },
+            {
+              "group": "Customer",
+              "pages": [
+                "api-reference/customer/retrieve-current-customer"
+              ]
+            },
+            {
+              "group": "Log",
+              "pages": [
+                "api-reference/log/retrieve-log",
+                "api-reference/log/search-logs"
+              ]
+            },
+            {
+              "group": "Log Summary",
+              "pages": [
+                "api-reference/log-summary/retrieve-log-summary",
+                "api-reference/log-summary/search-log-summary"
+              ]
+            },
+            {
+              "group": "Product",
+              "pages": [
+                "api-reference/product/search-product"
+              ]
+            },
+            {
+              "group": "Proxy",
+              "pages": [
+                "api-reference/proxy/proxy-edit",
+                "api-reference/proxy/retrieve-proxy-list-by-id",
+                "api-reference/proxy/retrieve-proxy-list-by-search",
+                "api-reference/proxy/retrieve-proxy",
+                "api-reference/proxy/search-proxies"
+              ]
+            },
+            {
+              "group": "Proxy Analytics",
+              "pages": [
+                "api-reference/proxy-analytics/graph-proxy-analytics"
+              ]
+            },
+            {
+              "group": "Proxy User",
+              "pages": [
+                "api-reference/proxy-user/create-proxy-user",
+                "api-reference/proxy-user/delete-proxy-user-record",
+                "api-reference/proxy-user/edit-proxy-user",
+                "api-reference/proxy-user/retrieve-proxy-user",
+                "api-reference/proxy-user/search-proxy-users"
+              ]
+            },
+            {
+              "group": "Residential",
+              "pages": [
+                "api-reference/residential/create-residential-list",
+                "api-reference/residential/retrieve-residential-service-summary"
+              ]
+            },
+            {
+              "group": "Residential Ledger",
+              "pages": [
+                "api-reference/residential-ledger/retrieve-residential-ledger",
+                "api-reference/residential-ledger/search-residential-ledger"
+              ]
+            },
+            {
+              "group": "Service",
+              "pages": [
+                "api-reference/service/cancel-service",
+                "api-reference/service/edit-service",
+                "api-reference/service/retrieve-service",
+                "api-reference/service/search-services"
+              ]
+            },
+            {
+              "group": "Service Adjustment",
+              "pages": [
+                "api-reference/service-adjustment/retrieve-service-adjustment",
+                "api-reference/service-adjustment/search-service-adjustments"
+              ]
+            },
+            {
+              "group": "Subdivision",
+              "pages": [
+                "api-reference/subdivision/retrieve-subdivision",
+                "api-reference/subdivision/search-subdivision"
+              ]
+            },
+            {
+              "group": "Utilities",
+              "pages": [
+                "api-reference/utilities/retrieve-ip-address-geolocation",
+                "api-reference/utilities/retrieve-iso-country-codes",
+                "api-reference/utilities/retrieve-iso-language-codes"
+              ]
+            }
+          ]
+        }
+        
+      ],
+      "global": {
+        "anchors": [
+          {
+            "anchor": "Community",
+            "href": "https://discord.com/invite/ping-proxies-584021352940568578",
+            "icon": "discord"
+          },
+          {
+            "anchor": "Blog",
+            "href": "https://pingproxies.com/blog",
+            "icon": "newspaper"
+          }
+        ]
+      }
+    },
+    "logo": {
+      "light": "https://ping-proxies-strapi.ams3.digitaloceanspaces.com/public/uploads/ping_logo_b83f7f9c6b.webp",
+      "dark": "https://ping-proxies-strapi.ams3.digitaloceanspaces.com/public/uploads/ping_logo_b83f7f9c6b.webp"
+    },
+    "navbar": {
+      "links": [
+        {
+          "label": "Support",
+          "href": "mailto:support@pingproxies.com"
+        }
+      ],
+      "primary": {
+        "type": "button",
+        "label": "Dashboard",
+        "href": "https://dashboard.pingproxies.com"
+      }
+    },
+    "footer": {
+      "socials": {
+        "x": "https://x.com/pingproxies",
+        "linkedin": "https://uk.linkedin.com/company/ping-proxies"
+      }
+    }
+  }
