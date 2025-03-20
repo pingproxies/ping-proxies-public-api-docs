@@ -3,42 +3,19 @@ title: 'Rate Limiting'
 description: 'Understanding and working with API rate limits'
 ---
 
-# Rate Limiting
-
-To ensure fair usage and system stability, the Ping Proxies API implements rate limiting. This page explains how our rate limits work and provides best practices for staying within these limits.
+To ensure fair usage and system stability, the Ping Proxies API implements rate limiting. This page explains our rate limits and how to work with them effectively.
 
 ## Rate Limit Policy
 
-The Ping Proxies API enforces the following rate limits:
+The Ping Proxies API enforces a default rate limit of **10 requests per second** per API key. This applies to most endpoints, with some exceptions:
 
-| Scope | Limit |
-|-------|-------|
-| Per minute | 100 requests |
-| Per day | 5,000 requests |
+- Some resource-intensive endpoints may have lower rate limits
+- The same limits apply in both testing and production environments
 
-These limits apply per API key pair and are shared across all endpoints. Rate limits are designed to:
-
-- Protect the API from abuse
-- Ensure fair resource allocation
-- Maintain high availability for all users
-
-## Rate Limit Headers
-
-Every API response includes headers that provide information about your current rate limit status:
-
-| Header | Description |
-|--------|-------------|
-| `X-RateLimit-Limit` | Maximum requests allowed per minute |
-| `X-RateLimit-Remaining` | Requests remaining in the current time window |
-| `X-RateLimit-Reset` | Seconds until your rate limit resets |
-
-Example headers:
-
-```
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 95
-X-RateLimit-Reset: 42
-```
+Rate limiting helps us:
+- Protect the API from excessive traffic
+- Ensure fair access for all users
+- Maintain reliable service performance
 
 ## Rate Limit Exceeded Response
 
@@ -47,175 +24,15 @@ If you exceed the rate limit, you'll receive a `429 Too Many Requests` response 
 ```json
 {
   "error": "Too Many Requests",
-  "message": "Rate limit exceeded. Please try again in 42 seconds.",
+  "message": "Rate limit exceeded. Please try again later.",
   "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
 }
 ```
 
-The response will also include a `Retry-After` header indicating the number of seconds to wait before retrying:
+## Increase Your Rate Limit
 
-```
-Retry-After: 42
-```
-
-## Best Practices for Working with Rate Limits
-
-### 1. Implement Proper Retry Logic
-
-When you receive a 429 response:
-
-1. Read the `Retry-After` header
-2. Wait at least the specified number of seconds
-3. Retry the request
-
-Example retry implementation in JavaScript:
-
-```javascript
-async function fetchWithRateLimitRetry(url, options) {
-  while (true) {
-    const response = await fetch(url, options);
-    
-    if (response.status !== 429) {
-      return response;
-    }
-    
-    // Get retry delay from header or default to 60 seconds
-    const retryAfter = parseInt(response.headers.get('Retry-After') || '60', 10);
-    console.log(`Rate limit exceeded. Retrying after ${retryAfter} seconds.`);
-    
-    // Wait for the specified time
-    await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
-  }
-}
-```
-
-### 2. Monitor Your Usage
-
-Track your API usage to avoid hitting rate limits:
-
-- Monitor the rate limit headers in responses
-- Log usage patterns to identify high-volume periods
-- Set up alerts when approaching limits
-
-```javascript
-function checkRateLimitStatus(response) {
-  const remaining = parseInt(response.headers.get('X-RateLimit-Remaining'), 10);
-  const limit = parseInt(response.headers.get('X-RateLimit-Limit'), 10);
-  const usagePercentage = 100 - (remaining / limit * 100);
+<Card title="Need Higher Limits?" icon="bolt">
+  We can customize rate limits on a per-customer basis with proper justification.
   
-  if (usagePercentage > 80) {
-    console.warn(`High API usage: ${usagePercentage.toFixed(2)}% of rate limit consumed`);
-  }
-}
-```
-
-### 3. Optimize Request Patterns
-
-Reduce the number of API calls with these strategies:
-
-- **Batch operations** when possible instead of making individual requests
-- **Cache responses** for data that doesn't change frequently
-- **Use search endpoints** with filters instead of retrieving and filtering locally
-- **Implement pagination** correctly to avoid unnecessary requests
-
-### 4. Use Bulk Endpoints
-
-For operations involving multiple resources, use bulk endpoints when available:
-
-```
-POST /public/user/proxy/list_by_id
-```
-
-instead of multiple calls to:
-
-```
-GET /public/user/proxy/retrieve/{proxy_id}
-```
-
-### 5. Implement Exponential Backoff
-
-For maximum resilience, combine rate limit handling with exponential backoff:
-
-```javascript
-async function fetchWithBackoff(url, options, maxRetries = 5) {
-  let retries = 0;
-  
-  while (true) {
-    try {
-      const response = await fetch(url, options);
-      
-      // Handle rate limiting
-      if (response.status === 429) {
-        const retryAfter = parseInt(response.headers.get('Retry-After') || '60', 10);
-        await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
-        continue;
-      }
-      
-      return response;
-    } catch (error) {
-      if (retries >= maxRetries) {
-        throw error;
-      }
-      
-      // Exponential backoff with jitter
-      const baseDelay = Math.pow(2, retries) * 1000;
-      const jitter = Math.random() * 1000;
-      const delay = baseDelay + jitter;
-      
-      console.log(`Request failed, retrying in ${delay}ms...`);
-      await new Promise(resolve => setTimeout(resolve, delay));
-      
-      retries++;
-    }
-  }
-}
-```
-
-### 6. Distribute Traffic Evenly
-
-Avoid request spikes by distributing API calls evenly:
-
-- Stagger batch jobs to run at different times
-- Add randomized delays between requests in automated processes
-- Implement a request queue with consistent throughput
-
-### 7. Request Rate Limit Increases
-
-If you consistently need more than the default limits, contact support to discuss your use case. Rate limit increases may be available for:
-
-- Enterprise customers
-- Partners
-- Specific high-volume use cases
-
-## Rate Limit FAQ
-
-### Are there different rate limits for different endpoints?
-
-No, the rate limits apply to your API key across all endpoints. However, some endpoints may have additional constraints for resource-intensive operations.
-
-### Do rate limits apply to both read and write operations?
-
-Yes, all API requests count toward your rate limits, regardless of whether they read or modify data.
-
-### What happens if I need to exceed the rate limits?
-
-Contact support to discuss your use case. We can work with you to find a solution, which might include:
-- Custom rate limits for your account
-- Architecture recommendations to optimize your usage
-- Alternative integration approaches
-
-### Do failed requests count toward my rate limit?
-
-Yes, all requests (successful or failed) count toward rate limits, except for 429 responses.
-
-### Are there differences between rate limits in testing and production?
-
-No, the same rate limits apply in both environments to ensure consistent behavior.
-
-### How do I troubleshoot rate limit issues?
-
-1. Check your logs for 429 responses
-2. Review your application's API call patterns
-3. Monitor rate limit headers for warning signs
-4. Implement the best practices outlined above
-5. Contact support if rate limit issues persist
+  Contact our development team at [developers@pingproxies.com](mailto:developers@pingproxies.com) to discuss your specific needs.
+</Card>
