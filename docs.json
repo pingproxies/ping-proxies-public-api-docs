@@ -15,12 +15,12 @@
         "pages": [
           "api-reference/introduction",
           {
-            "group": "API Concepts",
+            "group": "Core API Features",
             "pages": [
-              "api-concepts/metadata",
-              "api-concepts/pagination",
-              "api-concepts/search-operators",
-              "api-concepts/sorting"
+              "core-api-features/metadata",
+              "core-api-features/pagination",
+              "core-api-features/search-operators",
+              "core-api-features/sorting"
             ]
           },
           {
