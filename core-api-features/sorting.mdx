@@ -38,39 +38,6 @@ GET /public/user/proxy/search?sort_by=country_id_asc
 
 This sorts proxies by country ID in ascending order (A-Z).
 
-## Multi-Field Sorting
-
-The Ping Proxies API currently supports sorting by a single field at a time. If you need results ordered by multiple criteria, you'll need to perform additional sorting in your application after retrieving the data.
-
-## Available Sort Fields
-
-Most fields available in the response can be used for sorting. Common sortable fields include:
-
-### For Proxy Resources
-- `proxy_id`
-- `proxy_creation_datetime`
-- `proxy_last_update_datetime`
-- `proxy_status`
-- `country_id`
-- `city_name`
-- `asn_id`
-
-### For Service Resources
-- `service_id`
-- `service_creation_datetime`
-- `service_expiry_datetime`
-- `service_name`
-- `service_type`
-- `service_quantity`
-- `service_status`
-
-### For Log Resources
-- `log_creation_datetime`
-- `log_request_datetime`
-- `log_total_bytes`
-- `country_id`
-- `log_hostname`
-
 ## Special Sorting Options
 
 ### Random Sorting
@@ -105,20 +72,6 @@ GET /public/user/proxy/search?sort_by=proxy_creation_datetime_desc&page=2&per_pa
 ```
 
 This returns the second page of proxies, with 25 proxies per page, sorted by creation date from newest to oldest.
-
-## Sorting Performance Considerations
-
-Keep these performance considerations in mind when using sorting:
-
-- **Indexed vs. Non-indexed fields**: Sorting by indexed fields (like IDs) is typically faster than non-indexed fields
-- **Consistency**: For paginated results, maintain the same sort parameters across page requests to ensure consistency
-
-## Best Practices
-
-1. **Default sort order**: Choose a sensible default sort order for your application (often creation date descending)
-2. **User preferences**: Allow users to change sort order based on their needs
-3. **Indicate sort order**: Make the current sort order visible in your user interface
-4. **Optimize for common use cases**: Identify the most important sorting needs for your application
 
 ## Examples for Common Use Cases
 

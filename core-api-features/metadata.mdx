@@ -5,6 +5,8 @@ description: 'Using and working with metadata in the Ping Proxies API'
 
 Metadata provides a flexible way to store additional information with your resources. The Ping Proxies API supports metadata on several resources, allowing you to add custom attributes without changing the core API structure.
 
+Metadata is particularly useful for resellers who want to store information about their customers on our systems, or users who want to label or add information to specific proxy users or services.
+
 ## Supported Resources with Metadata
 
 The following resources support metadata fields:
@@ -25,6 +27,19 @@ Metadata is stored as a JSON object with key-value pairs. For example:
   "monthly_budget": 1500
 }
 ```
+
+## Supported Value Types
+
+Metadata supports the following value types:
+
+- **String**: Text values (e.g., `"department": "Marketing"`)
+- **Integer**: Whole numbers (e.g., `"monthly_budget": 1500`)
+- **Float**: Decimal numbers (e.g., `"success_rate": 98.6`)
+- **Boolean**: True/false values (e.g., `"is_priority": true`)
+
+<Tip>
+  To store datetime objects, we recommend using timestamps as integers since they're more efficiently stored and queried.
+</Tip>
 
 ## Constraints
 
@@ -78,22 +93,15 @@ When searching, you can use the following formats:
 - **Exact match**: `proxy_user_metadata.department=Marketing`
 - **Minimum value**: `min_proxy_user_metadata.monthly_budget=1000`
 - **Maximum value**: `max_proxy_user_metadata.monthly_budget=2000`
-- **Contains substring**: `like_proxy_user_metadata.project=Campaign`
+- **Contains substring**: `like_proxy_user_metadata.project=%Campaign%`
 - **Not equal**: `not_proxy_user_metadata.department=IT`
 - **Existence check**:
   - `proxy_user_metadata.exists_project=1` (key must exist)
   - `proxy_user_metadata.exists_project=0` (key must not exist)
 
-## Best Practices
-
-1. **Consistent naming**: Use consistent key names across resources
-2. **Keep metadata meaningful**: Only store relevant information that adds value
-3. **Consider searchability**: Structure metadata with future filtering needs in mind
-4. **Monitor size**: Keep metadata compact to avoid reaching size limits
-5. **Document your schema**: Maintain internal documentation of your metadata structure
-
 ## Example Use Cases
 
+- **Reseller customer tracking**: Store client-specific identifiers and attributes
 - **Billing categorization**: Add cost center or department information
 - **Client organization**: Track which client or project a resource belongs to
 - **Custom grouping**: Create your own grouping scheme beyond the API's built-in categories

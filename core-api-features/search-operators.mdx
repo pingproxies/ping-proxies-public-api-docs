@@ -13,9 +13,9 @@ The following operators are available when searching across most resources:
 |----------|-------------|---------|
 | `min_` | Greater than or equal (≥) | `min_proxy_user_residential_bytes_limit=1000000` |
 | `max_` | Less than or equal (≤) | `max_proxy_user_residential_bytes_used=500000` |
-| `like_` | Contains substring | `like_service_name=residential` |
+| `like_` | Contains substring | `like_service_name=%residential$` |
 | `not_` | Not equal | `not_proxy_user_is_deleted=true` |
-| `exists_` | Key existence check | `proxy_user_metadata.exists_client_id=1` |
+| `exists_` | Checks Metadata key existence check | `proxy_user_metadata.exists_client_id=1` |
 
 ## Using Numeric Comparison Operators
 
@@ -44,7 +44,7 @@ This returns log summaries with 1MB or less bytes transferred.
 You can combine `min_` and `max_` to create range queries:
 
 ```
-GET /public/user/proxy_user/search?min_proxy_user_creation_datetime=2023-01-01T00:00:00Z&max_proxy_user_creation_datetime=2023-12-31T23:59:59Z
+GET /public/user/proxy_user/search?min_proxy_user_creation_datetime=2023-01-01&max_proxy_user_creation_datetime=2023-12-31T23:59:59Z
 ```
 
 This returns proxy users created during the 2023 calendar year.
@@ -96,22 +96,22 @@ To find entries where a key doesn't exist:
 GET /public/user/proxy_user/search?proxy_user_metadata.exists_department=0
 ```
 
-## Metadata Filtering
+## Metadata Search Filtering
 
 The operators work seamlessly with metadata fields:
 
 - **Exact match**: `proxy_user_metadata.project=Marketing`
 - **Minimum value**: `min_proxy_user_metadata.priority=3`
 - **Maximum value**: `max_proxy_user_metadata.cost_center=5000`
-- **Contains substring**: `like_proxy_user_metadata.client_name=%Tech%`
+- **Contains substring**: `like_proxy_user_metadata.client_name=%tech%`
 - **Not equal**: `not_proxy_user_metadata.is_test=true`
 
 ## Date and Time Filtering
 
-Dates and times use ISO 8601 format and work with `min_` and `max_` operators:
+Dates and times use 20XX-01-31 format and work with `min_` and `max_` operators:
 
 ```
-GET /public/user/service/search?min_service_creation_datetime=2023-06-01T00:00:00Z
+GET /public/user/service/search?min_service_creation_datetime=2023-06-01
 ```
 
 ## Combining Multiple Filters
@@ -119,26 +119,11 @@ GET /public/user/service/search?min_service_creation_datetime=2023-06-01T00:00:0
 You can combine multiple operators in a single request to create complex queries:
 
 ```
-GET /public/user/proxy/search?proxy_type=isp&country_id=gb&min_proxy_creation_datetime=2023-01-01T00:00:00Z&not_proxy_status=pending_deletion
+GET /public/user/proxy/search?proxy_type=isp&country_id=gb&min_proxy_creation_datetime=2023-01-01&not_proxy_status=pending_deletion
 ```
 
 This returns ISP proxies in Great Britain created after January 1, 2023, that are not pending deletion.
 
 <Note>
-When you combine multiple filters, they are joined with AND logic - all conditions must be met for an item to be included in the results.
+When you combine multiple filters, they are joined with AND logic. All conditions must be met for an item to be included in the results.
 </Note>
-
-## Limitations
-
-- Not all fields support all operators. Generally, numeric and string fields support their appropriate operators.
-- The `like_` operator performs simple substring matching, not regex or advanced pattern matching.
-- Operator names are case-sensitive (`min_` works, but `MIN_` doesn't).
-
-## Best Practices
-
-1. **Start specific**: Begin with more specific filters to reduce the result set
-2. **Validate inputs**: Ensure values provided to operators are valid to avoid unexpected results
-3. **Consider performance**: Very broad queries with operators may be resource-intensive
-4. **Remember pagination**: Even with filters, you may need to paginate through results
-
-By mastering these search operators, you can efficiently find and filter resources within the Ping Proxies API, reducing unnecessary data transfer and processing in your applications.
