@@ -1,0 +1,118 @@
+---
+title: 'Pagination'
+description: 'Working with paginated responses in the Ping Proxies API'
+---
+
+# Pagination
+
+The Ping Proxies API uses pagination to manage large result sets efficiently. Without pagination, endpoints that return many items could slow down your application and consume unnecessary bandwidth.
+
+## How Pagination Works
+
+When you make a request to an endpoint that returns multiple items (like search endpoints), the API divides the results into pages and returns one page at a time. This approach:
+
+- Improves performance for large datasets
+- Reduces bandwidth consumption
+- Provides more predictable response times
+- Makes responses easier to process
+
+## Pagination Parameters
+
+Ping Proxies API uses the following query parameters to control pagination:
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+| `page` | integer | The page number to retrieve | 1 |
+| `per_page` | integer | Number of items to return per page | 10 |
+
+### Example Request
+
+```bash
+GET https://staging.api.pingproxies.com/1.0/public/user/proxy/search?page=2&per_page=25
+```
+
+This request would retrieve the second page of proxies, with 25 proxies per page.
+
+## Pagination Response
+
+Paginated responses include metadata to help you navigate through all available results. Here's what you'll find in a typical paginated response:
+
+```json
+{
+  "data": [
+    // Array of items for the current page
+  ],
+  "item_count": 25,     // Number of items in the current page
+  "message": "Search successful",
+  "page": 2,            // Current page number
+  "per_page": 25,       // Items per page
+  "total_count": 134    // Total items across all pages
+}
+```
+
+### Pagination Response Fields
+
+| Field | Description |
+|-------|-------------|
+| `data` | Array containing the items for the current page |
+| `item_count` | Number of items returned in the current page |
+| `page` | Current page number |
+| `per_page` | Number of items requested per page |
+| `total_count` | Total number of items that match your search criteria across all pages |
+
+## Calculating Total Pages
+
+To calculate the total number of pages, use:
+
+```
+total_pages = Math.ceil(total_count / per_page)
+```
+
+## Pagination Limits
+
+- **Minimum `per_page`**: 1
+- **Maximum `per_page`**: 100 (higher limits may be available for specific endpoints)
+- **Minimum `page`**: 1
+- If you request a page beyond the available data, you'll receive an empty data array
+
+## Efficient Pagination Strategies
+
+### Sequential Paging
+
+The simplest approach is to request page 1, then page 2, and so on:
+
+```
+GET /proxy/search?page=1&per_page=50
+GET /proxy/search?page=2&per_page=50
+...
+```
+
+### Parallel Paging
+
+For faster data collection, you can calculate the total pages and make multiple concurrent requests:
+
+```javascript
+// Example in JavaScript
+const totalPages = Math.ceil(totalCount / perPage);
+const pagePromises = [];
+
+for (let page = 1; page <= totalPages; page++) {
+  pagePromises.push(fetchPage(page, perPage));
+}
+
+const allResults = await Promise.all(pagePromises);
+```
+
+<Warning>
+  Use parallel paging cautiously to avoid rate limiting. Consider how many concurrent requests you're making to the API.
+</Warning>
+
+## Best Practices
+
+1. **Start small**: Begin with a small `per_page` value and increase only if needed
+2. **Be consistent**: Use the same `per_page` value throughout pagination to avoid confusion
+3. **Handle empty pages**: If you receive an empty array, you've reached the end of the data
+4. **Consider timeouts**: Processing large pages may increase the chance of timeouts
+5. **Cache results**: If you're making the same paginated requests frequently, consider caching results
+
+By using pagination effectively, you can build more efficient and responsive applications with the Ping Proxies API.

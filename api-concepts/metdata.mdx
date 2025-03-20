@@ -1,0 +1,104 @@
+---
+title: 'Metadata Handling'
+description: 'Using and working with metadata in the Ping Proxies API'
+---
+
+# Metadata Handling
+
+Metadata provides a flexible way to store additional information with your resources. The Ping Proxies API supports metadata on several resources, allowing you to add custom attributes without changing the core API structure.
+
+## Supported Resources with Metadata
+
+The following resources support metadata fields:
+
+- **Proxy Users** (`proxy_user_metadata`)
+- **Services** (`service_metadata`) 
+
+## Metadata Structure
+
+Metadata is stored as a JSON object with key-value pairs. For example:
+
+```json
+{
+  "customer_reference_id": "CR-12345",
+  "department": "Marketing",
+  "project": "Q2 Campaign",
+  "is_priority": true,
+  "monthly_budget": 1500
+}
+```
+
+## Constraints
+
+When working with metadata in the Ping Proxies API, keep these constraints in mind:
+
+- **Non-nested structure**: Metadata must be a flat JSON object (no nested objects)
+- **Limited keys**: Maximum of 30 keys per metadata object
+- **Value length**: Each value's string representation must be ≤ 300 characters
+- **Size limit**: Total metadata size must be ≤ 32KB
+- **Supported value types**: String, boolean, float, and integer values
+
+## Adding Metadata
+
+You can add metadata when creating or updating resources. For example, when creating a proxy user:
+
+```json
+{
+  "proxy_user_id": "marketing_team",
+  "proxy_user_metadata": {
+    "department": "Marketing",
+    "cost_center": "CC-45678",
+    "manager": "Jane Smith"
+  }
+}
+```
+
+## Updating Metadata
+
+When updating metadata, you must provide the complete metadata object. The API will replace the existing metadata with your new object, not merge them.
+
+For example, to update a service's metadata:
+
+```json
+{
+  "service_metadata": {
+    "project": "Updated Project Name",
+    "department": "Sales",
+    "priority": "high"
+  }
+}
+```
+
+## Searching by Metadata
+
+The API allows filtering resources based on their metadata values. This is particularly powerful for organizing and retrieving resources based on your custom attributes.
+
+### Metadata Search Operators
+
+When searching, you can use the following formats:
+
+- **Exact match**: `proxy_user_metadata.department=Marketing`
+- **Minimum value**: `min_proxy_user_metadata.monthly_budget=1000`
+- **Maximum value**: `max_proxy_user_metadata.monthly_budget=2000`
+- **Contains substring**: `like_proxy_user_metadata.project=Campaign`
+- **Not equal**: `not_proxy_user_metadata.department=IT`
+- **Existence check**:
+  - `proxy_user_metadata.exists_project=1` (key must exist)
+  - `proxy_user_metadata.exists_project=0` (key must not exist)
+
+## Best Practices
+
+1. **Consistent naming**: Use consistent key names across resources
+2. **Keep metadata meaningful**: Only store relevant information that adds value
+3. **Consider searchability**: Structure metadata with future filtering needs in mind
+4. **Monitor size**: Keep metadata compact to avoid reaching size limits
+5. **Document your schema**: Maintain internal documentation of your metadata structure
+
+## Example Use Cases
+
+- **Billing categorization**: Add cost center or department information
+- **Client organization**: Track which client or project a resource belongs to
+- **Custom grouping**: Create your own grouping scheme beyond the API's built-in categories
+- **Usage tracking**: Add purpose or usage details to track resource utilization
+
+By effectively using metadata, you can extend the Ping Proxies API to fit your organization's specific needs and workflows.
