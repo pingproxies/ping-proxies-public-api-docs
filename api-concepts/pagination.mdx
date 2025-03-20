@@ -104,13 +104,3 @@ const allResults = await Promise.all(pagePromises);
 <Warning>
   Use parallel paging cautiously to avoid rate limiting. Consider how many concurrent requests you're making to the API.
 </Warning>
-
-## Best Practices
-
-1. **Start small**: Begin with a small `per_page` value and increase only if needed
-2. **Be consistent**: Use the same `per_page` value throughout pagination to avoid confusion
-3. **Handle empty pages**: If you receive an empty array, you've reached the end of the data
-4. **Consider timeouts**: Processing large pages may increase the chance of timeouts
-5. **Cache results**: If you're making the same paginated requests frequently, consider caching results
-
-By using pagination effectively, you can build more efficient and responsive applications with the Ping Proxies API.
