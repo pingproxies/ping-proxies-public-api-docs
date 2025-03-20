@@ -1,0 +1,144 @@
+---
+title: 'Authentication'
+description: 'Securely authenticate with the Ping Proxies API'
+---
+
+# Authentication
+
+The Ping Proxies API uses API keys for authentication. Every request to the API must include authentication credentials to verify your identity and access rights.
+
+## API Keys
+
+Authentication is performed using a pair of API keys:
+
+1. **Public API Key**: Identifies your account but isn't considered secret
+2. **Private API Key**: Secret key that should never be shared or exposed
+
+Both keys must be included in every API request.
+
+## Obtaining API Keys
+
+To get your API keys:
+
+1. Log in to the [Ping Proxies Dashboard](https://dashboard.pingproxies.com)
+2. Navigate to the **API Keys** section
+3. Generate a new API key pair if you don't already have one
+
+<Warning>
+  Your Private API Key will only be shown once when generated. Make sure to store it securely.
+</Warning>
+
+## Authentication Headers
+
+Include your API keys in the HTTP headers of every request:
+
+```
+X-API-Public-Key: your_public_key
+X-API-Private-Key: your_private_key
+```
+
+Example cURL request with authentication:
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search' \
+  --header 'X-API-Public-Key: pub_key_aB12cD34eF56gH78' \
+  --header 'X-API-Private-Key: priv_key_iJ90kL12mN34oP56'
+```
+
+## API Key Security
+
+Protect your API keys using these best practices:
+
+1. **Never expose your Private API Key** in client-side code, public repositories, or to end users
+2. **Use environment variables** to store API keys in your applications
+3. **Implement IP restrictions** when possible to limit API access to known servers
+4. **Rotate keys periodically**, especially after team member changes
+5. **Use separate keys** for different environments (development, staging, production)
+
+<Note>
+  If you believe your API keys have been compromised, regenerate them immediately from the dashboard.
+</Note>
+
+## Authentication Errors
+
+If there are issues with your authentication, you'll receive one of these error responses:
+
+### Missing API Keys
+
+```json
+{
+  "error": "Unauthorized",
+  "message": "API key authentication is required.",
+  "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
+}
+```
+
+### Invalid API Keys
+
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid API key combination.",
+  "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
+}
+```
+
+### Insufficient Permissions
+
+```json
+{
+  "error": "Forbidden",
+  "message": "You don't have permission to access this resource.",
+  "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
+}
+```
+
+## Two-Factor Authentication
+
+Some sensitive operations in the API require two-factor authentication (2FA). When 2FA is required, you'll receive a `403 Forbidden` response with a special format:
+
+```json
+{
+  "error": "Two-Factor Authentication Required",
+  "message": "This action requires Two-Factor Authentication. Please retry request with Two-Factor Authentication keys.",
+  "two_factor_authentication_public_key": "1234567890",
+  "two_factor_authentication_service": "email",
+  "two_factor_authentication_target": "e******@example.com"
+}
+```
+
+To complete the request:
+
+1. Retrieve the 2FA code sent to your configured authentication method (email, SMS, etc.)
+2. Add the following headers to your original request:
+   ```
+   X-Two-Factor-Authentication-Public-Key: 1234567890
+   X-Two-Factor-Authentication-Private-Key: the_code_you_received
+   ```
+3. Resend the request with all original parameters and the added 2FA headers
+
+## Access Control
+
+The Ping Proxies API implements resource-based access control:
+
+- You can only access resources associated with your account
+- API keys have permissions that may limit which endpoints they can access
+- Some operations may require specific subscription levels or additional permissions
+
+## Rate Limiting
+
+Authentication is tied to rate limiting. Each API key pair has its own rate limits:
+
+- 100 requests per minute
+- 5,000 requests per day
+
+These limits help ensure fair usage of the API for all users.
+
+## Next Steps
+
+Now that you understand how to authenticate with the Ping Proxies API, you're ready to:
+
+- [Explore the API structure](/api-basics/structure)
+- [Learn about pagination](/api-techniques/pagination)
+- [Make your first API request](/tutorials/first-request)

@@ -15,6 +15,15 @@
         "pages": [
           "api-reference/introduction",
           {
+            "group": "API Basics",
+            "pages": [
+              "api-basics/structure",
+              "api-basics/authentication",
+              "api-basics/error-handling",
+              "api-basics/rate-limiting"
+            ]
+          },
+          {
             "group": "Core API Features",
             "pages": [
               "core-api-features/metadata",
