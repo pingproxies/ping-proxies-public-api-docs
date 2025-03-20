@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "API Reference 2",
+        "tab": "API Reference",
         "openapi": "https://staging.api.pingproxies.com/1.0/public/user/documentation/openapi.json"
     }
       
