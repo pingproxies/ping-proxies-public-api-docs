@@ -21,7 +21,7 @@ Ping Proxies API uses the following query parameters to control pagination:
 | Parameter | Type | Description | Default |
 |-----------|------|-------------|---------|
 | `page` | integer | The page number to retrieve | 1 |
-| `per_page` | integer | Number of items to return per page | 10 |
+| `per_page` | integer | Number of items to return per page | 100 |
 
 ### Example Request
 
@@ -69,7 +69,8 @@ total_pages = Math.ceil(total_count / per_page)
 ## Pagination Limits
 
 - **Minimum `per_page`**: 1
-- **Maximum `per_page`**: 100 (higher limits may be available for specific endpoints)
+- **Maximum `per_page`**: 1000
+- **Default `per_page`**: 100
 - **Minimum `page`**: 1
 - If you request a page beyond the available data, you'll receive an empty data array
 
@@ -89,16 +90,41 @@ GET /proxy/search?page=2&per_page=50
 
 For faster data collection, you can calculate the total pages and make multiple concurrent requests:
 
-```javascript
-// Example in JavaScript
-const totalPages = Math.ceil(totalCount / perPage);
-const pagePromises = [];
+```python
+import asyncio
+import aiohttp
 
-for (let page = 1; page <= totalPages; page++) {
-  pagePromises.push(fetchPage(page, perPage));
-}
+async def fetch_page(session, page, per_page):
+    """Fetch a specific page of results"""
+    url = f"https://api.pingproxies.com/1.0/public/user/proxy/search?page={page}&per_page={per_page}"
+    async with session.get(url) as response:
+        return await response.json()
 
-const allResults = await Promise.all(pagePromises);
+async def fetch_all_pages(total_count, per_page):
+    """Fetch all pages in parallel"""
+    total_pages = (total_count + per_page - 1) // per_page  # Math.ceil equivalent
+    
+    async with aiohttp.ClientSession() as session:
+        # Create tasks for each page request
+        page_tasks = []
+        for page in range(1, total_pages + 1):
+            page_tasks.append(fetch_page(session, page, per_page))
+        
+        # Run all page requests concurrently
+        all_results = await asyncio.gather(*page_tasks)
+        
+        return all_results
+
+# Usage example
+async def main():
+    total_count = 1250
+    per_page = 100  # Default is 100, but you can set up to 1000
+    
+    results = await fetch_all_pages(total_count, per_page)
+    print(f"Fetched {len(results)} pages")
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 <Warning>
