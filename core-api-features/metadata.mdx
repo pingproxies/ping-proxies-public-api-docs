@@ -38,7 +38,7 @@ Metadata supports the following value types:
 - **Boolean**: True/false values (e.g., `"is_priority": true`)
 
 <Tip>
-  To store datetime objects, we recommend using timestamps as integers since they're more efficiently stored and queried.
+  To store datetime objects, we recommend using timestamps as integers since they're more efficiently stored and queried. They can also be compared using the min_ and max_ operators.
 </Tip>
 
 ## Constraints
@@ -102,7 +102,6 @@ When searching, you can use the following formats:
 ## Example Use Cases
 
 - **Reseller customer tracking**: Store client-specific identifiers and attributes
-- **Billing categorization**: Add cost center or department information
 - **Client organization**: Track which client or project a resource belongs to
 - **Custom grouping**: Create your own grouping scheme beyond the API's built-in categories
 - **Usage tracking**: Add purpose or usage details to track resource utilization
