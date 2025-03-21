@@ -1,5 +1,5 @@
 ---
-title: 'Search Operators'
+title: 'Filter Operators'
 description: 'Advanced filtering with operators in the Ping Proxies API'
 ---
 
@@ -9,13 +9,13 @@ The Ping Proxies API supports powerful search operators that enable advanced fil
 
 The following operators are available when searching across most resources:
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `min_` | Greater than or equal (≥) | `min_proxy_user_residential_bytes_limit=1000000` |
-| `max_` | Less than or equal (≤) | `max_proxy_user_residential_bytes_used=500000` |
-| `like_` | Contains substring | `like_service_name=%residential$` |
-| `not_` | Not equal | `not_proxy_user_is_deleted=true` |
-| `exists_` | Checks Metadata key existence check | `proxy_user_metadata.exists_client_id=1` |
+| Operator | Description | Supported Types | Example |
+|----------|-------------|-----------------|---------|
+| `min_` | Greater than or equal (≥) | Numbers, Timestamps, Dates | `min_proxy_user_residential_bytes_limit=1000000` |
+| `max_` | Less than or equal (≤) | Numbers, Timestamps, Dates | `max_proxy_user_residential_bytes_used=500000` |
+| `like_` | Contains substring (case-insensitive) | Strings | `like_service_name=%residential$` |
+| `not_` | Not equal | All types | `not_proxy_user_is_deleted=true` |
+| `exists_` | Checks Metadata key existence | Metadata keys | `proxy_user_metadata.exists_client_id=1` |
 
 ## Using Numeric Comparison Operators
 
@@ -59,12 +59,16 @@ The `like_` prefix performs a case-insensitive substring search. You can use the
 GET /public/user/service/search?like_service_name=%premium%
 ```
 
-This returns services with "premium" anywhere in their name (e.g., "Premium ISP", "ISP Premium Plan").
+This returns services with "premium" anywhere in their name (e.g., "Premium ISP", "ISP Premium Plan", "premium service").
 
 You can also use the `%` wildcard more specifically:
 - `like_service_name=premium%` - matches strings that start with "premium"
 - `like_service_name=%premium` - matches strings that end with "premium"
 - `like_service_name=pre%mium` - matches strings that start with "pre" and end with "mium"
+
+<Note>
+The `like_` operator is case-insensitive, so `like_service_name=%PREMIUM%` will also match "premium", "Premium", and any other case variation.
+</Note>
 
 ## Boolean Operators
 
@@ -108,10 +112,14 @@ The operators work seamlessly with metadata fields:
 
 ## Date and Time Filtering
 
-Dates and times use 20XX-01-31 format and work with `min_` and `max_` operators:
+Dates and times use 20XX-01-31 format and work with `min_` and `max_` operators. These operators support both date strings and timestamp integers:
 
 ```
 GET /public/user/service/search?min_service_creation_datetime=2023-06-01
+```
+
+```
+GET /public/user/service/search?min_service_creation_timestamp=1685577600
 ```
 
 ## Combining Multiple Filters
