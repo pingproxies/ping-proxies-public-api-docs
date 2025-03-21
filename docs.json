@@ -8,15 +8,22 @@
     "dark": "#5547eb"
   },
   "favicon": "https://pingproxies.com/favicon.ico",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "API Reference 1",
-        "source": "openapi"
-      },
-      {
-        "tab": "API Reference",
-        "pages": [
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": ["quickstart"]
+    }
+  ],
+  "tabs": [
+    {
+      "name": "API Reference 1",
+      "url": "reference-1",
+      "source": "openapi"
+    },
+    {
+      "name": "API Reference",
+      "url": "reference",
+      "pages": [
           "api-reference/introduction",
           {
             "group": "API Basics",
@@ -150,7 +157,8 @@
         ]
       },
       {
-        "tab": "All Routes",
+        "name": "All Routes",
+        "url": "all-routes",
         "pages": [
           "api-reference/introduction",
           {
@@ -251,8 +259,7 @@
         ]
       }
     ],
-    "global": {
-      "anchors": [
+    "anchors": [
         {
           "anchor": "Community",
           "href": "https://discord.com/invite/ping-proxies-584021352940568578",
