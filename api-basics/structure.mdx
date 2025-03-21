@@ -227,31 +227,14 @@ The API uses standard JSON data types:
 
 ## Date and Time Format
 
-All date and time values in the API use the ISO 8601 format:
+All date and time values in the API use the format below:
 
 ```
-YYYY-MM-DDThh:mm:ssZ
+YYYY-MM-DDT hh:mm:ss
 ```
 
-Example: `"2023-09-15T14:30:00Z"`
+Example: `"2023-09-15 14:30:00"`
 
 When filtering by dates, you can use:
-- Complete ISO 8601 format: `2023-09-15T14:30:00Z`
+- Format: `2023-09-15 14:30:00`
 - Date only: `2023-09-15`
-
-## Rate Limiting
-
-The API implements rate limiting to ensure fair usage. Current limits are:
-
-- 100 requests per minute per API key
-- 5,000 requests per day per API key
-
-Rate limit headers are included in each response:
-
-| Header | Description |
-|--------|-------------|
-| `X-RateLimit-Limit` | Requests allowed per minute |
-| `X-RateLimit-Remaining` | Requests remaining in the current window |
-| `X-RateLimit-Reset` | Time (in seconds) until the rate limit resets |
-
-If you exceed the rate limit, you'll receive a `429 Too Many Requests` status code.

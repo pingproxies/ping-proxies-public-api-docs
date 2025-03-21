@@ -57,7 +57,7 @@ Protect your API keys using these best practices:
 5. **Use separate keys** for different environments (development, staging, production)
 
 <Note>
-  If you believe your API keys have been compromised, regenerate them immediately from the dashboard.
+  If you believe your API keys have been compromised, cancel them immediately from the dashboard.
 </Note>
 
 ## Authentication Errors
@@ -69,7 +69,7 @@ If there are issues with your authentication, you'll receive one of these error 
 ```json
 {
   "error": "Unauthorized",
-  "message": "API key authentication is required.",
+  "message": "API Private or Public Keys are missing.",
   "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
 }
 ```
@@ -79,66 +79,7 @@ If there are issues with your authentication, you'll receive one of these error 
 ```json
 {
   "error": "Unauthorized",
-  "message": "Invalid API key combination.",
+  "message": "Invalid API key.",
   "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
 }
 ```
-
-### Insufficient Permissions
-
-```json
-{
-  "error": "Forbidden",
-  "message": "You don't have permission to access this resource.",
-  "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
-}
-```
-
-## Two-Factor Authentication
-
-Some sensitive operations in the API require two-factor authentication (2FA). When 2FA is required, you'll receive a `403 Forbidden` response with a special format:
-
-```json
-{
-  "error": "Two-Factor Authentication Required",
-  "message": "This action requires Two-Factor Authentication. Please retry request with Two-Factor Authentication keys.",
-  "two_factor_authentication_public_key": "1234567890",
-  "two_factor_authentication_service": "email",
-  "two_factor_authentication_target": "e******@example.com"
-}
-```
-
-To complete the request:
-
-1. Retrieve the 2FA code sent to your configured authentication method (email, SMS, etc.)
-2. Add the following headers to your original request:
-   ```
-   X-Two-Factor-Authentication-Public-Key: 1234567890
-   X-Two-Factor-Authentication-Private-Key: the_code_you_received
-   ```
-3. Resend the request with all original parameters and the added 2FA headers
-
-## Access Control
-
-The Ping Proxies API implements resource-based access control:
-
-- You can only access resources associated with your account
-- API keys have permissions that may limit which endpoints they can access
-- Some operations may require specific subscription levels or additional permissions
-
-## Rate Limiting
-
-Authentication is tied to rate limiting. Each API key pair has its own rate limits:
-
-- 100 requests per minute
-- 5,000 requests per day
-
-These limits help ensure fair usage of the API for all users.
-
-## Next Steps
-
-Now that you understand how to authenticate with the Ping Proxies API, you're ready to:
-
-- [Explore the API structure](/api-basics/structure)
-- [Learn about pagination](/api-techniques/pagination)
-- [Make your first API request](/tutorials/first-request)
