@@ -57,6 +57,11 @@ The API uses standard HTTP methods to perform different actions:
 | `PATCH` | Update data | Edit a proxy user, update service metadata |
 | `DELETE` | Remove data | Cancel a service, delete a proxy user |
 
+<Warning>
+  **Inconsistent HTTP Method**: The route `POST /public/user/proxy/list_by_id` violates the established HTTP method convention.
+According to the convention, retrieval operations should use the GET method, but this endpoint uses POST for a retrieval operation. This is an intentional deviation to support sending large lists of UUIDs in the request body, which wouldn't be practical with query parameters in a GET request.
+</Warning>
+
 ### Method and URL Mapping
 
 The HTTP method and URL structure work together to define the operation:
@@ -68,11 +73,6 @@ The HTTP method and URL structure work together to define the operation:
 | Create | `POST` | `/resource/create` | `POST /proxy_user/create` |
 | Update | `PATCH` | `/resource/edit/{id}` | `PATCH /proxy/edit/123` |
 | Delete | `DELETE` | `/resource/delete/{id}` or `/resource/cancel/{id}` | `DELETE /proxy_user/delete/123` |
-
-<Warning>
-  **Inconsistent HTTP Method**: The route `POST /public/user/proxy/list_by_id` violates the established HTTP method convention.
-According to the convention, retrieval operations should use the GET method, but this endpoint uses POST for a retrieval operation. This is an intentional deviation to support sending large lists of UUIDs in the request body, which wouldn't be practical with query parameters in a GET request.
-</Warning>
 
 ## Request Format
 
