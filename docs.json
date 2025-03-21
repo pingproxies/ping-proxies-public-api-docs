@@ -161,7 +161,7 @@
       ]
     }
   },
-  "openapi": "https://staging.api.pingproxies.com/1.0/public/user/documentation/openapi.json",
+  "openapi": "https://api.pingproxies.com/1.0/public/user/documentation/openapi.json",
   "logo": {
     "light": "https://ping-proxies-strapi.ams3.digitaloceanspaces.com/public/uploads/ping_logo_b83f7f9c6b.webp",
     "dark": "https://ping-proxies-strapi.ams3.digitaloceanspaces.com/public/uploads/ping_logo_b83f7f9c6b.webp"
