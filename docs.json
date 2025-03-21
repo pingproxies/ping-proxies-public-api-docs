@@ -11,6 +11,10 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "API Reference 1",
+        "source": "openapi"
+      },
+      {
         "tab": "API Reference",
         "pages": [
           "api-reference/introduction",
