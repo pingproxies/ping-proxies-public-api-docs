@@ -44,114 +44,128 @@
           ]
         },
         {
-          "group": "Account & Authentication",
-          "pages": ["api-reference/customer/retrieve-current-customer"]
-        },
-        {
-          "group": "Proxy Services",
+          "group": "Customer",
           "pages": [
-            {
-              "group": "Proxy Management",
-              "pages": [
-                "api-reference/proxy/retrieve-proxy",
-                "api-reference/proxy/search-proxies",
-                "api-reference/proxy/proxy-edit",
-                "api-reference/proxy/retrieve-proxy-list-by-id",
-                "api-reference/proxy/retrieve-proxy-list-by-search"
-              ]
-            },
-            {
-              "group": "Proxy User Management",
-              "pages": [
-                "api-reference/proxy-user/create-proxy-user",
-                "api-reference/proxy-user/retrieve-proxy-user",
-                "api-reference/proxy-user/search-proxy-users",
-                "api-reference/proxy-user/edit-proxy-user",
-                "api-reference/proxy-user/delete-proxy-user-record"
-              ]
-            },
-            {
-              "group": "Residential Proxies",
-              "pages": [
-                "api-reference/residential/create-residential-list",
-                "api-reference/residential/retrieve-residential-service-summary",
-                "api-reference/residential-ledger/retrieve-residential-ledger",
-                "api-reference/residential-ledger/search-residential-ledger"
-              ]
-            }
+            "api-reference/customer/retrieve-current-customer"
           ]
         },
         {
-          "group": "Service & Billing",
+          "group": "Proxy",
           "pages": [
-            {
-              "group": "Service Management",
-              "pages": [
-                "api-reference/service/retrieve-service",
-                "api-reference/service/search-services",
-                "api-reference/service/edit-service",
-                "api-reference/service/cancel-service" 
-              ]
-            },
-            {
-              "group": "Service Adjustments",
-              "pages": [
-                "api-reference/service-adjustment/retrieve-service-adjustment",
-                "api-reference/service-adjustment/search-service-adjustments"
-              ]
-            },
-            {
-              "group": "Checkout",
-              "pages": [
-                "api-reference/checkout/retrieve-simplified-product-checkout-catalog",
-                "api-reference/checkout/generate-checkout-quote",
-                "api-reference/checkout/create-checkout"
-              ]
-            }
+            "api-reference/proxy/retrieve-proxy",
+            "api-reference/proxy/search-proxies",
+            "api-reference/proxy/proxy-edit",
+            "api-reference/proxy/retrieve-proxy-list-by-id",
+            "api-reference/proxy/retrieve-proxy-list-by-search"
           ]
         },
         {
-          "group": "Data & Analytics",
+          "group": "Proxy User",
           "pages": [
-            {
-              "group": "Usage Analytics",
-              "pages": [
-                "api-reference/proxy-analytics/graph-proxy-analytics",
-                "api-reference/log/retrieve-log",
-                "api-reference/log/search-logs",
-                "api-reference/log-summary/retrieve-log-summary",
-                "api-reference/log-summary/search-log-summary"
-              ]
-            },
-            {
-              "group": "Geo & Location Data",
-              "pages": [
-                {
-                  "group": "Geographic Areas",
-                  "pages": [
-                    "api-reference/continent/retrieve-continent",
-                    "api-reference/continent/search-continent",
-                    "api-reference/country/retrieve-country",
-                    "api-reference/country/search-country",
-                    "api-reference/subdivision/retrieve-subdivision",
-                    "api-reference/subdivision/search-subdivision",
-                    "api-reference/city/retrieve-city",
-                    "api-reference/city/search-city"
-                  ]
-                },
-                {
-                  "group": "Network Data",
-                  "pages": [
-                    "api-reference/asn/retrieve-asn",
-                    "api-reference/asn/search-asn"
-                  ]
-                }
-              ]
-            },
-            {
-              "group": "Products",
-              "pages": ["api-reference/product/search-product"]
-            }
+            "api-reference/proxy-user/create-proxy-user",
+            "api-reference/proxy-user/retrieve-proxy-user",
+            "api-reference/proxy-user/search-proxy-users",
+            "api-reference/proxy-user/edit-proxy-user",
+            "api-reference/proxy-user/delete-proxy-user-record"
+          ]
+        },
+        {
+          "group": "Residential",
+          "pages": [
+            "api-reference/residential/create-residential-list",
+            "api-reference/residential/retrieve-residential-service-summary"
+          ]
+        },
+        {
+          "group": "Residential Ledger",
+          "pages": [
+            "api-reference/residential-ledger/retrieve-residential-ledger",
+            "api-reference/residential-ledger/search-residential-ledger"
+          ]
+        },
+        {
+          "group": "Service",
+          "pages": [
+            "api-reference/service/retrieve-service",
+            "api-reference/service/search-services",
+            "api-reference/service/edit-service",
+            "api-reference/service/cancel-service" 
+          ]
+        },
+        {
+          "group": "Service Adjustment",
+          "pages": [
+            "api-reference/service-adjustment/retrieve-service-adjustment",
+            "api-reference/service-adjustment/search-service-adjustments"
+          ]
+        },
+        {
+          "group": "Checkout",
+          "pages": [
+            "api-reference/checkout/retrieve-simplified-product-checkout-catalog",
+            "api-reference/checkout/generate-checkout-quote",
+            "api-reference/checkout/create-checkout"
+          ]
+        },
+        {
+          "group": "Analytics",
+          "pages": [
+            "api-reference/proxy-analytics/graph-proxy-analytics"
+          ]
+        },
+        {
+          "group": "Log",
+          "pages": [
+            "api-reference/log/retrieve-log",
+            "api-reference/log/search-logs"
+          ]
+        },
+        {
+          "group": "Log Summary",
+          "pages": [
+            "api-reference/log-summary/retrieve-log-summary",
+            "api-reference/log-summary/search-log-summary"
+          ]
+        },
+        {
+          "group": "Product",
+          "pages": [
+            "api-reference/product/search-product"
+          ]
+        },
+        {
+          "group": "ASN",
+          "pages": [
+            "api-reference/asn/retrieve-asn",
+            "api-reference/asn/search-asn"
+          ]
+        },
+        {
+          "group": "Continent",
+          "pages": [
+            "api-reference/continent/retrieve-continent",
+            "api-reference/continent/search-continent"
+          ]
+        },
+        {
+          "group": "Country",
+          "pages": [
+            "api-reference/country/retrieve-country",
+            "api-reference/country/search-country"
+          ]
+        },
+        {
+          "group": "Subdivision",
+          "pages": [
+            "api-reference/subdivision/retrieve-subdivision",
+            "api-reference/subdivision/search-subdivision"
+          ]
+        },
+        {
+          "group": "City",
+          "pages": [
+            "api-reference/city/retrieve-city",
+            "api-reference/city/search-city"
           ]
         }
       ]
