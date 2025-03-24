@@ -8,12 +8,11 @@
     "dark": "#5547eb"
   },
   "favicon": "https://pingproxies.com/favicon.ico",
-  "navigation": [
-    {
-      "group": "Get Started",
+  "navigation": {
+    "Get Started": {
       "pages": ["quickstart"]
     }
-  ],
+  },
   "tabs": [
     {
       "name": "API Reference",
