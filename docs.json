@@ -184,7 +184,8 @@
     "links": [
       {
         "label": "Support",
-        "url": "mailto:support@pingproxies.com"
+        "url": "mailto:support@pingproxies.com",
+        "href": "mailto:support@pingproxies.com"
       }
     ]
   },
