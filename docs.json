@@ -8,34 +8,38 @@
     "dark": "#5547eb"
   },
   "favicon": "https://pingproxies.com/favicon.ico",
-  "navigation": {
-    "Get Started": {
+  "navigation": [
+    {
+      "group": "Get Started",
       "pages": ["quickstart"]
+    },
+    {
+      "group": "API Basics",
+      "pages": [
+        "api-basics/structure",
+        "api-basics/authentication",
+        "api-basics/error-handling",
+        "api-basics/rate-limiting"
+      ]
+    },
+    {
+      "group": "Core API Features",
+      "pages": [
+        "core-api-features/metadata",
+        "core-api-features/pagination",
+        "core-api-features/search-operators",
+        "core-api-features/sorting"
+      ]
     }
-  },
+  ],
   "tabs": [
     {
       "name": "API Reference",
       "url": "reference",
-      "pages": [
-        "api-reference/introduction",
+      "sections": [
         {
-          "group": "API Basics",
-          "pages": [
-            "api-basics/structure",
-            "api-basics/authentication",
-            "api-basics/error-handling",
-            "api-basics/rate-limiting"
-          ]
-        },
-        {
-          "group": "Core API Features",
-          "pages": [
-            "core-api-features/metadata",
-            "core-api-features/pagination",
-            "core-api-features/search-operators",
-            "core-api-features/sorting"
-          ]
+          "group": "Introduction",
+          "pages": ["api-reference/introduction"]
         },
         {
           "group": "Customer",
@@ -167,8 +171,11 @@
     {
       "name": "All Routes",
       "url": "all-routes",
-      "pages": [
-        "api-reference/introduction",
+      "sections": [
+        {
+          "group": "Introduction",
+          "pages": ["api-reference/introduction"]
+        },
         {
           "group": "Customer & Account",
           "pages": [
@@ -269,14 +276,14 @@
   ],
   "anchors": [
     {
-      "anchor": "Community",
-      "href": "https://discord.com/invite/ping-proxies-584021352940568578",
-      "icon": "discord"
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.com/invite/ping-proxies-584021352940568578"
     },
     {
-      "anchor": "Blog",
-      "href": "https://pingproxies.com/blog",
-      "icon": "newspaper"
+      "name": "Blog",
+      "icon": "newspaper",
+      "url": "https://pingproxies.com/blog"
     }
   ],
   "openapi": "https://staging.api.pingproxies.com/1.0/public/user/documentation/openapi.json",
@@ -288,19 +295,19 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@pingproxies.com"
+        "url": "mailto:support@pingproxies.com"
       }
     ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.pingproxies.com"
-    }
+    "buttons": [
+      {
+        "type": "link",
+        "label": "Dashboard",
+        "url": "https://dashboard.pingproxies.com"
+      }
+    ]
   },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/pingproxies",
-      "linkedin": "https://uk.linkedin.com/company/ping-proxies"
-    }
+  "footerSocials": {
+    "x": "https://x.com/pingproxies",
+    "linkedin": "https://uk.linkedin.com/company/ping-proxies"
   }
 }
