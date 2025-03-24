@@ -16,11 +16,6 @@
   ],
   "tabs": [
     {
-      "name": "API Reference 1",
-      "url": "reference-1",
-      "source": "openapi"
-    },
-    {
       "name": "API Reference",
       "url": "reference",
       "pages": [
