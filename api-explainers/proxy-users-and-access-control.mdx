@@ -13,15 +13,6 @@ A Proxy User is a username/password combination that provides authentication to 
 - Apply varying access restrictions to different sets of proxies
 - Track and monitor usage separately for each Proxy User
 
-<Card title="Key Benefits" icon="shield-halved">
-  Using multiple Proxy Users helps with:
-  
-  - Improved security through credential isolation
-  - Granular access control to specific proxy resources
-  - Better usage tracking and monitoring
-  - Simplified credential rotation without disrupting all systems
-</Card>
-
 ## Proxy User Authentication Methods
 
 Proxy Users support two primary authentication methods:
@@ -273,32 +264,7 @@ curl --request GET \
   --header 'X-API-Private-Key: your_private_key'
 ```
 
-## Best Practices
-
-<CardGroup cols={2}>
-  <Card title="Rotate Credentials Regularly" icon="key">
-    Periodically update Proxy User passwords to enhance security
-  </Card>
-  <Card title="Implement Least Privilege" icon="lock">
-    Grant each Proxy User only the access they need for their specific function
-  </Card>
-  <Card title="Use Metadata for Organization" icon="tags">
-    Add metadata to track departments, projects, or purposes
-  </Card>
-  <Card title="Monitor Usage Patterns" icon="chart-line">
-    Regularly check logs to identify unusual access patterns
-  </Card>
-</CardGroup>
-
-### Security Recommendations
-
-1. **Never share Proxy User credentials across different applications** - create separate credentials for each use case
-2. **Enable strict security** for sensitive applications
-3. **Set bandwidth limits** to prevent unexpected consumption
-4. **Use IP authentication** when connecting from fixed infrastructure
-5. **Implement credential rotation** workflows for regular password changes
-
-## Account Limits
+## Proxy User Account Limits
 
 Each customer account has a limit on the number of Proxy Users that can be created. You can check your current limit by retrieving your customer profile:
 
