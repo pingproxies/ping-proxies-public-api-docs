@@ -11,13 +11,15 @@
 "navigation": {
   "tabs": [
     {
-      "tab": "Getting Started",
-  "navigation": {
-    "groups": [
-      {
-        "group": "Getting Started",
-        "pages": ["introduction"]
-      }]}
+      "group": "Getting Started",
+      "pages": [
+        "introduction",
+        {
+          "group": "Editing",
+          "icon": "pen-paintbrush",
+          "pages": ["development"]
+        }
+      ]
     },
     {
       "tab": "API Reference",
