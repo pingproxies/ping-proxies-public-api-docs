@@ -3,19 +3,12 @@ title: 'Geolocation & Network Relationships'
 description: 'Understanding the geographical and network structure of the Ping Proxies API Objects.'
 ---
 
-# Geolocation & Network Relationships
-
-## Geographic Hierarchy
-
 The Ping Proxies API organizes proxies using a hierarchical geographic structure. Understanding this structure is essential for effectively filtering and selecting proxies based on location.
 
 ### Hierarchy Levels
 
-<img className="block dark:hidden" src="/images/geo-hierarchy-light.svg" alt="Geospatial Hierarchy" />
-<img className="hidden dark:block" src="/images/geo-hierarchy-dark.svg" alt="Geospatial Hierarchy" />
-
 1. **Continent**: The broadest geographical division (e.g., Europe, North America)
-2. **Country**: Countries within each continent, identified by ISO two-letter codes (e.g., 'us', 'gb', 'de')
+2. **Country**: Countries within each continent, identified by ISO two-letter codes in lower-case (e.g., 'us', 'gb', 'de')
 3. **Subdivision**: States, provinces, or regions within a country (e.g., 'us-ca' for California)
 4. **City**: Specific cities within subdivisions
 
