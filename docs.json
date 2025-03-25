@@ -22,7 +22,7 @@
     {
       "tab": "API Reference",
       "pages": [
-        "api-basics/rate-limiting",
+        "api-basics/rate-limiting"
       ]
     }
   ]
