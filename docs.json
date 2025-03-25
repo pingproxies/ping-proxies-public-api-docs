@@ -12,6 +12,10 @@
     "groups": [
       {
         "group": "Getting Started",
+        "pages": ["introduction"]
+      },
+      {
+        "group": "Getting Started",
         "pages": ["quickstart"]
       },
       {
@@ -31,10 +35,6 @@
           "core-api-features/search-operators",
           "core-api-features/sorting"
         ]
-      },
-      {
-        "group": "API Reference",
-        "pages": ["introduction"]
       },
       {
         "group": "Customer",
