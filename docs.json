@@ -38,7 +38,8 @@
           {
             "group": "Explainers",
             "pages": [
-              "api-explainers/geolocation-network-relationships"
+              "api-explainers/geolocation-network-relationships",
+              "api-explainers/proxy-users-and-access-control"
             ]
           }
         ]
