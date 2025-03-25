@@ -88,7 +88,7 @@ curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?asn_type=i
   --header 'X-API-Private-Key: your_private_key'
 ```
 
-## Geo-IP Resolution
+## IP Address Geolocation Look Up
 
 You can use the IP geolocation endpoint to get detailed information about specific IP addresses:
 
@@ -118,24 +118,3 @@ This endpoint returns both external geolocation data and mapped internal objects
   }
 }
 ```
-
-## Combining Geographic and Network Filters
-
-For more precise proxy selection, you can combine geographic and network criteria:
-
-```bash
-# Find ISP proxies in the UK with AT&T as the provider
-curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?country_id=gb&proxy_type=isp&asn_id=7018' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-## Object Relationships
-
-The relationship between geographic and network entities is represented in the API's object model. For a deeper understanding of how these objects relate to one another, refer to the [API Object Relationships](/api-explainers/api-object-relationships) page.
-
-<Card title="Further Reading" icon="book-open">
-  The geographic and network information is foundational to how Ping Proxies operates. Understanding these concepts will help you effectively target the right proxies for your specific use cases.
-  
-  For more details on the API endpoints mentioned, refer to the respective API Reference sections.
-</Card>
