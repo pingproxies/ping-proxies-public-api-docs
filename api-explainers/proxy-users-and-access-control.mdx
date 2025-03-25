@@ -1,0 +1,316 @@
+---
+title: 'Proxy Users & Access Control'
+description: 'Managing authentication and access to proxies through the API'
+---
+
+Proxy Users are a central authentication mechanism in the Ping Proxies system, controlling how your applications authenticate with and access proxies. This guide explains how to create, manage, and utilize Proxy Users effectively through the API.
+
+## What is a Proxy User?
+
+A Proxy User is a username/password combination that provides authentication to access your proxies. Each customer account can have multiple Proxy Users, allowing you to:
+
+- Create different credentials for different teams, projects, or applications
+- Apply varying access restrictions to different sets of proxies
+- Track and monitor usage separately for each Proxy User
+
+<Card title="Key Benefits" icon="shield-halved">
+  Using multiple Proxy Users helps with:
+  
+  - Improved security through credential isolation
+  - Granular access control to specific proxy resources
+  - Better usage tracking and monitoring
+  - Simplified credential rotation without disrupting all systems
+</Card>
+
+## Proxy User Authentication Methods
+
+Proxy Users support two primary authentication methods:
+
+### 1. Username/Password Authentication
+
+The standard method where a username and password are provided with each proxy request:
+
+```
+http://username:password@proxy_ip:port
+```
+
+### 2. IP-Based Authentication
+
+Allows access based on the originating IP address:
+
+```javascript
+// Configure a Proxy User with IP-based authentication
+const response = await fetch('https://api.pingproxies.com/1.0/public/user/proxy_user/create', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-API-Public-Key': 'your_public_key',
+    'X-API-Private-Key': 'your_private_key'
+  },
+  body: JSON.stringify({
+    "proxy_user_id": "app_server",
+    "proxy_user_password": "secure_password",
+    "proxy_user_is_strict_security": true,
+    "ip_address_authentications": [
+      "34.56.78.90",
+      "34.56.78.91"
+    ]
+  })
+});
+```
+
+## Creating Proxy Users
+
+You can create Proxy Users with various settings:
+
+```bash
+curl --request POST \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/create' \
+  --header 'Content-Type: application/json' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key' \
+  --data '{
+    "proxy_user_id": "marketing_team",
+    "proxy_user_password": "secure_password",
+    "proxy_user_metadata": {
+      "department": "Marketing",
+      "project": "Q2 Campaign"
+    }
+  }'
+```
+
+If you don't provide a username or password, the API will generate them for you:
+
+```json
+{
+  "created": ["marketing_team"],
+  "data": {
+    "proxy_user_id": "marketing_team",
+    "proxy_user_password": "secure_password"
+  },
+  "message": "Proxy User successfully created."
+}
+```
+
+## Access Control Features
+
+### Service Restriction
+
+Limit a Proxy User to access only specific services:
+
+```bash
+curl --request POST \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/create' \
+  --header 'Content-Type: application/json' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key' \
+  --data '{
+    "proxy_user_id": "project_a",
+    "proxy_user_is_service_restricted": true,
+    "restricted_service_ids": ["API-1234-5678", "API-8765-4321"]
+  }'
+```
+
+### IP-Based Authentication
+
+Restrict access to specific client IP addresses:
+
+```bash
+curl --request POST \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/create' \
+  --header 'Content-Type: application/json' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key' \
+  --data '{
+    "proxy_user_id": "office_access",
+    "proxy_user_is_strict_security": true,
+    "ip_address_authentications": ["203.0.113.1", "203.0.113.2"]
+  }'
+```
+
+### Residential Bandwidth Limits
+
+Assign specific bandwidth quotas to different Proxy Users:
+
+```bash
+curl --request POST \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/create' \
+  --header 'Content-Type: application/json' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key' \
+  --data '{
+    "proxy_user_id": "limited_user",
+    "proxy_user_residential_bytes_limit": 1073741824
+  }'
+```
+
+## Access Control by Proxy Type
+
+Different proxy types have distinct access control characteristics:
+
+### Datacenter & ISP Proxies
+
+- **Dedicated Access**: Each proxy is assigned exclusively to your account
+- **Direct IP Access**: Connect directly to the proxy IP address
+- **Optional Authentication**: Can be configured with or without authentication
+- **Authentication Methods**: Both username/password and IP-based authentication supported
+
+### Residential Proxies
+
+- **Pool Access**: Connect to a gateway that routes to the residential proxy pool
+- **Required Authentication**: Always requires Proxy User authentication
+- **Session Control**: Use session identifiers in the proxy string format
+- **Bandwidth Management**: Track and limit bandwidth by Proxy User
+
+## Proxy String Formats
+
+Access proxies using specific string formats based on authentication method:
+
+### Username/Password Authentication
+
+```
+# HTTP proxy
+http://username:password@proxy_ip:port
+
+# SOCKS5 proxy
+socks5://username:password@proxy_ip:port
+```
+
+### IP Authentication
+
+When using IP authentication, you can omit the username/password:
+
+```
+# HTTP proxy with IP authentication
+http://proxy_ip:port
+
+# SOCKS5 proxy with IP authentication
+socks5://proxy_ip:port
+```
+
+### Residential Proxy Strings
+
+Residential proxy strings include additional parameters:
+
+```
+# Format for residential proxies
+socks5h://username:password@residential.pingproxies.com:port
+
+# Example with session parameters
+socks5h://1_proxyuser_c_us_city_newyork_s_SESSIONID:password@residential.pingproxies.com:8000
+```
+
+The components in a residential proxy string:
+- `1_`: Protocol identifier
+- `proxyuser`: Your Proxy User ID
+- `c_us`: Country (US)
+- `city_newyork`: City (New York)
+- `s_SESSIONID`: Session identifier for sticky sessions
+
+## Managing Proxy Users
+
+### Retrieving Proxy Users
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/retrieve/marketing_team' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+### Searching for Proxy Users
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/search?proxy_user_is_strict_security=true' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+### Editing Proxy Users
+
+```bash
+curl --request PATCH \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/edit/marketing_team' \
+  --header 'Content-Type: application/json' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key' \
+  --data '{
+    "proxy_user_password": "new_secure_password",
+    "proxy_user_metadata": {
+      "department": "Marketing",
+      "project": "Q3 Campaign"
+    }
+  }'
+```
+
+### Deleting Proxy Users
+
+```bash
+curl --request DELETE \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/delete/marketing_team' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Monitoring and Usage Tracking
+
+Track proxy usage by Proxy User:
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/log/search?proxy_user_id=marketing_team' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+For residential proxies, monitor bandwidth consumption:
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/residential/summary' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Rotate Credentials Regularly" icon="key">
+    Periodically update Proxy User passwords to enhance security
+  </Card>
+  <Card title="Implement Least Privilege" icon="lock">
+    Grant each Proxy User only the access they need for their specific function
+  </Card>
+  <Card title="Use Metadata for Organization" icon="tags">
+    Add metadata to track departments, projects, or purposes
+  </Card>
+  <Card title="Monitor Usage Patterns" icon="chart-line">
+    Regularly check logs to identify unusual access patterns
+  </Card>
+</CardGroup>
+
+### Security Recommendations
+
+1. **Never share Proxy User credentials across different applications** - create separate credentials for each use case
+2. **Enable strict security** for sensitive applications
+3. **Set bandwidth limits** to prevent unexpected consumption
+4. **Use IP authentication** when connecting from fixed infrastructure
+5. **Implement credential rotation** workflows for regular password changes
+
+## Account Limits
+
+Each customer account has a limit on the number of Proxy Users that can be created. You can check your current limit by retrieving your customer profile:
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/customer/retrieve' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+In the response, check the `customer_proxy_user_limit` field for your account's maximum allowed Proxy Users.
+
+<Card title="Need More Proxy Users?" icon="question">
+  If you need to increase your Proxy User limit, contact our support team at support@pingproxies.com.
+</Card>
