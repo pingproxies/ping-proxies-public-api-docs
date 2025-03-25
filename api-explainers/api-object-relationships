@@ -1,0 +1,194 @@
+---
+title: 'API Object Relationships'
+description: 'Understanding the key relationships between objects in the Ping Proxies API'
+---
+
+# API Object Relationships
+
+The Ping Proxies API is built around a set of interconnected objects that form a comprehensive ecosystem. Understanding these relationships is essential for effectively integrating with the API and building robust applications.
+
+## Core Object Hierarchy
+
+At the highest level, the API's object relationships follow this general hierarchy:
+
+```
+Customer → Service → Proxy → Geolocation/Network
+```
+
+## Customer Relationships
+
+The Customer object sits at the top of the hierarchy:
+
+- **Customer → Services**: A customer can have multiple services (one-to-many)
+- **Customer → Proxy Users**: A customer can create multiple proxy users for authentication (one-to-many)
+- **Customer → Residential Bandwidth**: Residential bandwidth is tied directly to the customer account, not to specific services
+
+```json
+{
+  "customer_id": 1955,
+  "customer_email_address": "example@domain.com",
+  "credit_balance": 1245,          // Credit available for purchases
+  "residential_bytes_left": 10737418240,  // Remaining residential bandwidth
+  "proxy_count": 100               // Total proxies across all services
+}
+```
+
+## Service Relationships
+
+Services connect customers to their proxy resources:
+
+- **Service → Customer**: Each service belongs to exactly one customer (many-to-one)
+- **Service → Proxies**: A service contains one or more proxies (one-to-many)
+- **Service → Country**: Services are typically associated with a specific country (many-to-one)
+- **Service → Service Adjustments**: Service modifications are tracked through adjustments (one-to-many)
+
+```json
+{
+  "service_id": "API-1234-5678",
+  "customer_id": 1955,             // Link to customer
+  "service_type": "isp",           // Type of service (datacenter, isp, residential)
+  "country_id": "us",              // Geographic association
+  "service_quantity": 5,           // Number of proxies
+  "service_protocol": "ipv4"       // Network protocol
+}
+```
+
+## Proxy Relationships
+
+Proxies are connected to services, locations, and network attributes:
+
+- **Proxy → Service**: Each proxy belongs to one service (many-to-one)
+- **Proxy → Geolocation**: Proxies have precise location data (many-to-one relationships at each level)
+- **Proxy → ASN**: Each proxy is associated with a specific network provider (many-to-one)
+- **Proxy → Logs**: Proxy usage generates log entries (one-to-many)
+
+```json
+{
+  "proxy_id": "7a018d34-76c2-4c23-b14d-f7b9a7054e25",
+  "service_id": "API-1234-5678",    // Link to service
+  "proxy_type": "isp",
+  "proxy_status": "in_use",
+  
+  // Geolocation relationships
+  "country_id": "us",               // Link to country
+  "subdivision_id": "us-tx",        // Link to subdivision
+  "city_id": 75202,                 // Link to city
+  
+  // Network relationships
+  "asn_id": 7018,                   // Link to ASN
+  "subnet_id": "107.225.72.0/22"    // Network subnet
+}
+```
+
+## Proxy User Relationships
+
+Proxy Users manage authentication across services:
+
+- **Proxy User → Customer**: Each proxy user belongs to one customer (many-to-one)
+- **Proxy User → IP Authentications**: A proxy user can have multiple authorized IP addresses (one-to-many)
+- **Proxy User → Services**: A proxy user can be restricted to specific services (many-to-many)
+
+```json
+{
+  "proxy_user_id": "example_user",
+  "customer_id": 1955,              // Link to customer
+  "proxy_user_is_service_restricted": true,
+  "restricted_service_ids": ["API-1234-5678"],  // Links to services
+  "ip_address_authentications": ["192.168.1.1"] // Authorized IPs
+}
+```
+
+## Geolocation Relationships
+
+Geolocation objects form a hierarchical relationship structure:
+
+- **Continent → Countries**: One-to-many relationship
+- **Country → Subdivisions**: One-to-many relationship
+- **Subdivision → Cities**: One-to-many relationship
+- **Country → ASNs**: One-to-many relationship
+
+```
+Continent (eu)
+    └── Country (fr)
+            └── Subdivision (fr-idf)
+                    └── City (Paris)
+```
+
+## Network Relationships
+
+Network objects provide context about proxy connectivity:
+
+- **ASN → Country**: Each ASN is primarily associated with a country (many-to-one)
+- **ASN → Proxies**: An ASN can have multiple proxies associated with it (one-to-many)
+
+## Usage Data Relationships
+
+Usage tracking forms additional relationships:
+
+- **Proxy → Log Entries**: Each proxy generates usage logs (one-to-many)
+- **Proxy User → Log Entries**: Activities are associated with proxy users (one-to-many)
+- **Service → Log Summaries**: Usage is summarized by service (one-to-many)
+- **Customer → Residential Ledger**: Residential bandwidth usage is tracked at the customer level (one-to-many)
+
+## Key Relationship Examples
+
+### Example: Location Connections
+
+A proxy's complete location information comes from multiple related objects:
+
+```json
+{
+  "proxy_id": "7a018d34-76c2-4c23-b14d-f7b9a7054e25",
+  
+  // Location fields from the Country object
+  "country_id": "us",
+  "country_name": "United States",
+  
+  // Location fields from the Subdivision object
+  "subdivision_id": "us-tx",
+  "subdivision_name": "Texas",
+  
+  // Location fields from the City object
+  "city_id": 75202,
+  "city_name": "Dallas",
+  "city_latitude": 32.7767,
+  "city_longitude": -96.797,
+  "city_timezone": "America/Chicago"
+}
+```
+
+### Example: Service to Proxy Chain
+
+The chain of relationships from customer to individual proxy:
+
+```
+Customer (ID: 1955)
+    └── Service (ID: API-1234-5678, type: isp, country: us)
+            └── Proxy (ID: 7a018d34-76c2-4c23-b14d-f7b9a7054e25)
+                    └── Geolocation (Country: us, City: Dallas)
+                    └── Network (ASN: 7018, AT&T)
+```
+
+### Example: Authentication Relationships
+
+How proxy users connect to the authentication system:
+
+```
+Customer (ID: 1955)
+    └── Proxy User (ID: marketing_team)
+            ├── IP Authentications [list of authorized IPs]
+            └── Service Restrictions [list of accessible services]
+                    └── Service (ID: API-1234-5678)
+                            └── Proxies [accessible via this proxy user]
+```
+
+## Practical Implications
+
+Understanding these relationships helps you:
+
+1. **Efficiently Query Data**: Filter at the appropriate level in the hierarchy
+2. **Optimize API Usage**: Reduce calls by understanding how objects relate
+3. **Implement Complex Logic**: Build applications that properly respect the object hierarchy
+4. **Manage Resources**: Understand how actions on one object affect related objects
+
+By visualizing the API as an interconnected system of relationships rather than isolated endpoints, you can create more effective and efficient integrations with the Ping Proxies platform.

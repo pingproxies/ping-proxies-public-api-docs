@@ -34,6 +34,12 @@
               "core-api-features/search-operators",
               "core-api-features/metadata"
             ]
+          },
+          {
+            "group": "Explainers",
+            "pages": [
+              "api-explainers/api-object-relationships"
+            ]
           }
         ]
       },
