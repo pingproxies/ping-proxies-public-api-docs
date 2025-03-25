@@ -34,7 +34,7 @@
       },
       {
         "group": "API Reference",
-        "pages": ["api-reference/introduction"]
+        "pages": ["introduction"]
       },
       {
         "group": "Customer",
