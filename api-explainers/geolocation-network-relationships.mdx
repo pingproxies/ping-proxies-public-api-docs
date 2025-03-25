@@ -1,0 +1,141 @@
+---
+title: 'Geolocation & Network Relationships'
+description: 'Understanding the geographical and network structure of the Ping Proxies API Objects.'
+---
+
+# Geolocation & Network Relationships
+
+## Geographic Hierarchy
+
+The Ping Proxies API organizes proxies using a hierarchical geographic structure. Understanding this structure is essential for effectively filtering and selecting proxies based on location.
+
+### Hierarchy Levels
+
+<img className="block dark:hidden" src="/images/geo-hierarchy-light.svg" alt="Geospatial Hierarchy" />
+<img className="hidden dark:block" src="/images/geo-hierarchy-dark.svg" alt="Geospatial Hierarchy" />
+
+1. **Continent**: The broadest geographical division (e.g., Europe, North America)
+2. **Country**: Countries within each continent, identified by ISO two-letter codes (e.g., 'us', 'gb', 'de')
+3. **Subdivision**: States, provinces, or regions within a country (e.g., 'us-ca' for California)
+4. **City**: Specific cities within subdivisions
+
+### API Endpoints for Geographic Data
+
+Each level of the hierarchy has dedicated endpoints for retrieval and searching:
+
+```
+GET /public/user/continent/search
+GET /public/user/country/search
+GET /public/user/subdivision/search
+GET /public/user/city/search
+```
+
+### Example: Location-Based Filtering
+
+To find proxies in a specific location, you can filter using location IDs:
+
+```bash
+# Find all proxies in the United Kingdom
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?country_id=gb' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+
+# Find all proxies in London
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?city_name=london' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Network Information
+
+In addition to geographic data, Ping Proxies provides detailed network information for each proxy.
+
+### ASN (Autonomous System Number)
+
+ASNs represent different internet service providers and network operators. Each proxy is associated with a specific ASN, which determines its network characteristics.
+
+```
+GET /public/user/asn/search
+GET /public/user/asn/retrieve/{asn_id}
+```
+
+### ASN Types
+
+Different ASN types provide varied characteristics and use cases:
+
+| ASN Type | Description | Typical Use Cases |
+|----------|-------------|-------------------|
+| `isp` | Internet Service Provider networks | General browsing, accessing consumer websites |
+| `hosting` | Data center and hosting providers | High-throughput operations |
+| `business` | Corporate networks | Accessing enterprise applications |
+| `cdn` | Content Delivery Networks | Content-heavy applications |
+| `education` | Educational institutions | Academic research |
+| `gov` | Government networks | Accessing government services |
+
+### Example: Finding Proxies by Network Type
+
+You can filter proxies by ASN type or specific ASN:
+
+```bash
+# Find all proxies on AT&T's network (ASN 7018)
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?asn_id=7018' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+
+# Find all proxies on ISP networks
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?asn_type=isp' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Geo-IP Resolution
+
+You can use the IP geolocation endpoint to get detailed information about specific IP addresses:
+
+```
+GET /public/user/ip_address/geolocate/{ip_address}
+```
+
+This endpoint returns both external geolocation data and mapped internal objects:
+
+```json
+{
+  "data": {
+    "external": {
+      "asn_id": "13335",
+      "city_name": "South Brisbane",
+      "country_id": "au",
+      "latitude": -27.4766,
+      "longitude": 153.0166,
+      "timezone": "australia/brisbane"
+    },
+    "internal": {
+      "asn": { "asn_id": 13335, "asn_name": "Cloudflare Inc", ... },
+      "city": { "city_id": 378778, "city_name": "Brisbane", ... },
+      "country": { "country_id": "au", "country_name": "Australia", ... },
+      "subdivision": { "subdivision_id": "au-qld", "subdivision_name": "Queensland", ... }
+    }
+  }
+}
+```
+
+## Combining Geographic and Network Filters
+
+For more precise proxy selection, you can combine geographic and network criteria:
+
+```bash
+# Find ISP proxies in the UK with AT&T as the provider
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?country_id=gb&proxy_type=isp&asn_id=7018' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Object Relationships
+
+The relationship between geographic and network entities is represented in the API's object model. For a deeper understanding of how these objects relate to one another, refer to the [API Object Relationships](/api-explainers/api-object-relationships) page.
+
+<Card title="Further Reading" icon="book-open">
+  The geographic and network information is foundational to how Ping Proxies operates. Understanding these concepts will help you effectively target the right proxies for your specific use cases.
+  
+  For more details on the API endpoints mentioned, refer to the respective API Reference sections.
+</Card>
