@@ -8,6 +8,20 @@
     "dark": "#5547eb"
   },
   "favicon": "https://pingproxies.com/favicon.ico",
+  "tabs": [
+    {
+      "name": "API Documentation",
+      "url": "introduction"
+    },
+    {
+      "name": "Reference",
+      "url": "api-reference"
+    },
+    {
+      "name": "Examples",
+      "url": "examples"
+    }
+  ],
   "navigation": {
     "groups": [
       {
