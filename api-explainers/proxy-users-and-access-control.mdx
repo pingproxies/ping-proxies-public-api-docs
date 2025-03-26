@@ -114,66 +114,6 @@ curl --request POST \
       </tbody>
     </table>
   </Tab>
-  <Tab title="Pros & Cons">
-    <AccordionGroup>
-      <Accordion title="Proxy User Authentication">
-        <div className="mb-4">
-          <div className="text-lg font-bold text-[#5547EB] mb-2">Pros</div>
-          <ul className="list-disc pl-6">
-            <li>Works with all proxy types</li>
-            <li>Full analytics and tracking capabilities</li>
-            <li>Supports service restrictions and bandwidth limits</li>
-            <li>Centralized credential management</li>
-          </ul>
-        </div>
-        <div>
-          <div className="text-lg font-bold text-[#5547EB] mb-2">Cons</div>
-          <ul className="list-disc pl-6">
-            <li>Requires storing credentials in application code</li>
-            <li>Same credentials used across multiple proxies</li>
-          </ul>
-        </div>
-      </Accordion>
-      <Accordion title="IP Authentication">
-        <div className="mb-4">
-          <div className="text-lg font-bold text-[#5547EB] mb-2">Pros</div>
-          <ul className="list-disc pl-6">
-            <li>No need to store credentials in code</li>
-            <li>Enhanced security for server applications</li>
-            <li>Full analytics and tracking capabilities</li>
-            <li>Works with service restrictions</li>
-          </ul>
-        </div>
-        <div>
-          <div className="text-lg font-bold text-[#5547EB] mb-2">Cons</div>
-          <ul className="list-disc pl-6">
-            <li>Only works with static proxies</li>
-            <li>Requires fixed IP addresses</li>
-            <li>Not suitable for distributed applications</li>
-          </ul>
-        </div>
-      </Accordion>
-      <Accordion title="Proxy Specific Authentication">
-        <div className="mb-4">
-          <div className="text-lg font-bold text-[#5547EB] mb-2">Pros</div>
-          <ul className="list-disc pl-6">
-            <li>Unique credentials per proxy</li>
-            <li>Higher security if one set of credentials is compromised</li>
-            <li>Works well with rotating credentials</li>
-          </ul>
-        </div>
-        <div>
-          <div className="text-lg font-bold text-[#5547EB] mb-2">Cons</div>
-          <ul className="list-disc pl-6">
-            <li>Only works with static proxies</li>
-            <li>Limited analytics (all usage attributed to Default User)</li>
-            <li>No user-level bandwidth limits</li>
-            <li>More complex credential management</li>
-          </ul>
-        </div>
-      </Accordion>
-    </AccordionGroup>
-  </Tab>
 </Tabs>
 
 <Note>
@@ -194,17 +134,9 @@ When using Proxy Specific Authentication:
 
 ## Bandwidth Management
 
-<Warning>
-  Careful bandwidth management is essential for controlling costs and ensuring all teams have access to the resources they need.
-</Warning>
-
 ### Residential Bandwidth Limits
 
 For Residential Proxies, you can set specific bandwidth quotas for different Proxy Users by setting the `proxy_user_residential_bytes_limit` parameter when creating or editing a Proxy User.
-
-<Frame caption="Bandwidth limits provide better cost control and resource allocation">
-  <img src="/api-explainers/bandwidth-limits-diagram.svg" alt="Bandwidth Allocation and Limits Diagram" />
-</Frame>
 
 This feature allows you to:
 - Allocate specific bandwidth quotas to different teams or projects
@@ -242,19 +174,13 @@ This ensures that even if a Proxy User's credentials are compromised, they can o
 
 The diagram below illustrates how services are linked to proxy users, providing fine-grained access control:
 
-<img src="/api-explainers/services-proxy-users-diagram.svg" alt="Services Linked to Proxy Users Diagram" />
+<img src="/images/access-control-diagram.webp" alt="Services Linked to Proxy Users Diagram" />
 
 In this model:
 - The default proxy user has access to all services
 - Custom proxy users can be restricted to specific services
 - Multiple proxy users can access the same service
 - Access restrictions provide an additional layer of security
-
-## Bandwidth Limits Visualization
-
-The following diagram shows how bandwidth limits work with different proxy users:
-
-<img src="/api-explainers/bandwidth-limits-diagram.svg" alt="Bandwidth Allocation and Limits Diagram" />
 
 Key concepts illustrated:
 - The customer account has a total bandwidth pool
@@ -277,17 +203,3 @@ curl --request GET \
   --header 'X-API-Public-Key: your_public_key' \
   --header 'X-API-Private-Key: your_private_key'
 ```
-
-## Best Practices
-
-1. **Create separate Proxy Users** for different teams or projects to improve security and usage tracking
-2. **Implement IP authentication** for server-side applications where credentials cannot be compromised
-3. **Set appropriate bandwidth limits** to ensure fair resource allocation
-4. **Regularly rotate passwords** for sensitive Proxy Users
-5. **Monitor usage patterns** to identify potential abuse or optimization opportunities
-
-<Card title="Need Help with Authentication?" icon="key">
-  Our support team can assist you with complex authentication configurations and best practices.
-  
-  Contact us at [support@pingproxies.com](mailto:support@pingproxies.com) to discuss your specific needs.
-</Card>
