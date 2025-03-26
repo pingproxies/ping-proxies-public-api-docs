@@ -1,58 +1,43 @@
 ---
-title: 'Proxy Users & Access Control'
-description: 'Managing authentication and access to proxies through the API'
+title: 'Proxy Authentication & Bandwidth Limits'
+description: 'Managing authentication and bandwidth allocation for proxies through the API'
 ---
 
-Proxy Users are a central authentication mechanism in the Ping Proxies system, controlling how your applications authenticate with and access proxies. This guide explains how to create, manage, and utilize Proxy Users effectively through the API.
+Proxy authentication and bandwidth management are critical components of the Ping Proxies system, providing secure access control and resource allocation for your proxy infrastructure.
 
-## What is a Proxy User?
+## Understanding Proxy Authentication
 
-A Proxy User is a username/password combination that provides authentication to access your proxies. Each customer account can have multiple Proxy Users, allowing you to:
+<Info>
+  Authentication in the Ping Proxies system is managed through the **Proxy User** system. This centralized approach allows for secure access control and detailed usage tracking.
+</Info>
 
-- Create different credentials for different teams, projects, or applications
-- Apply varying access restrictions to different sets of proxies
+Authentication in the Ping Proxies system is managed through the **Proxy User** system. This centralized approach allows you to:
+
+- Create different authentication credentials for different teams, projects, or applications
+- Apply granular access restrictions to specific sets of proxies
 - Track and monitor usage separately for each Proxy User
 
-## Proxy User Authentication Methods
+### Default Proxy User
 
-Proxy Users support two primary authentication methods:
+<Tip>
+  The default proxy user is automatically created with each customer account and provides a baseline for proxy access.
+</Tip>
 
-### 1. Username/Password Authentication
+Each customer account is automatically assigned a default Proxy User with the following characteristics:
 
-The standard method where a username and password are provided with each proxy request:
+- Cannot be deleted
+- Has access to all proxy services by default
+- Has access to all available bandwidth
+- Used for analytics and logging when individual proxy authentication is configured
 
-```
-http://username:password@proxy_ip:port
-```
+### Custom Proxy Users
 
-### 2. IP-Based Authentication
+You can create additional Proxy Users to implement more granular control over who can access your proxies and what resources they can use. Custom proxy users are ideal for:
 
-Allows access based on the originating IP address:
-
-```javascript
-// Configure a Proxy User with IP-based authentication
-const response = await fetch('https://api.pingproxies.com/1.0/public/user/proxy_user/create', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-API-Public-Key': 'your_public_key',
-    'X-API-Private-Key': 'your_private_key'
-  },
-  body: JSON.stringify({
-    "proxy_user_id": "app_server",
-    "proxy_user_password": "secure_password",
-    "proxy_user_is_strict_security": true,
-    "ip_address_authentications": [
-      "34.56.78.90",
-      "34.56.78.91"
-    ]
-  })
-});
-```
-
-## Creating Proxy Users
-
-You can create Proxy Users with various settings:
+- Separating access between different teams or departments
+- Implementing different bandwidth limits for various projects
+- Tracking usage and costs by project or team
+- Enhanced security through compartmentalization
 
 ```bash
 curl --request POST \
@@ -70,183 +55,221 @@ curl --request POST \
   }'
 ```
 
-If you don't provide a username or password, the API will generate them for you:
+## Authentication Types Comparison
 
-```json
-{
-  "created": ["marketing_team"],
-  "data": {
-    "proxy_user_id": "marketing_team",
-    "proxy_user_password": "secure_password"
-  },
-  "message": "Proxy User successfully created."
-}
-```
+<Tabs>
+  <Tab title="Comparison Table">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Proxy User Authentication</th>
+          <th>IP Authentication</th>
+          <th>Proxy Specific Authentication</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>**Linked to**</td>
+          <td>Proxy User</td>
+          <td>Proxy User</td>
+          <td>Individual Proxy</td>
+        </tr>
+        <tr>
+          <td>**Usage Attribution**</td>
+          <td>Attributed to specific Proxy User</td>
+          <td>Attributed to specific Proxy User</td>
+          <td>Attributed to Default Proxy User</td>
+        </tr>
+        <tr>
+          <td>**Proxy Types**</td>
+          <td>All proxy types (Datacenter, ISP, Residential)</td>
+          <td>Static Proxies only (Datacenter, ISP)</td>
+          <td>Static Proxies only (Datacenter, ISP)</td>
+        </tr>
+        <tr>
+          <td>**Method**</td>
+          <td>Username/password in proxy string</td>
+          <td>IP address verification</td>
+          <td>Unique username/password per proxy</td>
+        </tr>
+        <tr>
+          <td>**Analytics**</td>
+          <td>Full user-level analytics</td>
+          <td>Full user-level analytics</td>
+          <td>Limited (only at Default User level)</td>
+        </tr>
+        <tr>
+          <td>**Bandwidth Limits**</td>
+          <td>Supports bandwidth limits</td>
+          <td>Supports bandwidth limits</td>
+          <td>Cannot have specific limits</td>
+        </tr>
+        <tr>
+          <td>**Best For**</td>
+          <td>Most use cases, especially when tracking usage by team/project</td>
+          <td>Server-side applications where storing credentials is risky</td>
+          <td>Situations requiring unique credentials per proxy</td>
+        </tr>
+      </tbody>
+    </table>
+  </Tab>
+  <Tab title="Pros & Cons">
+    <AccordionGroup>
+      <Accordion title="Proxy User Authentication">
+        <div className="mb-4">
+          <div className="text-lg font-bold text-[#5547EB] mb-2">Pros</div>
+          <ul className="list-disc pl-6">
+            <li>Works with all proxy types</li>
+            <li>Full analytics and tracking capabilities</li>
+            <li>Supports service restrictions and bandwidth limits</li>
+            <li>Centralized credential management</li>
+          </ul>
+        </div>
+        <div>
+          <div className="text-lg font-bold text-[#5547EB] mb-2">Cons</div>
+          <ul className="list-disc pl-6">
+            <li>Requires storing credentials in application code</li>
+            <li>Same credentials used across multiple proxies</li>
+          </ul>
+        </div>
+      </Accordion>
+      <Accordion title="IP Authentication">
+        <div className="mb-4">
+          <div className="text-lg font-bold text-[#5547EB] mb-2">Pros</div>
+          <ul className="list-disc pl-6">
+            <li>No need to store credentials in code</li>
+            <li>Enhanced security for server applications</li>
+            <li>Full analytics and tracking capabilities</li>
+            <li>Works with service restrictions</li>
+          </ul>
+        </div>
+        <div>
+          <div className="text-lg font-bold text-[#5547EB] mb-2">Cons</div>
+          <ul className="list-disc pl-6">
+            <li>Only works with static proxies</li>
+            <li>Requires fixed IP addresses</li>
+            <li>Not suitable for distributed applications</li>
+          </ul>
+        </div>
+      </Accordion>
+      <Accordion title="Proxy Specific Authentication">
+        <div className="mb-4">
+          <div className="text-lg font-bold text-[#5547EB] mb-2">Pros</div>
+          <ul className="list-disc pl-6">
+            <li>Unique credentials per proxy</li>
+            <li>Higher security if one set of credentials is compromised</li>
+            <li>Works well with rotating credentials</li>
+          </ul>
+        </div>
+        <div>
+          <div className="text-lg font-bold text-[#5547EB] mb-2">Cons</div>
+          <ul className="list-disc pl-6">
+            <li>Only works with static proxies</li>
+            <li>Limited analytics (all usage attributed to Default User)</li>
+            <li>No user-level bandwidth limits</li>
+            <li>More complex credential management</li>
+          </ul>
+        </div>
+      </Accordion>
+    </AccordionGroup>
+  </Tab>
+</Tabs>
 
-## Access Control Features
+<Note>
+  You can use different authentication methods for different proxies within the same account. For example, you might use IP Authentication for your backend servers and Proxy User Authentication for your scraping operations.
+</Note>
 
-### Service Restriction
+## Proxy Specific Authentication Details
 
-Limit a Proxy User to access only specific services:
+As mentioned in the authentication methods, Proxy Specific Authentication allows you to configure unique credentials at the individual proxy level using the `/proxy/edit` command.
 
-```bash
-curl --request POST \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/create' \
-  --header 'Content-Type: application/json' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key' \
-  --data '{
-    "proxy_user_id": "project_a",
-    "proxy_user_is_service_restricted": true,
-    "restricted_service_ids": ["API-1234-5678", "API-8765-4321"]
-  }'
-```
+When using Proxy Specific Authentication:
 
-### IP-Based Authentication
+- Each proxy can have its own unique username/password combination
+- These credentials are not tied to any Proxy User
+- All usage, logs, and analytics for these proxies will be associated with the default Proxy User
+- This can make detailed user-level tracking more challenging
+- This authentication type is only available for Static Proxies (Datacenter and ISP)
 
-Restrict access to specific client IP addresses:
+## Bandwidth Management
 
-```bash
-curl --request POST \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/create' \
-  --header 'Content-Type: application/json' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key' \
-  --data '{
-    "proxy_user_id": "office_access",
-    "proxy_user_is_strict_security": true,
-    "ip_address_authentications": ["203.0.113.1", "203.0.113.2"]
-  }'
-```
+<Warning>
+  Careful bandwidth management is essential for controlling costs and ensuring all teams have access to the resources they need.
+</Warning>
 
 ### Residential Bandwidth Limits
 
-Assign specific bandwidth quotas to different Proxy Users:
+For Residential Proxies, you can set specific bandwidth quotas for different Proxy Users by setting the `proxy_user_residential_bytes_limit` parameter when creating or editing a Proxy User.
 
-```bash
-curl --request POST \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/create' \
-  --header 'Content-Type: application/json' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key' \
-  --data '{
-    "proxy_user_id": "limited_user",
-    "proxy_user_residential_bytes_limit": 1073741824
-  }'
-```
+<Frame caption="Bandwidth limits provide better cost control and resource allocation">
+  <img src="/api-explainers/bandwidth-limits-diagram.svg" alt="Bandwidth Allocation and Limits Diagram" />
+</Frame>
 
-## Access Control by Proxy Type
+This feature allows you to:
+- Allocate specific bandwidth quotas to different teams or projects
+- Prevent a single user from consuming all available bandwidth
+- Implement usage-based billing for your own customers
 
-Different proxy types have distinct access control characteristics:
+When a bandwidth limit is established:
+- The Proxy User can only use residential bandwidth up to that specified limit
+- Once the limit is reached, further requests are denied until more bandwidth is allocated
+- Usage is tracked and visible through the analytics dashboard
 
-### Datacenter & ISP Proxies
+If no bandwidth limit is set, the Proxy User will be able to access all bandwidth available on the customer account.
 
-- **Dedicated Access**: Each proxy is assigned exclusively to your account
-- **Direct IP Access**: Connect directly to the proxy IP address
-- **Optional Authentication**: Can be configured with or without authentication
-- **Authentication Methods**: Both username/password and IP-based authentication supported
+### Monitoring Bandwidth Usage
 
-### Residential Proxies
+The system tracks bandwidth consumption by Proxy User, allowing you to:
+- View current usage levels for each Proxy User
+- Set up alerts for approaching bandwidth limits
+- Generate reports on bandwidth utilization patterns
+- Make data-driven decisions about bandwidth allocation
 
-- **Pool Access**: Connect to a gateway that routes to the residential proxy pool
-- **Required Authentication**: Always requires Proxy User authentication
-- **Session Control**: Use session identifiers in the proxy string format
-- **Bandwidth Management**: Track and limit bandwidth by Proxy User
+## Service Restrictions
 
-## Proxy String Formats
+A customer can create Proxy Users and give them specific access to proxies by linking them to particular services. This is done by setting the `proxy_user_is_service_restricted` flag to true and specifying which services the user can access with the `restricted_service_ids` parameter.
 
-Access proxies using specific string formats based on authentication method:
+Key benefits of service restrictions:
+- Enhanced security through granular access control
+- Ability to compartmentalize proxy resources by project or team
+- Protection against credential sharing or misuse
+- Simplified management of access rights as projects change
 
-### Username/Password Authentication
+This ensures that even if a Proxy User's credentials are compromised, they can only access the specific services you've authorized.
 
-```
-# HTTP proxy
-http://username:password@proxy_ip:port
+## Services Linked to Proxy Users
 
-# SOCKS5 proxy
-socks5://username:password@proxy_ip:port
-```
+The diagram below illustrates how services are linked to proxy users, providing fine-grained access control:
 
-### IP Authentication
+<img src="/api-explainers/services-proxy-users-diagram.svg" alt="Services Linked to Proxy Users Diagram" />
 
-When using IP authentication, you can omit the username/password:
+In this model:
+- The default proxy user has access to all services
+- Custom proxy users can be restricted to specific services
+- Multiple proxy users can access the same service
+- Access restrictions provide an additional layer of security
 
-```
-# HTTP proxy with IP authentication
-http://proxy_ip:port
+## Bandwidth Limits Visualization
 
-# SOCKS5 proxy with IP authentication
-socks5://proxy_ip:port
-```
+The following diagram shows how bandwidth limits work with different proxy users:
 
-### Residential Proxy Strings
+<img src="/api-explainers/bandwidth-limits-diagram.svg" alt="Bandwidth Allocation and Limits Diagram" />
 
-Residential proxy strings include additional parameters:
+Key concepts illustrated:
+- The customer account has a total bandwidth pool
+- Proxy users without bandwidth limits can use the entire pool
+- Proxy users with limits are restricted to their allocated amount
+- Once a limit is reached, further requests are denied
+- Multiple proxy users can share the bandwidth pool simultaneously
 
-```
-# Format for residential proxies
-socks5h://username:password@residential.pingproxies.com:port
+## Usage Analytics
 
-# Example with session parameters
-socks5h://1_proxyuser_c_us_city_newyork_s_SESSIONID:password@residential.pingproxies.com:8000
-```
+Authentication through the Proxy User system allows for detailed usage analytics and graphing at the proxy user level. This provides:
 
-The components in a residential proxy string:
-- `1_`: Protocol identifier
-- `proxyuser`: Your Proxy User ID
-- `c_us`: Country (US)
-- `city_newyork`: City (New York)
-- `s_SESSIONID`: Session identifier for sticky sessions
-
-## Managing Proxy Users
-
-### Retrieving Proxy Users
-
-```bash
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/retrieve/marketing_team' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-### Searching for Proxy Users
-
-```bash
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/search?proxy_user_is_strict_security=true' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-### Editing Proxy Users
-
-```bash
-curl --request PATCH \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/edit/marketing_team' \
-  --header 'Content-Type: application/json' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key' \
-  --data '{
-    "proxy_user_password": "new_secure_password",
-    "proxy_user_metadata": {
-      "department": "Marketing",
-      "project": "Q3 Campaign"
-    }
-  }'
-```
-
-### Deleting Proxy Users
-
-```bash
-curl --request DELETE \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/delete/marketing_team' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-## Monitoring and Usage Tracking
-
-Track proxy usage by Proxy User:
+- Visibility into which teams or projects are consuming proxy resources
+- Bandwidth usage patterns across different Proxy Users
+- Request volume and target domains by Proxy User
 
 ```bash
 curl --request GET \
@@ -255,30 +278,16 @@ curl --request GET \
   --header 'X-API-Private-Key: your_private_key'
 ```
 
-For residential proxies, monitor bandwidth consumption:
+## Best Practices
 
-```bash
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/residential/summary' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
+1. **Create separate Proxy Users** for different teams or projects to improve security and usage tracking
+2. **Implement IP authentication** for server-side applications where credentials cannot be compromised
+3. **Set appropriate bandwidth limits** to ensure fair resource allocation
+4. **Regularly rotate passwords** for sensitive Proxy Users
+5. **Monitor usage patterns** to identify potential abuse or optimization opportunities
 
-## Proxy User Account Limits
-
-Each customer account has a limit on the number of Proxy Users that can be created. You can check your current limit by retrieving your customer profile:
-
-```bash
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/customer/retrieve' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-In the response, check the `customer_proxy_user_limit` field for your account's maximum allowed Proxy Users.
-
-<Card title="Need More Proxy Users?" icon="bolt">
-  We can increase increase your Proxy User limit with proper justification.
+<Card title="Need Help with Authentication?" icon="key">
+  Our support team can assist you with complex authentication configurations and best practices.
   
-  Contact our support team at [support@pingproxies.com](mailto:support@pingproxies.com) to discuss your specific needs.
+  Contact us at [support@pingproxies.com](mailto:support@pingproxies.com) to discuss your specific needs.
 </Card>

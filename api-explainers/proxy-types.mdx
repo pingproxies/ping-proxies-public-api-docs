@@ -1,0 +1,224 @@
+---
+title: 'Proxy Types'
+description: 'Understanding the different proxy types available through Ping Proxies'
+---
+
+# Proxy Types
+
+Ping Proxies offers several types of proxies, each with distinct characteristics, pricing models, and use cases. This guide explains the differences between the main proxy types and helps you choose the best option for your specific needs.
+
+## Overview of Proxy Types
+
+<CardGroup cols={3}>
+  <Card title="Datacenter Proxies" icon="server">
+    High-speed, reliable proxies hosted in datacenters with consistent performance
+  </Card>
+  <Card title="Static Residential ISP Proxies" icon="home">
+    ISP-assigned IP addresses that combine the reliability of datacenter proxies with the legitimacy of residential IPs
+  </Card>
+  <Card title="Residential Proxies" icon="network-wired">
+    Dynamic proxy pool using real residential connections for maximum legitimacy
+  </Card>
+</CardGroup>
+
+## Detailed Comparison
+
+| Feature | Datacenter Proxies | Static Residential ISP | Residential Proxies |
+|---------|-------------------|------------------------|---------------------|
+| **Source** | Cloud providers & datacenters | Major ISPs | Consumer ISP connections |
+| **IP Type** | Commercial IPs | Consumer ISP-allocated IPs | Real residential IPs |
+| **Pricing Model** | Per proxy | Per proxy | Bandwidth-based |
+| **Speed** | Very fast (1Gbps+) | Fast (100-500Mbps) | Moderate (varies) |
+| **Stability** | Highly stable | Stable | Variable |
+| **Detection Risk** | Higher | Low | Very low |
+| **Rotation** | Fixed IPs | Fixed IPs | Supports rotation |
+| **Geo-targeting** | Country-level | City-level | City & carrier-level |
+
+## Datacenter Proxies
+
+Datacenter proxies are hosted in commercial data centers and offer high-speed connectivity with reliable uptime.
+
+### Key Characteristics
+
+- **High Performance**: Offers the fastest speeds of all proxy types
+- **Consistent Availability**: Minimal downtime
+- **Fixed IP Addresses**: Each proxy maintains the same IP address
+- **Unlimited Bandwidth**: Typically not metered by data transferred
+
+### Ideal Use Cases
+
+- Web scraping projects requiring high-speed data collection
+- Tasks where proxy legitimacy is less important than performance
+- Applications requiring consistent, reliable connections
+
+### Accessing Datacenter Proxies
+
+```bash
+# Search for datacenter proxies
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?proxy_type=datacenter' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Static Residential ISP Proxies
+
+Static Residential ISP proxies represent the middle ground between datacenter and residential proxies. These are legitimate IP addresses assigned by major Internet Service Providers but maintained on stable infrastructure.
+
+### Key Characteristics
+
+- **ISP-Assigned IPs**: Real IP addresses from major ISPs like AT&T, Comcast, etc.
+- **Static Addresses**: IPs remain constant unless explicitly replaced
+- **High Legitimacy**: Appear as genuine consumer connections
+- **Reliable Performance**: More stable than standard residential proxies
+
+### Ideal Use Cases
+
+- E-commerce and retail automation
+- Social media management
+- Ad verification
+- SEO monitoring
+
+### Accessing Static Residential ISP Proxies
+
+```bash
+# Search for ISP proxies
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?proxy_type=isp' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Residential Proxies
+
+Residential proxies route your traffic through real residential IP addresses, providing the highest level of legitimacy.
+
+### Key Characteristics
+
+- **Real Consumer IPs**: Traffic appears to come from actual residential connections
+- **Dynamic Pool**: Access to a large, rotating pool of IPs
+- **Bandwidth-Based Billing**: Charged based on data transferred
+- **Rotation Options**: 
+  - **Sticky Sessions**: Maintain the same IP for a set duration
+  - **Rotating**: Change IPs with each request
+
+### Ideal Use Cases
+
+- Accessing geo-restricted content
+- Price comparison across different regions
+- Brand protection and counterfeit detection
+- Highly sensitive web scraping tasks
+
+### Accessing Residential Proxies
+
+Unlike datacenter and ISP proxies which are dedicated to your account, residential proxies are accessed through a backconnect gateway:
+
+```bash
+# Create a list of residential proxies
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/residential/list?country_id=us&list_count=5' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Billing Models
+
+### Per-Proxy Billing (Datacenter & ISP)
+
+Datacenter and Static Residential ISP proxies are billed on a per-proxy basis:
+
+- **Fixed monthly cost** per proxy
+- **Unlimited bandwidth** with each proxy
+- **Commitment period** typically ranges from 1-12 months
+- **Discounts** often available for longer commitments
+
+### Bandwidth-Based Billing (Residential)
+
+Residential proxies use a bandwidth consumption model:
+
+- **Pay for data transferred** (typically per GB)
+- **Access to the entire proxy pool**
+- **No limit on concurrent connections**
+- **More economical** for intermittent or low-volume usage
+
+## Static vs Residential Bandwidth
+
+### Static (Datacenter & ISP Proxies)
+
+- **Unlimited traffic**: No metering of bandwidth usage
+- **Fixed cost**: Predictable monthly expenses
+- **Dedicated resources**: Exclusive use of specific IP addresses
+
+### Residential Bandwidth
+
+- **Metered usage**: Pay only for what you use
+- **Shared pool**: Access to many IPs without dedicating specific ones
+- **Bandwidth allocations**: Purchase bandwidth packages that can be used over time
+- **Bandwidth rollovers**: Depending on your plan, unused bandwidth may roll over
+
+You can check your residential bandwidth usage via the API:
+
+```bash
+# Get residential bandwidth summary
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/residential/summary' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Searching vs Generating
+
+### Searching for Static Proxies
+
+With datacenter and ISP proxies, you search for and manage specific proxy instances:
+
+```bash
+# Search for available proxies with specific criteria
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/proxy/search?proxy_type=isp&country_id=us' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+### Generating Residential Proxies
+
+For residential proxies, you generate access points to the proxy pool:
+
+```bash
+# Generate residential proxies for a specific location
+curl -X GET 'https://api.pingproxies.com/1.0/public/user/residential/list?country_id=gb&city_alias=london&list_count=10' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+## Choosing the Right Proxy Type
+
+<Card title="Decision Framework" icon="lightbulb">
+  Consider these factors when selecting a proxy type:
+  
+  1. **Legitimacy Required**: How important is it that your IP appears as a genuine consumer connection?
+  2. **Performance Needs**: What speed and reliability does your application require?
+  3. **Usage Pattern**: Consistent usage or intermittent with traffic spikes?
+  4. **Budget Constraints**: Fixed costs or pay-as-you-go preference?
+  5. **Geo-targeting**: How specific are your location requirements?
+</Card>
+
+| If you prioritize... | Consider using... |
+|----------------------|-------------------|
+| Maximum legitimacy | Residential proxies |
+| Best balance of legitimacy and performance | Static Residential ISP |
+| Raw speed and reliability | Datacenter |
+| Predictable costs with unlimited traffic | Datacenter or ISP |
+| Pay-as-you-go flexibility | Residential |
+
+## Purchasing Proxies
+
+All proxy types can be purchased through the API using the checkout endpoints:
+
+```bash
+# View available products
+GET /public/user/checkout/catalog
+
+# Generate a quote
+POST /public/user/checkout/quote
+
+# Complete purchase
+POST /public/user/checkout/create
+```
+
+For more details on purchasing proxies via the API, see our [Purchasing via API](/purchasing-via-api) guide.
