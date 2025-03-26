@@ -7,47 +7,6 @@ description: 'Understanding billing cycles and the credit system in the Ping Pro
 
 The Ping Proxies billing system is built on Stripe's subscription architecture, providing flexible billing cycles and a credit balance system for managing your proxy services.
 
-## Billing Cycles
-
-Ping Proxies supports three primary billing cycle options:
-
-| Cycle | Description |
-|-------|-------------|
-| Monthly | 1-month billing cycle |
-| Quarterly | 3-month billing cycle |
-| Annual | 12-month (1-year) billing cycle |
-
-When purchasing a service through the API, you specify the billing cycle using two parameters:
-
-- `cycle_interval`: Always set to `month`
-- `cycle_interval_count`: The number of months in the cycle (1, 3, or 12)
-
-For example:
-
-```json
-// Monthly billing
-{
-  "cycle_interval": "month",
-  "cycle_interval_count": 1
-}
-
-// Quarterly billing
-{
-  "cycle_interval": "month",
-  "cycle_interval_count": 3
-}
-
-// Annual billing
-{
-  "cycle_interval": "month",
-  "cycle_interval_count": 12
-}
-```
-
-<Info>
-  Longer billing cycles typically offer better pricing compared to monthly billing.
-</Info>
-
 ## Credit System
 
 The credit system serves as a prepaid balance that is used for all API purchases.
@@ -74,7 +33,7 @@ The response includes your current credit balance:
 ```json
 {
   "data": {
-    "credit_balance": 500,
+    "credit_balance": 500, #displayed in cents
     // Other customer fields...
   },
   "message": "Customer successfully retrieved."
@@ -83,26 +42,9 @@ The response includes your current credit balance:
 
 ### Adding Credit
 
-You can add credits to your account using the checkout endpoint with the credit product:
+You can add credit to your account via the dashboard top up flow. Credit can be added by card payment, cryptocurrency or ACH payment.
 
-```bash
-curl --request POST \
-  --url 'https://api.pingproxies.com/1.0/public/user/checkout/create' \
-  --header 'Content-Type: application/json' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key' \
-  --data '{
-    "product_code": "credit",
-    "quantity": 1,
-    "cycle_interval": "month",
-    "cycle_interval_count": 1,
-    "top_up_amount": 5000
-  }'
-```
-
-<Note>
-  Credit top-ups are one-time purchases, but the API still requires the cycle_interval and cycle_interval_count parameters.
-</Note>
+![Add Ping Proxies Credit](/images/add_credit.png)
 
 ## Invoice Generation & Credit Application
 
