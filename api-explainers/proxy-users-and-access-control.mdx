@@ -3,11 +3,22 @@ title: 'Proxy Authentication Types'
 description: 'Understanding and choosing between different proxy authentication methods'
 ---
 
-Ping Proxies offers three different authentication methods for accessing proxies:
+Ping Proxies offers three different authentication methods for accessing proxies.
 
 ### 1. Proxy User Authentication
 
 The standard and recommended authentication method using username/password credentials attached to a Proxy User.
+
+- Works with all proxy types (Datacenter, ISP, Residential)
+- Provides full user-level analytics and tracking
+- Allows for bandwidth limits and service restrictions
+- Simplifies management across your entire proxy infrastructure
+
+<img src="/images/access-control-diagram.svg" alt="Services Linked to Proxy Users Diagram" />
+
+<Tip>
+  We recommend using Proxy User Authentication for most use cases as it provides the best balance of security, flexibility, and analytics capabilities.
+</Tip>
 
 ### 2. IP Authentication
 
@@ -41,6 +52,10 @@ curl --request PATCH \
     "proxy_password": "unique_password"
   }'
 ```
+
+<Note>
+  You can use different authentication methods for different proxies within the same account. For example, you might use IP Authentication for your backend servers and Proxy User Authentication for your scraping operations.
+</Note>
 
 ## Authentication Types Comparison
 
@@ -82,7 +97,7 @@ curl --request PATCH \
       <td>**Best For**</td>
       <td>Most use cases</td>
       <td>Server applications</td>
-      <td>Special use cases</td>
+      <td>Special use cases / Reselling</td>
     </tr>
   </tbody>
 </table>
@@ -90,31 +105,3 @@ curl --request PATCH \
 <Warning>
   Proxy-Specific Authentication makes user-level tracking more challenging as all usage is attributed to the default proxy user.
 </Warning>
-
-## Recommended Approach: Proxy User Authentication
-
-<Tip>
-  We recommend using Proxy User Authentication for most use cases as it provides the best balance of security, flexibility, and analytics capabilities.
-</Tip>
-
-Proxy User Authentication is recommended because it:
-
-- Works with all proxy types (Datacenter, ISP, Residential)
-- Provides full user-level analytics and tracking
-- Allows for bandwidth limits and service restrictions
-- Simplifies management across your entire proxy infrastructure
-
-## Proxy User Access Control
-
-Proxy users can be restricted to specific services, giving you fine-grained access control:
-
-<img src="/images/access-control-diagram.svg" alt="Services Linked to Proxy Users Diagram" />
-
-In this model:
-- The default proxy user has access to all services
-- Custom proxy users can be restricted to specific services
-- Multiple proxy users can access the same service
-
-<Note>
-  You can use different authentication methods for different proxies within the same account. For example, you might use IP Authentication for your backend servers and Proxy User Authentication for your scraping operations.
-</Note>
