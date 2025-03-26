@@ -39,7 +39,8 @@
             "group": "Explainers",
             "pages": [
               "api-explainers/common-object-relationships",
-              "api-explainers/proxy-users-and-access-control"
+              "api-explainers/proxy-users-and-access-control",
+              "api-explainers/billing"
             ]
           }
         ]
