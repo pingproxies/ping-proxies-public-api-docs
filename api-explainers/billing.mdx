@@ -3,6 +3,8 @@ title: 'Billing Cycles & Credit System'
 description: 'Understanding billing cycles and the credit system in the Ping Proxies API'
 ---
 
+# Billing Cycles & Credit System
+
 The Ping Proxies billing system is built on Stripe's subscription architecture, providing flexible billing cycles and a credit balance system for managing your proxy services.
 
 ## Billing Cycles
@@ -108,7 +110,7 @@ Invoices are generated at key points in the service lifecycle:
 
 1. **Initial Purchase**: When you first purchase a service
 2. **Renewal**: At the end of each billing cycle
-3. **Service Changes**: When service quantity or features are modified
+3. **Service Reconfigurations or Top Ups**: When service quantity or billing cycloe is reconfigured
 
 ### Automatic Credit Application
 
@@ -163,7 +165,6 @@ Invoices can exist in several states:
 | `draft` | Invoice has been created but not finalized |
 | `open` | Invoice has been finalized and awaiting payment |
 | `paid` | Invoice has been paid (either with credit or payment method) |
-| `uncollectible` | Payment failed and invoice has been marked as uncollectible |
 | `void` | Invoice has been voided and will not be paid |
 
 <Info>
@@ -207,3 +208,9 @@ The response will include the `open_invoice_id` field if there's a pending invoi
   "message": "Service successfully retrieved."
 }
 ```
+
+## Best Practices
+
+1. **Maintain sufficient credit balance**: Ensure smooth service continuity by keeping your credit balance topped up
+2. **Use quarterly or annual billing** for better pricing on long-term commitments
+4. **Top up before API purchases** since credit is required for all API-initiated purchases
