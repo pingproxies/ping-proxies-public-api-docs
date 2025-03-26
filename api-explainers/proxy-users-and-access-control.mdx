@@ -3,24 +3,11 @@ title: 'Proxy Authentication Types'
 description: 'Understanding and choosing between different proxy authentication methods'
 ---
 
-# Proxy Authentication Types
-
-<Info>
-  Authentication in the Ping Proxies system is managed through the **Proxy User** system, which provides secure access control and detailed usage tracking.
-</Info>
-
-## Three Authentication Types
-
 Ping Proxies offers three different authentication methods for accessing proxies:
 
 ### 1. Proxy User Authentication
 
 The standard and recommended authentication method using username/password credentials attached to a Proxy User.
-
-```bash
-# Example proxy string with Proxy User Authentication
-http://username:password@proxy.pingproxies.com:8080
-```
 
 ### 2. IP Authentication
 
@@ -57,50 +44,48 @@ curl --request PATCH \
 
 ## Authentication Types Comparison
 
-<Card>
-  <table>
-    <thead>
-      <tr>
-        <th>Feature</th>
-        <th>Proxy User Authentication</th>
-        <th>IP Authentication</th>
-        <th>Proxy Specific Authentication</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>**Linked to**</td>
-        <td>Proxy User</td>
-        <td>Proxy User</td>
-        <td>Individual Proxy</td>
-      </tr>
-      <tr>
-        <td>**Usage Attribution**</td>
-        <td>Specific Proxy User</td>
-        <td>Specific Proxy User</td>
-        <td>Default Proxy User</td>
-      </tr>
-      <tr>
-        <td>**Proxy Types**</td>
-        <td>All types</td>
-        <td>Static Proxies only</td>
-        <td>Static Proxies only</td>
-      </tr>
-      <tr>
-        <td>**Analytics**</td>
-        <td>Full user-level</td>
-        <td>Full user-level</td>
-        <td>Limited</td>
-      </tr>
-      <tr>
-        <td>**Best For**</td>
-        <td>Most use cases</td>
-        <td>Server applications</td>
-        <td>Special use cases</td>
-      </tr>
-    </tbody>
-  </table>
-</Card>
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Proxy User Authentication</th>
+      <th>IP Authentication</th>
+      <th>Proxy Specific Authentication</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**Linked to**</td>
+      <td>Proxy User</td>
+      <td>Proxy User</td>
+      <td>Individual Proxy</td>
+    </tr>
+    <tr>
+      <td>**Usage Attribution**</td>
+      <td>Specific Proxy User</td>
+      <td>Specific Proxy User</td>
+      <td>Default Proxy User</td>
+    </tr>
+    <tr>
+      <td>**Proxy Types**</td>
+      <td>All types</td>
+      <td>Static Proxies only</td>
+      <td>Static Proxies only</td>
+    </tr>
+    <tr>
+      <td>**Analytics**</td>
+      <td>Full user-level</td>
+      <td>Full user-level</td>
+      <td>Limited</td>
+    </tr>
+    <tr>
+      <td>**Best For**</td>
+      <td>Most use cases</td>
+      <td>Server applications</td>
+      <td>Special use cases</td>
+    </tr>
+  </tbody>
+</table>
 
 <Warning>
   Proxy-Specific Authentication makes user-level tracking more challenging as all usage is attributed to the default proxy user.
