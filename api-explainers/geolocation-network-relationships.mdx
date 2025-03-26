@@ -3,15 +3,7 @@ title: 'Object Relationships'
 description: 'Understanding how proxy objects relate to geographic and network entities in the Ping Proxies API'
 ---
 
-# Object Relationships in the Ping Proxies API
-
 The Ping Proxies API organizes resources in a hierarchical structure that mirrors the real-world relationships between network and geographic entities. Understanding these relationships is crucial for effectively managing and filtering proxies.
-
-## Core Object Hierarchy
-
-<img src="/images/object-hierarchy.svg" alt="Ping Proxies Object Hierarchy" />
-
-The diagram above illustrates the hierarchical relationships between different objects in the Ping Proxies API. Let's explore these relationships in detail:
 
 ## Geographic Hierarchy
 
@@ -121,11 +113,11 @@ Response:
 ```json
 {
   "data": [
-    "socks5h://1_oGDQZ_c_gb_city_london_s_DDINPY7TQ0781XEO:vxqaFAA99F@residential.pingproxies.com:8000",
-    "socks5h://1_oGDQZ_c_gb_city_london_s_XIINPY7TQ0781XEA:vxqaFAA99F@residential.pingproxies.com:8000",
-    "socks5h://1_oGDQZ_c_gb_city_london_s_PPINPY7TQ0781XEB:vxqaFAA99F@residential.pingproxies.com:8000",
-    "socks5h://1_oGDQZ_c_gb_city_london_s_QQINPY7TQ0781XEC:vxqaFAA99F@residential.pingproxies.com:8000",
-    "socks5h://1_oGDQZ_c_gb_city_london_s_RRINPY7TQ0781XED:vxqaFAA99F@residential.pingproxies.com:8000"
+    "socks5h://stevejobs_c_gb_city_london_s_DDINPY7TQ0781XEO:apple1984@residential.pingproxies.com:8000",
+    "socks5h://stevejobs_c_gb_city_london_s_XIINPY7TQ0781XEA:apple1984@residential.pingproxies.com:8000",
+    "socks5h://stevejobs_c_gb_city_london_s_PPINPY7TQ0781XEB:apple1984@residential.pingproxies.com:8000",
+    "socks5h://stevejobs_c_gb_city_london_s_QQINPY7TQ0781XEC:apple1984@residential.pingproxies.com:8000",
+    "socks5h://stevejobs_c_gb_city_london_s_RRINPY7TQ0781XED:apple1984@residential.pingproxies.com:8000"
   ],
   "message": "Residential list successfully created."
 }
@@ -174,36 +166,6 @@ curl --request GET \
   --url 'https://api.pingproxies.com/1.0/public/user/proxy/search?proxy_type=isp&asn_id=7018' \
   --header 'X-API-Public-Key: your_public_key' \
   --header 'X-API-Private-Key: your_private_key'
-```
-
-### Combined Geographic and Network Filtering
-
-You can combine both geographic and network attributes for highly specific targeting:
-
-```bash
-# Find all ISP proxies in Texas on AT&T's network
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search?proxy_type=isp&subdivision_id=us-tx&asn_id=7018' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-## Service Fulfillment Filters and Object Relationships
-
-When purchasing proxies through the checkout process, you can use service fulfillment filters to target specific geographic or network attributes:
-
-```json
-{
-  "product_code": "isp_us",
-  "quantity": 5,
-  "cycle_interval": "month",
-  "cycle_interval_count": 1,
-  "service_fulfillment_filter": {
-    "asn_id": 7018,        // AT&T
-    "subdivision_id": "us-tx",  // Texas
-    "city_id": 75202       // Dallas
-  }
-}
 ```
 
 This ensures that the proxies allocated to your service match your specific geographic and network requirements.
