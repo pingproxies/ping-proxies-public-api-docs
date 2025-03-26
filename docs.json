@@ -38,6 +38,7 @@
           {
             "group": "Explainers",
             "pages": [
+              "api-explainers/proxy-types",
               "api-explainers/common-object-relationships",
               "api-explainers/proxy-users-and-access-control",
               "api-explainers/billing"
