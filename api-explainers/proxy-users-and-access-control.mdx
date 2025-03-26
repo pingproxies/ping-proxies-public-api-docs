@@ -5,7 +5,11 @@ description: 'Understanding and choosing between different proxy authentication 
 
 Ping Proxies offers three different authentication methods for accessing proxies.
 
-### 1. Proxy User Authentication
+Here's the authentication types section following your specific structure:
+
+### 1. Proxy User Authentication System
+
+#### 1A. Username/Password Authentication
 
 The standard and recommended authentication method using username/password credentials attached to a Proxy User.
 
@@ -20,7 +24,7 @@ The standard and recommended authentication method using username/password crede
   We recommend using Proxy User Authentication for most use cases as it provides the best balance of security, flexibility, and analytics capabilities.
 </Tip>
 
-### 2. IP Authentication
+#### 1B. IP Authentication [Part of Proxy User]
 
 Authenticate based on your server's IP address without sending credentials in each request. Works with Proxy User system.
 
@@ -36,7 +40,7 @@ curl --request PATCH \
   }'
 ```
 
-### 3. Proxy-Specific Authentication
+### 2. Proxy-Specific Authentication
 
 Set unique credentials for individual proxies.
 
