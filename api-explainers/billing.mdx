@@ -5,6 +5,12 @@ description: 'Understanding billing cycles and the credit system in the Ping Pro
 
 The Ping Proxies billing system is built on Stripe's subscription architecture, providing flexible billing cycles and a credit balance system for managing your proxy services.
 
+### Best Practices
+
+1. **Maintain sufficient credit balance**: Ensure smooth service continuity by keeping your credit balance topped up
+2. **Use quarterly or annual billing** for better pricing on long-term commitments
+4. **Top up before API purchases** since credit is required for all API-initiated purchases
+
 ## Credit System
 
 The credit system serves as a prepaid balance that is used for all API purchases.
@@ -113,17 +119,23 @@ Invoices can exist in several states:
 
 ## Billing Cycle & Invoice Flow
 
-<img className="block dark:hidden" src="/images/billing-cycle-light.svg" alt="Billing Cycle Diagram" />
-<img className="hidden dark:block" src="/images/billing-cycle-dark.svg" alt="Billing Cycle Diagram" />
-
 1. **Service Creation**: A service is purchased through the API using account credit
 2. **Initial Invoice**: Generated and marked as paid (if fully covered by credit)
 3. **Service Activation**: Service becomes active after payment
 4. **Renewal Invoice**: Generated at the end of the billing cycle
 5. **Automatic Credit Application**: Available credit is applied to the renewal invoice
-6. **Service Continuation**: Service continues if payment is successful
+6. **Service Continuation**: Service continues if invoice is paid successfully within 48 hours of generation.
 
 ## Checking Invoice Status
+
+You can view open invoices requiring payment:
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/invoice/search?invoice_status=open' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
 
 You can view invoices associated with a service:
 
@@ -149,8 +161,3 @@ The response will include the `open_invoice_id` field if there's a pending invoi
 }
 ```
 
-## Best Practices
-
-1. **Maintain sufficient credit balance**: Ensure smooth service continuity by keeping your credit balance topped up
-2. **Use quarterly or annual billing** for better pricing on long-term commitments
-4. **Top up before API purchases** since credit is required for all API-initiated purchases
