@@ -52,10 +52,10 @@ The `like_` operator is case-insensitive, so `like_service_name=%PREMIUM%` will 
 The `not_` prefix finds items where the field does not equal the specified value:
 
 ```
-GET /public/user/proxy/search?not_proxy_status=inactive
+GET /public/user/proxy/search?not_country_id=us
 ```
 
-This returns proxies that are not inactive (i.e., active proxies).
+This returns proxies that are not located in the United States.
 
 ## Existence Operators
 
@@ -74,7 +74,7 @@ This returns proxy users that have a "department" key in their metadata.
 You can combine multiple operators in a single request to create complex queries:
 
 ```
-GET /public/user/proxy/search?proxy_type=isp&country_id=gb&min_proxy_creation_datetime=2023-01-01&not_proxy_status=inactive
+GET /public/user/proxy/search?proxy_type=isp&country_id=gb&min_proxy_creation_datetime=2023-01-01&not_country_id=us
 ```
 
 This returns active ISP proxies in Great Britain created after January 1, 2023.
@@ -93,9 +93,9 @@ curl --request GET \
   --header 'X-API-Public-Key: your_public_key' \
   --header 'X-API-Private-Key: your_private_key'
 
-# Negative matching - find active proxies
+# Negative matching - find proxies outside the US
 curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search?not_proxy_status=inactive' \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search?not_country_id=us' \
   --header 'X-API-Public-Key: your_public_key' \
   --header 'X-API-Private-Key: your_private_key'
 
@@ -107,7 +107,7 @@ curl --request GET \
 
 # Metadata existence check - find proxy users with department metadata
 curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/search?proxy_user_metadata.exists_department=1' \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user/search?proxy_user_metadata.exists_department=true' \
   --header 'X-API-Public-Key: your_public_key' \
   --header 'X-API-Private-Key: your_private_key'
 ```
@@ -157,14 +157,14 @@ def get_users_with_department():
 # Example usage
 if __name__ == "__main__":
     premium_services = search_premium_services()
-    active_proxies = get_active_proxies()
+    non_us_proxies = get_non_us_proxies()
     high_quantity_services = get_services_min_quantity(10)
     users_with_dept = get_users_with_department()
     
-    print(f"Premium services: {len(premium_services['data'])}")
-    print(f"Active proxies: {len(active_proxies['data'])}")
-    print(f"Services with 10+ units: {len(high_quantity_services['data'])}")
-    print(f"Users with department metadata: {len(users_with_dept['data'])}")
+    print(f"Premium services: {premium_services['total_count']}")
+    print(f"Non-US proxies: {non_us_proxies['total_count']}")
+    print(f"Services with 10+ units: {high_quantity_services['total_count']}")
+    print(f"Users with department metadata: {users_with_dept['total_count']}")
 ```
 
 ```javascript JavaScript
@@ -219,14 +219,14 @@ async function getUsersWithDepartment() {
 async function main() {
   try {
     const premiumServices = await searchPremiumServices();
-    const activeProxies = await getActiveProxies();
+    const nonUsProxies = await getNonUsProxies();
     const highQuantityServices = await getServicesMinQuantity(10);
     const usersWithDept = await getUsersWithDepartment();
     
-    console.log(`Premium services: ${premiumServices.data.length}`);
-    console.log(`Active proxies: ${activeProxies.data.length}`);
-    console.log(`Services with 10+ units: ${highQuantityServices.data.length}`);
-    console.log(`Users with department metadata: ${usersWithDept.data.length}`);
+    console.log(`Premium services: ${premiumServices.total_count}`);
+    console.log(`Non-US proxies: ${nonUsProxies.total_count}`);
+    console.log(`Services with 10+ units: ${highQuantityServices.total_count}`);
+    console.log(`Users with department metadata: ${usersWithDept.total_count}`);
   } catch (error) {
     console.error('Error fetching filtered data:', error);
   }
@@ -287,14 +287,14 @@ function getUsersWithDepartment($baseUrl, $headers) {
 // Example usage
 try {
     $premiumServices = searchPremiumServices($baseUrl, $headers);
-    $activeProxies = getActiveProxies($baseUrl, $headers);
+    $nonUsProxies = getNonUsProxies($baseUrl, $headers);
     $highQuantityServices = getServicesMinQuantity($baseUrl, $headers, 10);
     $usersWithDept = getUsersWithDepartment($baseUrl, $headers);
     
-    echo "Premium services: " . count($premiumServices['data']) . "\n";
-    echo "Active proxies: " . count($activeProxies['data']) . "\n";
-    echo "Services with 10+ units: " . count($highQuantityServices['data']) . "\n";
-    echo "Users with department metadata: " . count($usersWithDept['data']) . "\n";
+    echo "Premium services: " . $premiumServices['total_count'] . "\n";
+    echo "Non-US proxies: " . $nonUsProxies['total_count'] . "\n";
+    echo "Services with 10+ units: " . $highQuantityServices['total_count'] . "\n";
+    echo "Users with department metadata: " . $usersWithDept['total_count'] . "\n";
 } catch (Exception $e) {
     echo "Error fetching filtered data: " . $e->getMessage() . "\n";
 }
@@ -394,15 +394,15 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error fetching premium services: %v\n", err)
 	} else {
-		fmt.Printf("Premium services: %d\n", len(premiumServices.Data))
+		fmt.Printf("Premium services: %d\n", premiumServices.TotalCount)
 	}
 	
-	// Negative matching - active proxies
-	activeProxies, err := GetActiveProxies()
+	// Negative matching - non-US proxies
+	nonUsProxies, err := GetNonUsProxies()
 	if err != nil {
-		fmt.Printf("Error fetching active proxies: %v\n", err)
+		fmt.Printf("Error fetching non-US proxies: %v\n", err)
 	} else {
-		fmt.Printf("Active proxies: %d\n", len(activeProxies.Data))
+		fmt.Printf("Non-US proxies: %d\n", nonUsProxies.TotalCount)
 	}
 	
 	// Minimum value
@@ -410,7 +410,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error fetching high quantity services: %v\n", err)
 	} else {
-		fmt.Printf("Services with 10+ units: %d\n", len(highQuantityServices.Data))
+		fmt.Printf("Services with 10+ units: %d\n", highQuantityServices.TotalCount)
 	}
 	
 	// Metadata existence check
@@ -418,7 +418,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error fetching users with department: %v\n", err)
 	} else {
-		fmt.Printf("Users with department metadata: %d\n", len(usersWithDept.Data))
+		fmt.Printf("Users with department metadata: %d\n", usersWithDept.TotalCount)
 	}
 }
 ```
