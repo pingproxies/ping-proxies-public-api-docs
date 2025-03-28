@@ -27,7 +27,6 @@ Include the following headers in all your API requests:
 
 - **Never share your private key**: Keep your private API key confidential
 - **Use environment variables**: Store keys in environment variables rather than hardcoding them
-- **Implement IP restrictions**: Consider restricting API access to specific IP addresses for added security
 - **Rotate keys periodically**: Change your API keys regularly as a security best practice
 
 ## Basic Authentication Example
@@ -45,6 +44,7 @@ curl --request GET \
 
 ```python Python
 import requests
+import json
 
 # API credentials
 API_PUBLIC_KEY = "your_public_key"
@@ -61,14 +61,25 @@ headers = {
 def get_customer_info():
     url = f"{BASE_URL}/customer/retrieve"
     response = requests.get(url, headers=headers)
-    return response.json()
+    
+    # Parse the response
+    data = response.json()
+    
+    # Check for errors
+    if response.status_code != 200:
+        error_message = data.get('message', 'Unknown error')
+        api_request_id = data.get('api_request_id', 'None')
+        error_code = data.get('code', 'None')
+        raise Exception(f"Error {error_code}: {error_message} (Request ID: {api_request_id})")
+        
+    return data
 
 # Example usage
 if __name__ == "__main__":
     try:
         customer_info = get_customer_info()
         print("Authentication successful!")
-        print(f"Customer information: {customer_info}")
+        print(f"Customer information: {json.dumps(customer_info, indent=2)}")
     except Exception as e:
         print(f"Authentication failed: {e}")
 ```
@@ -90,7 +101,17 @@ async function getCustomerInfo() {
   const url = `${BASE_URL}/customer/retrieve`;
   
   const response = await fetch(url, { headers });
-  return await response.json();
+  const data = await response.json();
+  
+  // Check for errors
+  if (!response.ok) {
+    const errorMessage = data.message || 'Unknown error';
+    const apiRequestId = data.api_request_id || 'None';
+    const errorCode = data.code || 'None';
+    throw new Error(`Error ${errorCode}: ${errorMessage} (Request ID: ${apiRequestId})`);
+  }
+  
+  return data;
 }
 
 // Example usage
@@ -98,9 +119,9 @@ async function main() {
   try {
     const customerInfo = await getCustomerInfo();
     console.log('Authentication successful!');
-    console.log(`Customer information:`, customerInfo);
+    console.log('Customer information:', JSON.stringify(customerInfo, null, 2));
   } catch (error) {
-    console.error(`Authentication failed: ${error}`);
+    console.error(`Authentication failed: ${error.message}`);
   }
 }
 
@@ -132,18 +153,25 @@ function getCustomerInfo($baseUrl, $headers) {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     
+    // Parse the response
+    $data = json_decode($response, true);
+    
+    // Check for errors
     if ($httpCode !== 200) {
-        throw new Exception("API request failed with status code: " . $httpCode);
+        $errorMessage = isset($data['message']) ? $data['message'] : 'Unknown error';
+        $apiRequestId = isset($data['api_request_id']) ? $data['api_request_id'] : 'None';
+        $errorCode = isset($data['code']) ? $data['code'] : 'None';
+        throw new Exception("Error {$errorCode}: {$errorMessage} (Request ID: {$apiRequestId})");
     }
     
-    return json_decode($response, true);
+    return $data;
 }
 
 // Example usage
 try {
     $customerInfo = getCustomerInfo($baseUrl, $headers);
     echo "Authentication successful!\n";
-    echo "Customer information: " . json_encode($customerInfo) . "\n";
+    echo "Customer information: " . json_encode($customerInfo, JSON_PRETTY_PRINT) . "\n";
 } catch (Exception $e) {
     echo "Authentication failed: " . $e->getMessage() . "\n";
 }
@@ -167,24 +195,21 @@ const (
 	baseURL       = "https://api.pingproxies.com/1.0/public"
 )
 
-// CustomerResponse represents the customer info API response
-type CustomerResponse struct {
-	Message string         `json:"message"`
-	Data    CustomerData   `json:"data"`
+// ApiError represents an error response from the API
+type ApiError struct {
+	Code         string `json:"code"`
+	Message      string `json:"message"`
+	ApiRequestID string `json:"api_request_id"`
 }
 
-// CustomerData holds customer information
-type CustomerData struct {
-	// Fields will depend on the actual API response structure
-	// This is just an example
-	CustomerID    string `json:"customer_id"`
-	CustomerName  string `json:"customer_name"`
-	EmailAddress  string `json:"email_address"`
-	AccountStatus string `json:"account_status"`
+// CustomerResponse represents the customer info API response
+type CustomerResponse struct {
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 // GetCustomerInfo retrieves authenticated customer information
-func GetCustomerInfo() (*CustomerResponse, error) {
+func GetCustomerInfo() (interface{}, error) {
 	url := baseURL + "/customer/retrieve"
 	
 	// Create a new request
@@ -205,24 +230,29 @@ func GetCustomerInfo() (*CustomerResponse, error) {
 	}
 	defer resp.Body.Close()
 
-	// Check status code
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("API request failed with status code: %d", resp.StatusCode)
-	}
-
-	// Read and parse the response
+	// Read the response body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 
+	// Check for errors
+	if resp.StatusCode != 200 {
+		var apiError ApiError
+		if err := json.Unmarshal(body, &apiError); err != nil {
+			return nil, fmt.Errorf("API request failed with status code: %d", resp.StatusCode)
+		}
+		return nil, fmt.Errorf("Error %s: %s (Request ID: %s)", 
+			apiError.Code, apiError.Message, apiError.ApiRequestID)
+	}
+
+	// Parse the response
 	var response CustomerResponse
-	err = json.Unmarshal(body, &response)
-	if err != nil {
+	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, err
 	}
 
-	return &response, nil
+	return response, nil
 }
 
 func main() {
@@ -232,8 +262,11 @@ func main() {
 		return
 	}
 	
+	// Format the output as JSON
+	customerJSON, _ := json.MarshalIndent(customerInfo, "", "  ")
+	
 	fmt.Println("Authentication successful!")
-	fmt.Printf("Customer information: %+v\n", customerInfo.Data)
+	fmt.Printf("Customer information: %s\n", string(customerJSON))
 }
 ```
 
@@ -244,6 +277,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -257,27 +291,21 @@ public class PingProxiesAuthentication {
     private static final HttpClient client = HttpClient.newHttpClient();
     private static final ObjectMapper mapper = new ObjectMapper();
     
-    // Customer response class
-    static class CustomerResponse {
+    // API Error class
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class ApiError {
+        public String code;
         public String message;
-        public CustomerData data;
+        
+        @JsonProperty("api_request_id")
+        public String apiRequestId;
     }
     
-    // Customer data class
-    static class CustomerData {
-        @JsonProperty("customer_id")
-        public String customerId;
-        
-        @JsonProperty("customer_name")
-        public String customerName;
-        
-        @JsonProperty("email_address")
-        public String emailAddress;
-        
-        @JsonProperty("account_status")
-        public String accountStatus;
-        
-        // Other customer fields as needed
+    // Customer response class
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class CustomerResponse {
+        public String message;
+        public Object data;
     }
     
     // Retrieve customer information
@@ -295,9 +323,11 @@ public class PingProxiesAuthentication {
         // Execute the request
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         
-        // Check status code
+        // Check for errors
         if (response.statusCode() != 200) {
-            throw new IOException("API request failed with status code: " + response.statusCode());
+            ApiError error = mapper.readValue(response.body(), ApiError.class);
+            throw new IOException(String.format("Error %s: %s (Request ID: %s)", 
+                error.code, error.message, error.apiRequestId));
         }
         
         // Parse the response
@@ -309,12 +339,28 @@ public class PingProxiesAuthentication {
             CustomerResponse customerInfo = getCustomerInfo();
             System.out.println("Authentication successful!");
             System.out.println("Customer information: " + 
-                customerInfo.data.customerName + " (" + customerInfo.data.customerId + ")");
+                mapper.writerWithDefaultPrettyPrinter().writeValueAsString(customerInfo));
         } catch (Exception e) {
             System.out.println("Authentication failed: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
 ```
 </CodeGroup>
+
+## Troubleshooting Authentication Issues
+
+If you encounter authentication errors, check the following:
+
+| Error | Possible Cause | Solution |
+|-------|---------------|----------|
+| 401 Unauthorized | Invalid API keys | Verify your API keys are correct and properly formatted |
+| No response | Network issues | Check your network connection and firewall settings |
+
+## API Key Management
+
+You can manage your API keys through the Ping Proxies dashboard:
+
+1. Log in to your account
+2. Navigate to the API Keys section
+3. View your current keys or generate new ones
