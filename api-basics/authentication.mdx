@@ -1,85 +1,320 @@
 ---
 title: 'Authentication'
-description: 'Securely authenticate with the Ping Proxies API'
+description: 'Authenticating with the Ping Proxies API'
 ---
 
-The Ping Proxies API uses API keys for authentication. Every request to the API must include authentication credentials to verify your identity and access rights.
+The Ping Proxies API uses API keys for authentication. Each request must include both your public and private API keys in the request headers. This ensures that only authorized users can access the API.
 
 ## API Keys
 
-Authentication is performed using a pair of API keys:
+You'll need to use two keys for authentication:
 
-1. **Public API Key**: Identifies your account but isn't considered secret
-2. **Private API Key**: Secret key that should never be shared or exposed
+- **Public API Key**: Identifies your account
+- **Private API Key**: Verifies your identity (keep this secure)
 
-Both keys must be included in every API request.
-
-## Obtaining API Keys
-
-To get your API keys:
-
-1. Log in to the [Ping Proxies Dashboard](https://dashboard.pingproxies.com)
-2. Navigate to the **API Keys** section
-3. Generate a new API key pair if you don't already have one
-
-![Create Ping Proxies API Key](/images/create_api_key.png)
-
-<Warning>
-  Your Private API Key will only be shown once when generated. Make sure to store it securely.
-</Warning>
+These keys must be included in the headers of every request to the API.
 
 ## Authentication Headers
 
-Include your API keys in the HTTP headers of every request:
+Include the following headers in all your API requests:
 
-```
-X-API-Public-Key: your_public_key
-X-API-Private-Key: your_private_key
-```
+| Header | Description |
+|--------|-------------|
+| `X-API-Public-Key` | Your public API key |
+| `X-API-Private-Key` | Your private API key |
 
-Example cURL request with authentication:
+## Security Best Practices
 
-```bash
+- **Never share your private key**: Keep your private API key confidential
+- **Use environment variables**: Store keys in environment variables rather than hardcoding them
+- **Implement IP restrictions**: Consider restricting API access to specific IP addresses for added security
+- **Rotate keys periodically**: Change your API keys regularly as a security best practice
+
+## Basic Authentication Example
+
+This example shows how to authenticate and retrieve customer information using the `/customer/retrieve` endpoint:
+
+<CodeGroup>
+```bash cURL
+# Basic authentication and customer information retrieval
 curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search' \
-  --header 'X-API-Public-Key: m4SNQfyG54Lcqf8kxQPHMk71UFI4WjBQ' \
-  --header 'X-API-Private-Key: QQ7n7dyYxpFQQSvQPJ5tri15OPueiGlh'
+  --url 'https://api.pingproxies.com/1.0/public/customer/retrieve' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
 ```
 
-## API Key Security
+```python Python
+import requests
 
-Protect your API keys using these best practices:
+# API credentials
+API_PUBLIC_KEY = "your_public_key"
+API_PRIVATE_KEY = "your_private_key"
+BASE_URL = "https://api.pingproxies.com/1.0/public"
 
-1. **Never expose your Private API Key** in client-side code, public repositories, or to end users
-2. **Use environment variables** to store API keys in your applications
-3. **Implement IP restrictions** when possible to limit API access to known servers
-4. **Rotate keys periodically**, especially after team member changes
-5. **Use separate keys** for different environments (development, staging, production)
+# Headers for authentication
+headers = {
+    "X-API-Public-Key": API_PUBLIC_KEY,
+    "X-API-Private-Key": API_PRIVATE_KEY
+}
 
-<Note>
-  If you believe your API keys have been compromised, cancel them immediately from the dashboard.
-</Note>
+# Retrieve customer information
+def get_customer_info():
+    url = f"{BASE_URL}/customer/retrieve"
+    response = requests.get(url, headers=headers)
+    return response.json()
 
-## Authentication Errors
+# Example usage
+if __name__ == "__main__":
+    try:
+        customer_info = get_customer_info()
+        print("Authentication successful!")
+        print(f"Customer information: {customer_info}")
+    except Exception as e:
+        print(f"Authentication failed: {e}")
+```
 
-If there are issues with your authentication, you'll receive one of these error responses:
+```javascript JavaScript
+// API credentials
+const API_PUBLIC_KEY = 'your_public_key';
+const API_PRIVATE_KEY = 'your_private_key';
+const BASE_URL = 'https://api.pingproxies.com/1.0/public';
 
-### Missing API Keys
+// Headers for authentication
+const headers = {
+  'X-API-Public-Key': API_PUBLIC_KEY,
+  'X-API-Private-Key': API_PRIVATE_KEY
+};
 
-```json
-{
-  "error": "Unauthorized",
-  "message": "API Private or Public Keys are missing.",
-  "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
+// Retrieve customer information
+async function getCustomerInfo() {
+  const url = `${BASE_URL}/customer/retrieve`;
+  
+  const response = await fetch(url, { headers });
+  return await response.json();
+}
+
+// Example usage
+async function main() {
+  try {
+    const customerInfo = await getCustomerInfo();
+    console.log('Authentication successful!');
+    console.log(`Customer information:`, customerInfo);
+  } catch (error) {
+    console.error(`Authentication failed: ${error}`);
+  }
+}
+
+main();
+```
+
+```php PHP
+<?php
+// API credentials
+$apiPublicKey = 'your_public_key';
+$apiPrivateKey = 'your_private_key';
+$baseUrl = 'https://api.pingproxies.com/1.0/public';
+
+// Headers for authentication
+$headers = [
+    'X-API-Public-Key: ' . $apiPublicKey,
+    'X-API-Private-Key: ' . $apiPrivateKey
+];
+
+// Retrieve customer information
+function getCustomerInfo($baseUrl, $headers) {
+    $url = $baseUrl . '/customer/retrieve';
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    
+    if ($httpCode !== 200) {
+        throw new Exception("API request failed with status code: " . $httpCode);
+    }
+    
+    return json_decode($response, true);
+}
+
+// Example usage
+try {
+    $customerInfo = getCustomerInfo($baseUrl, $headers);
+    echo "Authentication successful!\n";
+    echo "Customer information: " . json_encode($customerInfo) . "\n";
+} catch (Exception $e) {
+    echo "Authentication failed: " . $e->getMessage() . "\n";
+}
+?>
+```
+
+```go Go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+// API credentials
+const (
+	apiPublicKey  = "your_public_key"
+	apiPrivateKey = "your_private_key"
+	baseURL       = "https://api.pingproxies.com/1.0/public"
+)
+
+// CustomerResponse represents the customer info API response
+type CustomerResponse struct {
+	Message string         `json:"message"`
+	Data    CustomerData   `json:"data"`
+}
+
+// CustomerData holds customer information
+type CustomerData struct {
+	// Fields will depend on the actual API response structure
+	// This is just an example
+	CustomerID    string `json:"customer_id"`
+	CustomerName  string `json:"customer_name"`
+	EmailAddress  string `json:"email_address"`
+	AccountStatus string `json:"account_status"`
+}
+
+// GetCustomerInfo retrieves authenticated customer information
+func GetCustomerInfo() (*CustomerResponse, error) {
+	url := baseURL + "/customer/retrieve"
+	
+	// Create a new request
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// Add authentication headers
+	req.Header.Add("X-API-Public-Key", apiPublicKey)
+	req.Header.Add("X-API-Private-Key", apiPrivateKey)
+
+	// Execute the request
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Check status code
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("API request failed with status code: %d", resp.StatusCode)
+	}
+
+	// Read and parse the response
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var response CustomerResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func main() {
+	customerInfo, err := GetCustomerInfo()
+	if err != nil {
+		fmt.Printf("Authentication failed: %v\n", err)
+		return
+	}
+	
+	fmt.Println("Authentication successful!")
+	fmt.Printf("Customer information: %+v\n", customerInfo.Data)
 }
 ```
 
-### Invalid API Keys
+```java Java
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
-```json
-{
-  "error": "Unauthorized",
-  "message": "Invalid API key.",
-  "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class PingProxiesAuthentication {
+
+    // API credentials
+    private static final String API_PUBLIC_KEY = "your_public_key";
+    private static final String API_PRIVATE_KEY = "your_private_key";
+    private static final String BASE_URL = "https://api.pingproxies.com/1.0/public";
+    
+    private static final HttpClient client = HttpClient.newHttpClient();
+    private static final ObjectMapper mapper = new ObjectMapper();
+    
+    // Customer response class
+    static class CustomerResponse {
+        public String message;
+        public CustomerData data;
+    }
+    
+    // Customer data class
+    static class CustomerData {
+        @JsonProperty("customer_id")
+        public String customerId;
+        
+        @JsonProperty("customer_name")
+        public String customerName;
+        
+        @JsonProperty("email_address")
+        public String emailAddress;
+        
+        @JsonProperty("account_status")
+        public String accountStatus;
+        
+        // Other customer fields as needed
+    }
+    
+    // Retrieve customer information
+    public static CustomerResponse getCustomerInfo() throws IOException, InterruptedException {
+        String url = BASE_URL + "/customer/retrieve";
+        
+        // Create the request with authentication headers
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("X-API-Public-Key", API_PUBLIC_KEY)
+                .header("X-API-Private-Key", API_PRIVATE_KEY)
+                .GET()
+                .build();
+        
+        // Execute the request
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        
+        // Check status code
+        if (response.statusCode() != 200) {
+            throw new IOException("API request failed with status code: " + response.statusCode());
+        }
+        
+        // Parse the response
+        return mapper.readValue(response.body(), CustomerResponse.class);
+    }
+
+    public static void main(String[] args) {
+        try {
+            CustomerResponse customerInfo = getCustomerInfo();
+            System.out.println("Authentication successful!");
+            System.out.println("Customer information: " + 
+                customerInfo.data.customerName + " (" + customerInfo.data.customerId + ")");
+        } catch (Exception e) {
+            System.out.println("Authentication failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
 ```
+</CodeGroup>
