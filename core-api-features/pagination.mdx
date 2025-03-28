@@ -1,0 +1,132 @@
+---
+title: 'Pagination'
+description: 'Working with paginated responses in the Ping Proxies API'
+---
+
+The Ping Proxies API uses pagination to manage large result sets efficiently. Without pagination, endpoints that return many items could slow down your application and consume unnecessary bandwidth.
+
+## How Pagination Works
+
+When you make a request to an endpoint that returns multiple items (like search endpoints), the API divides the results into pages and returns one page at a time. This approach:
+
+- Improves performance for large datasets
+- Reduces bandwidth consumption
+- Provides more predictable response times
+- Makes responses easier to process
+
+## Pagination Parameters
+
+Ping Proxies API uses the following query parameters to control pagination:
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+| `page` | integer | The page number to retrieve | 1 |
+| `per_page` | integer | Number of items to return per page | 100 |
+
+### Example Request
+
+```bash
+GET https://api.pingproxies.com/1.0/public/user/proxy/search?page=2&per_page=25
+```
+
+This request would retrieve the second page of proxies, with 25 proxies per page.
+
+## Pagination Response
+
+Paginated responses include metadata to help you navigate through all available results. Here's what you'll find in a typical paginated response:
+
+```json
+{
+  "data": [
+    // Array of items for the current page
+  ],
+  "item_count": 25,     // Number of items in the current page
+  "message": "Search successful",
+  "page": 2,            // Current page number
+  "per_page": 25,       // Items per page
+  "total_count": 134    // Total items across all pages
+}
+```
+
+### Pagination Response Fields
+
+| Field | Description |
+|-------|-------------|
+| `data` | Array containing the items for the current page |
+| `item_count` | Number of items returned in the current page |
+| `page` | Current page number |
+| `per_page` | Number of items requested per page |
+| `total_count` | Total number of items that match your search criteria across all pages |
+
+## Calculating Total Pages
+
+To calculate the total number of pages, use:
+
+```
+total_pages = Math.ceil(total_count / per_page)
+```
+
+## Pagination Limits
+
+- **Minimum `per_page`**: 1
+- **Maximum `per_page`**: 1000
+- **Default `per_page`**: 100
+- **Minimum `page`**: 1
+- If you request a page beyond the available data, you'll receive an empty data array
+
+## Efficient Pagination Strategies
+
+### Sequential Paging
+
+The simplest approach is to request page 1, then page 2, and so on:
+
+```
+GET /proxy/search?page=1&per_page=50
+GET /proxy/search?page=2&per_page=50
+...
+```
+
+### Parallel Paging
+
+For faster data collection, you can calculate the total pages and make multiple concurrent requests:
+
+```python
+import asyncio
+import aiohttp
+
+async def fetch_page(session, page, per_page):
+    """Fetch a specific page of results"""
+    url = f"https://api.pingproxies.com/1.0/public/user/proxy/search?page={page}&per_page={per_page}"
+    async with session.get(url) as response:
+        return await response.json()
+
+async def fetch_all_pages(total_count, per_page):
+    """Fetch all pages in parallel"""
+    total_pages = (total_count + per_page - 1) // per_page  # Math.ceil equivalent
+    
+    async with aiohttp.ClientSession() as session:
+        # Create tasks for each page request
+        page_tasks = []
+        for page in range(1, total_pages + 1):
+            page_tasks.append(fetch_page(session, page, per_page))
+        
+        # Run all page requests concurrently
+        all_results = await asyncio.gather(*page_tasks)
+        
+        return all_results
+
+# Usage example
+async def main():
+    total_count = 1250
+    per_page = 100  # Default is 100, but you can set up to 1000
+    
+    results = await fetch_all_pages(total_count, per_page)
+    print(f"Fetched {len(results)} pages")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+<Warning>
+  Use parallel paging cautiously to avoid rate limiting. Consider how many concurrent requests you're making to the API.
+</Warning>

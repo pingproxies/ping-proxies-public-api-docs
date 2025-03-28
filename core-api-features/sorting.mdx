@@ -1,0 +1,102 @@
+---
+title: 'Sorting'
+description: 'Controlling result order with the sort_by parameter in the Ping Proxies API'
+---
+
+The Ping Proxies API provides sorting capabilities that allow you to control the order of returned results. Proper sorting is essential for creating intuitive, user-friendly interfaces and for optimizing data processing workflows.
+
+## The `sort_by` Parameter
+
+All search endpoints in the Ping Proxies API support the `sort_by` parameter, which allows you to specify fields to sort by and the direction of the sort.
+
+## Basic Sorting
+
+The simplest form of sorting uses a single field name without any suffix, which sorts in ascending order (A-Z, oldest to newest):
+
+```
+GET /public/user/proxy/search?sort_by=proxy_creation_datetime
+```
+
+This sorts results by the creation datetime in ascending order (oldest to newest).
+
+## Sort Direction
+
+You can specify the sort direction by adding a direction suffix:
+
+- Ascending: Add `_asc` suffix (default when no suffix is specified)
+- Descending: Add `_desc` suffix
+
+```
+GET /public/user/service/search?sort_by=service_expiry_datetime_desc
+```
+
+This sorts services by expiry date in descending order (expiring soonest first).
+
+```
+GET /public/user/proxy/search?sort_by=country_id_asc
+```
+
+This sorts proxies by country ID in ascending order (A-Z).
+
+## Special Sorting Options
+
+### Random Sorting
+
+Some endpoints support a special `random` sort option:
+
+```
+GET /public/user/proxy/search?sort_by=random
+```
+
+This returns results in a random order, which can be useful for:
+- Load balancing across multiple proxies
+- Selecting random samples for testing
+- Presenting different options to users
+
+<Note>
+Random sorting should not be used with pagination if you need to access the complete randomly ordered set, as each page will have its own random order.
+</Note>
+
+## Sorting and Pagination
+
+Sorting works in conjunction with pagination. When you specify both a sort order and pagination parameters, the API:
+
+1. Applies the sort to the entire result set
+2. Divides the sorted results into pages
+3. Returns the requested page
+
+For example:
+
+```
+GET /public/user/proxy/search?sort_by=proxy_creation_datetime_desc&page=2&per_page=25
+```
+
+This returns the second page of proxies, with 25 proxies per page, sorted by creation date from newest to oldest.
+
+## Examples for Common Use Cases
+
+### Show newest items first
+
+```
+GET /public/user/service/search?sort_by=service_creation_datetime_desc
+```
+
+### Alphabetical order by name
+
+```
+GET /public/user/proxy_user/search?sort_by=proxy_user_id_asc
+```
+
+### Find proxies expiring soon (earliest first)
+
+```
+GET /public/user/service/search?sort_by=service_expiry_datetime_asc
+```
+
+### Sort logs by size (largest first)
+
+```
+GET /public/user/log/search?sort_by=log_total_bytes_desc
+```
+
+By effectively using the sorting capabilities of the Ping Proxies API, you can create more intuitive and efficient applications that present data in the most useful order for your specific needs.

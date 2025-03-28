@@ -1,0 +1,85 @@
+---
+title: 'Authentication'
+description: 'Securely authenticate with the Ping Proxies API'
+---
+
+The Ping Proxies API uses API keys for authentication. Every request to the API must include authentication credentials to verify your identity and access rights.
+
+## API Keys
+
+Authentication is performed using a pair of API keys:
+
+1. **Public API Key**: Identifies your account but isn't considered secret
+2. **Private API Key**: Secret key that should never be shared or exposed
+
+Both keys must be included in every API request.
+
+## Obtaining API Keys
+
+To get your API keys:
+
+1. Log in to the [Ping Proxies Dashboard](https://dashboard.pingproxies.com)
+2. Navigate to the **API Keys** section
+3. Generate a new API key pair if you don't already have one
+
+![Create Ping Proxies API Key](/images/create_api_key.png)
+
+<Warning>
+  Your Private API Key will only be shown once when generated. Make sure to store it securely.
+</Warning>
+
+## Authentication Headers
+
+Include your API keys in the HTTP headers of every request:
+
+```
+X-API-Public-Key: your_public_key
+X-API-Private-Key: your_private_key
+```
+
+Example cURL request with authentication:
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search' \
+  --header 'X-API-Public-Key: m4SNQfyG54Lcqf8kxQPHMk71UFI4WjBQ' \
+  --header 'X-API-Private-Key: QQ7n7dyYxpFQQSvQPJ5tri15OPueiGlh'
+```
+
+## API Key Security
+
+Protect your API keys using these best practices:
+
+1. **Never expose your Private API Key** in client-side code, public repositories, or to end users
+2. **Use environment variables** to store API keys in your applications
+3. **Implement IP restrictions** when possible to limit API access to known servers
+4. **Rotate keys periodically**, especially after team member changes
+5. **Use separate keys** for different environments (development, staging, production)
+
+<Note>
+  If you believe your API keys have been compromised, cancel them immediately from the dashboard.
+</Note>
+
+## Authentication Errors
+
+If there are issues with your authentication, you'll receive one of these error responses:
+
+### Missing API Keys
+
+```json
+{
+  "error": "Unauthorized",
+  "message": "API Private or Public Keys are missing.",
+  "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
+}
+```
+
+### Invalid API Keys
+
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid API key.",
+  "api_request_id": "0a5a76aa-e286-477b-b88f-e5b492a0ba70"
+}
+```
