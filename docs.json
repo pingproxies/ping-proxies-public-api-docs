@@ -54,7 +54,9 @@
             "group": "Practical Examples",
             "pages": [
               "api-examples/retrieving-all-proxies",
-              "api-examples/export-all-static-proxies"
+              "api-examples/export-all-static-proxies",
+              "api-examples/retrieving-all-proxies-from-service",
+              "api-examples/export-all-proxies-from-service"
             ]
           },
           {

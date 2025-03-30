@@ -1,0 +1,159 @@
+---
+title: "Exporting a list of proxies from a particular service"
+description: "Learn how to export a formatted list of proxies from a specific service using the list_by_search endpoint"
+icon: "file-export"
+---
+
+This example demonstrates how to export a formatted list of proxies from a specific service using the `list_by_search` endpoint with filtering parameters. Unlike the basic search, this endpoint returns ready-to-use proxy strings in various formats (standard, HTTP, SOCKS5, SOCKS5H).
+
+<CodeGroup>
+```python Python
+import requests
+import os
+from datetime import datetime
+
+# API credentials
+API_PUBLIC_KEY = "your_public_key"
+API_PRIVATE_KEY = "your_private_key"
+BASE_URL = "https://api.pingproxies.com/1.0/public"
+
+# Headers for authentication
+headers = {
+    "X-API-Public-Key": API_PUBLIC_KEY,
+    "X-API-Private-Key": API_PRIVATE_KEY
+}
+
+def export_service_proxies(service_id, format_type="standard", protocol="http"):
+    """
+    Export a formatted list of proxies from a specific service.
+    
+    Args:
+        service_id: ID of the service to export proxies from
+        format_type: Format of the returned proxies ("standard", "http", "socks5", "socks5h")
+        protocol: Protocol to use ("http" or "socks5")
+        
+    Returns:
+        List of formatted proxy strings
+    """
+    # Set up the parameters for list_by_search
+    params = {
+        "service_id": service_id,
+        "list_format": format_type,     # Format of the returned proxies
+        "list_protocol": protocol,      # Protocol to use
+        "list_version": "ipv4",         # IP version
+        "list_authentication": "username_and_password"  # Authentication type
+    }
+    
+    # Make request to the list_by_search endpoint
+    response = requests.get(
+        f"{BASE_URL}/user/proxy/list_by_search",
+        params=params,
+        headers=headers
+    )
+    
+    if response.status_code != 200:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        return []
+    
+    data = response.json()
+    
+    # The list endpoint returns the formatted proxies directly in data
+    proxy_list = data["data"]
+    
+    print(f"Successfully retrieved {len(proxy_list)} formatted proxies from service {service_id}")
+    return proxy_list
+
+def export_to_file(proxy_list, service_id, format_type="standard"):
+    """Export proxy list to a file."""
+    # Create a default filename with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"service_{service_id}_proxies_{format_type}_{timestamp}.txt"
+    
+    # Write the proxy list to a file
+    with open(filename, "w") as file:
+        for proxy in proxy_list:
+            file.write(f"{proxy}\n")
+    
+    print(f"Exported {len(proxy_list)} proxies to {filename}")
+    return filename
+
+# Example usage
+if __name__ == "__main__":
+    # Replace with your actual service ID
+    SERVICE_ID = "API-1234-5678"
+    
+    # Get proxies in different formats
+    standard_list = export_service_proxies(SERVICE_ID, "standard", "http")
+    http_list = export_service_proxies(SERVICE_ID, "http", "http")
+    socks5_list = export_service_proxies(SERVICE_ID, "socks5", "socks5")
+    
+    # Export to files
+    if standard_list:
+        export_to_file(standard_list, SERVICE_ID, "standard")
+    if http_list:
+        export_to_file(http_list, SERVICE_ID, "http")
+    if socks5_list:
+        export_to_file(socks5_list, SERVICE_ID, "socks5")
+    
+    # Print sample of each format
+    print("\nSample outputs:")
+    if standard_list:
+        print(f"Standard format: {standard_list[0]}")
+    if http_list:
+        print(f"HTTP format: {http_list[0]}")
+    if socks5_list:
+        print(f"SOCKS5 format: {socks5_list[0]}")
+```
+
+```javascript JavaScript
+// API credentials
+const API_PUBLIC_KEY = 'your_public_key';
+const API_PRIVATE_KEY = 'your_private_key';
+const BASE_URL = 'https://api.pingproxies.com/1.0/public';
+
+/**
+ * Export a formatted list of proxies from a specific service
+ * @param {string} serviceId - ID of the service to export proxies from
+ * @param {string} formatType - Format of the returned proxies
+ * @param {string} protocol - Protocol to use
+ * @returns {Promise<Array>} List of formatted proxy strings
+ */
+async function exportServiceProxies(serviceId, formatType = 'standard', protocol = 'http') {
+  // Set up the parameters for list_by_search
+  const url = new URL(`${BASE_URL}/user/proxy/list_by_search`);
+  const params = {
+    'service_id': serviceId,
+    'list_format': formatType,    // Format of the returned proxies
+    'list_protocol': protocol,    // Protocol to use
+    'list_version': 'ipv4',       // IP version
+    'list_authentication': 'username_and_password'  // Authentication type
+  };
+  
+  // Add all params to URL
+  Object.keys(params).forEach(key => 
+    url.searchParams.append(key, params[key])
+  );
+  
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'X-API-Public-Key': API_PUBLIC_KEY,
+        'X-API-Private-Key': API_PRIVATE_KEY
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // The list endpoint returns the formatted proxies directly in data
+    const proxyList = data.data;
+    
+    console.log(`Successfully retrieved ${proxyList.length} formatted proxies from service ${serviceId}`);
+    return proxyList;
+    
+  } catch (error) {
+    console.error('Error retrieving proxy list:', error);
