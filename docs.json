@@ -57,7 +57,8 @@
               "api-examples/export-all-static-proxies",
               "api-examples/retrieving-all-proxies-from-service",
               "api-examples/export-all-proxies-from-service",
-              "api-examples/generate-residential-proxies-sticky-us"
+              "api-examples/generate-residential-proxies-sticky-us",
+              "api-examples/create-a-proxy-user"
             ]
           },
           {
