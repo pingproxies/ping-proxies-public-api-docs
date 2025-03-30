@@ -53,7 +53,8 @@
           {
             "group": "Practical Examples",
             "pages": [
-              "api-examples/retrieving-all-proxies"
+              "api-examples/retrieving-all-proxies",
+              "api-examples/export-all-static-proxies"
             ]
           },
           {
