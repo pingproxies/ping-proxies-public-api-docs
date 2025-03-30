@@ -29,10 +29,10 @@
           {
             "group": "Core API Features",
             "pages": [
-              "core-api-features/pagination",
-              "core-api-features/sorting",
-              "core-api-features/search-operators",
-              "core-api-features/metadata"
+              "api-core-features/pagination",
+              "api-core-features/sorting",
+              "api-core-features/search-operators",
+              "api-core-features/metadata"
             ]
           },
           {
@@ -51,25 +51,14 @@
         "tab": "Examples",
         "groups": [
           {
-            "group": "Getting Started",
-            "pages": ["introduction"]
-          },
-          {
-            "group": "API Basics",
+            "group": "Practical Examples",
             "pages": [
-              "api-basics/authentication",
-              "api-basics/structure",
-              "api-basics/error-handling",
-              "api-basics/rate-limiting"
+              "api-examples/retrieving-all-proxies"
             ]
           },
           {
-            "group": "Core API Features",
+            "group": "Reselling Examples",
             "pages": [
-              "core-api-features/pagination",
-              "core-api-features/sorting",
-              "core-api-features/search-operators",
-              "core-api-features/metadata"
             ]
           }
         ]
