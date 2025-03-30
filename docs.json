@@ -53,6 +53,10 @@
           {
             "group": "Practical Examples",
             "pages": ["examples-index"]
+          },
+          {
+            "group": "Reselling Examples",
+            "pages": ["examples-index"]
           }
         ]
       },
