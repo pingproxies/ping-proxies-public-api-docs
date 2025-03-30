@@ -51,7 +51,6 @@
         "tab": "Examples",
         "groups": [
           {
-            "group": "Practical Examples",
             "pages": ["examples-index"]
           }
         ]
