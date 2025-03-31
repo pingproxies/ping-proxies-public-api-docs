@@ -411,16 +411,9 @@ func main() {
    - Once the purchase is complete, we use the `list_by_search` endpoint to get our proxies
    - We filter by service ID and specify the format we want (HTTP in this example)
    - Finally, we save the proxies to a text file
-
-## Best Practices
-
-- In a production environment, implement a polling mechanism to check if the service is active before attempting to export proxies
-- Add proper error handling and retry logic for network failures
-- Consider implementing a more robust authentication system with token refreshing
-- Use environment variables to store your API keys securely
-
+   
 ## Additional Considerations
 
+- In a production environment, implement a polling mechanism to check if the service is active before attempting to export proxies
 - The default proxy user credentials are used in this example
 - You may want to create a custom proxy user for better organization and access control
-- For high-volume usage, consider implementing pagination when exporting proxies
