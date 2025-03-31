@@ -54,7 +54,8 @@
             "group": "Practical Examples",
             "pages": ["examples-index", 
             "api-examples/retrieve-all-proxies-for-a-proxy-user",
-            "api-examples/search-proxy-user-by-metadata"
+            "api-examples/search-proxy-user-by-metadata",
+            "api-examples/purchasing-with-api"
           ]
           },
           {

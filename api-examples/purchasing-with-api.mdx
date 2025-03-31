@@ -1,0 +1,481 @@
+---
+title: "Purchase and Export Static Residential Proxies"
+description: "Learn how to purchase static residential proxies via the API and export them to a text file"
+icon: "file-export"
+---
+
+# Purchase and Export Static Residential Proxies
+
+This guide demonstrates how to purchase static residential ISP proxies through the Ping Proxies API and then export them to a text file. This automation can be valuable for quickly setting up and deploying proxy infrastructure in your applications.
+
+The process involves two main steps:
+1. Create a checkout to purchase the static residential proxies
+2. Export the proxies to a text file once they're active
+
+## Example Implementation
+
+<CodeGroup>
+```python Python
+import requests
+import time
+import json
+
+# API credentials
+API_PUBLIC_KEY = "your_public_key"
+API_PRIVATE_KEY = "your_private_key"
+BASE_URL = "https://api.pingproxies.com/1.0/public"
+
+# Headers for authentication
+headers = {
+    "X-API-Public-Key": API_PUBLIC_KEY,
+    "X-API-Private-Key": API_PRIVATE_KEY,
+    "Content-Type": "application/json"
+}
+
+# Step 1: Purchase static residential ISP proxies
+# Create checkout data for 5 US ISP proxies with a monthly subscription
+checkout_data = {
+    "product_code": "isp_us",     # Product code for US ISP proxies
+    "quantity": 5,                # Number of proxies to purchase
+    "cycle_interval": "month",    # Billing cycle interval
+    "cycle_interval_count": 1     # Number of intervals
+}
+
+# Make the checkout request
+checkout_response = requests.post(
+    f"{BASE_URL}/user/checkout/create",
+    headers=headers,
+    json=checkout_data
+)
+
+# Parse the response
+checkout_result = checkout_response.json()
+
+# Check if the checkout was successful
+if "created" not in checkout_result:
+    print(f"Error creating checkout: {checkout_result}")
+    exit(1)
+
+# Get the service ID from the response
+service_id = checkout_result["created"][0]
+print(f"Successfully created service with ID: {service_id}")
+
+# Step 2: If the service requires payment (checkout_result["invoice_is_paid"] is False),
+# the user would need to complete payment via checkout_result["invoice_url"]
+
+# Step 3: Wait briefly for the service to become active
+# In a production environment, you would implement a more robust polling mechanism
+print("Waiting for service to be provisioned...")
+time.sleep(10)  # Simple delay, in production you'd poll the service status
+
+# Step 4: Export the proxies using list_by_search
+export_params = {
+    "service_id": service_id,         # Filter by our new service
+    "list_format": "http",            # Format as HTTP URLs
+    "list_protocol": "http",          # Use HTTP protocol
+    "list_authentication": "username_and_password"  # Include auth in the URL
+}
+
+# Make the export request
+export_response = requests.get(
+    f"{BASE_URL}/user/proxy/list_by_search",
+    headers=headers,
+    params=export_params
+)
+
+# Parse the response
+export_result = export_response.json()
+
+# Check if export was successful
+if "data" not in export_result:
+    print(f"Error exporting proxies: {export_result}")
+    exit(1)
+
+# Get the proxy list
+proxy_list = export_result["data"]
+print(f"Successfully exported {len(proxy_list)} proxies")
+
+# Step 5: Save proxies to a text file
+with open("isp_proxies.txt", "w") as f:
+    for proxy in proxy_list:
+        f.write(f"{proxy}\n")
+
+print(f"Proxies saved to isp_proxies.txt")
+```
+
+```javascript JavaScript
+// Import required modules
+const axios = require('axios');
+const fs = require('fs');
+
+// API credentials
+const API_PUBLIC_KEY = "your_public_key";
+const API_PRIVATE_KEY = "your_private_key";
+const BASE_URL = "https://api.pingproxies.com/1.0/public";
+
+// Headers for authentication
+const headers = {
+    "X-API-Public-Key": API_PUBLIC_KEY,
+    "X-API-Private-Key": API_PRIVATE_KEY,
+    "Content-Type": "application/json"
+};
+
+// Main async function
+(async () => {
+    try {
+        // Step 1: Purchase static residential ISP proxies
+        // Create checkout data for 5 US ISP proxies with a monthly subscription
+        const checkoutData = {
+            "product_code": "isp_us",     // Product code for US ISP proxies
+            "quantity": 5,                 // Number of proxies to purchase
+            "cycle_interval": "month",     // Billing cycle interval
+            "cycle_interval_count": 1      // Number of intervals
+        };
+
+        // Make the checkout request
+        console.log("Creating checkout...");
+        const checkoutResponse = await axios.post(
+            `${BASE_URL}/user/checkout/create`,
+            checkoutData,
+            { headers }
+        );
+
+        // Check if the checkout was successful
+        if (!checkoutResponse.data.created) {
+            console.error(`Error creating checkout: ${JSON.stringify(checkoutResponse.data)}`);
+            process.exit(1);
+        }
+
+        // Get the service ID from the response
+        const serviceId = checkoutResponse.data.created[0];
+        console.log(`Successfully created service with ID: ${serviceId}`);
+
+        // Step 2: If the service requires payment (checkoutResponse.data.invoice_is_paid is false),
+        // the user would need to complete payment via checkoutResponse.data.invoice_url
+
+        // Step 3: Wait briefly for the service to become active
+        // In a production environment, you would implement a more robust polling mechanism
+        console.log("Waiting for service to be provisioned...");
+        await new Promise(resolve => setTimeout(resolve, 10000)); // Simple 10s delay
+
+        // Step 4: Export the proxies using list_by_search
+        console.log("Exporting proxies...");
+        const exportResponse = await axios.get(
+            `${BASE_URL}/user/proxy/list_by_search`,
+            { 
+                headers,
+                params: {
+                    "service_id": serviceId,         // Filter by our new service
+                    "list_format": "http",           // Format as HTTP URLs
+                    "list_protocol": "http",         // Use HTTP protocol
+                    "list_authentication": "username_and_password"  // Include auth in the URL
+                }
+            }
+        );
+
+        // Check if export was successful
+        if (!exportResponse.data.data) {
+            console.error(`Error exporting proxies: ${JSON.stringify(exportResponse.data)}`);
+            process.exit(1);
+        }
+
+        // Get the proxy list
+        const proxyList = exportResponse.data.data;
+        console.log(`Successfully exported ${proxyList.length} proxies`);
+
+        // Step 5: Save proxies to a text file
+        const proxyContent = proxyList.join('\n');
+        fs.writeFileSync('isp_proxies.txt', proxyContent);
+        console.log(`Proxies saved to isp_proxies.txt`);
+
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        if (error.response) {
+            console.error(`API response: ${JSON.stringify(error.response.data)}`);
+        }
+    }
+})();
+```
+
+```php PHP
+<?php
+// API credentials
+$API_PUBLIC_KEY = "your_public_key";
+$API_PRIVATE_KEY = "your_private_key";
+$BASE_URL = "https://api.pingproxies.com/1.0/public";
+
+// Headers for authentication
+$headers = [
+    "X-API-Public-Key: " . $API_PUBLIC_KEY,
+    "X-API-Private-Key: " . $API_PRIVATE_KEY,
+    "Content-Type: application/json"
+];
+
+// Step 1: Purchase static residential ISP proxies
+// Create checkout data for 5 US ISP proxies with a monthly subscription
+$checkoutData = [
+    "product_code" => "isp_us",    // Product code for US ISP proxies
+    "quantity" => 5,               // Number of proxies to purchase
+    "cycle_interval" => "month",   // Billing cycle interval
+    "cycle_interval_count" => 1    // Number of intervals
+];
+
+// Initialize cURL session for checkout
+$ch = curl_init($BASE_URL . "/user/checkout/create");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($checkoutData));
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+// Execute the request
+$checkoutResponse = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+// Parse the response
+$checkoutResult = json_decode($checkoutResponse, true);
+
+// Check if the checkout was successful
+if ($httpCode != 201 || !isset($checkoutResult['created'])) {
+    echo "Error creating checkout: " . $checkoutResponse . "\n";
+    exit(1);
+}
+
+// Get the service ID from the response
+$serviceId = $checkoutResult['created'][0];
+echo "Successfully created service with ID: " . $serviceId . "\n";
+
+// Step 2: If the service requires payment ($checkoutResult["invoice_is_paid"] is false),
+// the user would need to complete payment via $checkoutResult["invoice_url"]
+
+// Step 3: Wait briefly for the service to become active
+// In a production environment, you would implement a more robust polling mechanism
+echo "Waiting for service to be provisioned...\n";
+sleep(10);  // Simple delay, in production you'd poll the service status
+
+// Step 4: Export the proxies using list_by_search
+$exportUrl = $BASE_URL . "/user/proxy/list_by_search?" . http_build_query([
+    "service_id" => $serviceId,         // Filter by our new service
+    "list_format" => "http",            // Format as HTTP URLs
+    "list_protocol" => "http",          // Use HTTP protocol
+    "list_authentication" => "username_and_password"  // Include auth in the URL
+]);
+
+// Initialize cURL session for export
+$ch = curl_init($exportUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+// Execute the request
+$exportResponse = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+// Parse the response
+$exportResult = json_decode($exportResponse, true);
+
+// Check if export was successful
+if ($httpCode != 200 || !isset($exportResult['data'])) {
+    echo "Error exporting proxies: " . $exportResponse . "\n";
+    exit(1);
+}
+
+// Get the proxy list
+$proxyList = $exportResult['data'];
+echo "Successfully exported " . count($proxyList) . " proxies\n";
+
+// Step 5: Save proxies to a text file
+$file = fopen("isp_proxies.txt", "w");
+foreach ($proxyList as $proxy) {
+    fwrite($file, $proxy . "\n");
+}
+fclose($file);
+
+echo "Proxies saved to isp_proxies.txt\n";
+?>
+```
+
+```go Go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
+	"time"
+)
+
+func main() {
+	// API credentials
+	apiPublicKey := "your_public_key"
+	apiPrivateKey := "your_private_key"
+	baseURL := "https://api.pingproxies.com/1.0/public"
+
+	// Step 1: Purchase static residential ISP proxies
+	// Create checkout data for 5 US ISP proxies with a monthly subscription
+	checkoutData := map[string]interface{}{
+		"product_code":          "isp_us", // Product code for US ISP proxies
+		"quantity":              5,         // Number of proxies to purchase
+		"cycle_interval":        "month",   // Billing cycle interval
+		"cycle_interval_count":  1,         // Number of intervals
+	}
+
+	// Convert checkout data to JSON
+	checkoutJSON, err := json.Marshal(checkoutData)
+	if err != nil {
+		fmt.Printf("Error creating checkout JSON: %v\n", err)
+		return
+	}
+
+	// Create a new request for checkout
+	checkoutReq, err := http.NewRequest("POST", baseURL+"/user/checkout/create", bytes.NewBuffer(checkoutJSON))
+	if err != nil {
+		fmt.Printf("Error creating checkout request: %v\n", err)
+		return
+	}
+
+	// Add authentication headers
+	checkoutReq.Header.Add("X-API-Public-Key", apiPublicKey)
+	checkoutReq.Header.Add("X-API-Private-Key", apiPrivateKey)
+	checkoutReq.Header.Add("Content-Type", "application/json")
+
+	// Execute the checkout request
+	client := &http.Client{}
+	checkoutResp, err := client.Do(checkoutReq)
+	if err != nil {
+		fmt.Printf("Error executing checkout request: %v\n", err)
+		return
+	}
+	defer checkoutResp.Body.Close()
+
+	// Read and parse the checkout response
+	checkoutBody, err := ioutil.ReadAll(checkoutResp.Body)
+	if err != nil {
+		fmt.Printf("Error reading checkout response: %v\n", err)
+		return
+	}
+
+	var checkoutResult map[string]interface{}
+	err = json.Unmarshal(checkoutBody, &checkoutResult)
+	if err != nil {
+		fmt.Printf("Error parsing checkout response: %v\n", err)
+		return
+	}
+
+	// Check if the checkout was successful
+	createdArray, ok := checkoutResult["created"].([]interface{})
+	if !ok {
+		fmt.Printf("Error creating checkout: %s\n", string(checkoutBody))
+		return
+	}
+
+	// Get the service ID from the response
+	serviceID := createdArray[0].(string)
+	fmt.Printf("Successfully created service with ID: %s\n", serviceID)
+
+	// Step 2: If the service requires payment (checkoutResult["invoice_is_paid"] is false),
+	// the user would need to complete payment via checkoutResult["invoice_url"]
+
+	// Step 3: Wait briefly for the service to become active
+	// In a production environment, you would implement a more robust polling mechanism
+	fmt.Println("Waiting for service to be provisioned...")
+	time.Sleep(10 * time.Second) // Simple delay, in production you'd poll the service status
+
+	// Step 4: Export the proxies using list_by_search
+	// Create query parameters
+	exportParams := url.Values{}
+	exportParams.Add("service_id", serviceID)         // Filter by our new service
+	exportParams.Add("list_format", "http")           // Format as HTTP URLs
+	exportParams.Add("list_protocol", "http")         // Use HTTP protocol
+	exportParams.Add("list_authentication", "username_and_password") // Include auth in the URL
+
+	// Create a new request for export
+	exportReq, err := http.NewRequest("GET", baseURL+"/user/proxy/list_by_search?"+exportParams.Encode(), nil)
+	if err != nil {
+		fmt.Printf("Error creating export request: %v\n", err)
+		return
+	}
+
+	// Add authentication headers
+	exportReq.Header.Add("X-API-Public-Key", apiPublicKey)
+	exportReq.Header.Add("X-API-Private-Key", apiPrivateKey)
+
+	// Execute the export request
+	exportResp, err := client.Do(exportReq)
+	if err != nil {
+		fmt.Printf("Error executing export request: %v\n", err)
+		return
+	}
+	defer exportResp.Body.Close()
+
+	// Read and parse the export response
+	exportBody, err := ioutil.ReadAll(exportResp.Body)
+	if err != nil {
+		fmt.Printf("Error reading export response: %v\n", err)
+		return
+	}
+
+	var exportResult map[string]interface{}
+	err = json.Unmarshal(exportBody, &exportResult)
+	if err != nil {
+		fmt.Printf("Error parsing export response: %v\n", err)
+		return
+	}
+
+	// Check if export was successful
+	proxyListInterface, ok := exportResult["data"].([]interface{})
+	if !ok {
+		fmt.Printf("Error exporting proxies: %s\n", string(exportBody))
+		return
+	}
+
+	// Convert proxy list to strings
+	var proxyList []string
+	for _, proxy := range proxyListInterface {
+		proxyList = append(proxyList, proxy.(string))
+	}
+
+	fmt.Printf("Successfully exported %d proxies\n", len(proxyList))
+
+	// Step 5: Save proxies to a text file
+	proxyContent := strings.Join(proxyList, "\n")
+	err = ioutil.WriteFile("isp_proxies.txt", []byte(proxyContent), 0644)
+	if err != nil {
+		fmt.Printf("Error saving proxies to file: %v\n", err)
+		return
+	}
+
+	fmt.Println("Proxies saved to isp_proxies.txt")
+}
+```
+</CodeGroup>
+
+## Key Considerations
+
+1. **API Authentication**: You'll need valid API keys from the Ping Proxies dashboard to authenticate your requests.
+
+2. **Service Provisioning Time**: After creating the checkout, there might be a delay before the proxies are fully provisioned. In a production environment, you should implement proper polling to check the service status.
+
+3. **Payment Handling**: If the service requires payment (the `invoice_is_paid` field is `false`), your implementation should handle the payment flow by directing the user to the provided `invoice_url`.
+
+4. **Error Handling**: The examples above include basic error handling. For production use, implement more robust error handling and retry mechanisms.
+
+5. **Proxy Formats**: The `list_format` parameter in the export step can be adjusted to obtain proxies in different formats:
+   - `http`: Returns HTTP proxy URLs
+   - `socks5`: Returns SOCKS5 proxy URLs
+   - `socks5h`: Returns SOCKS5h proxy URLs with hostname resolution
+   - `standard`: Returns standard format
+
+## Next Steps
+
+Once you have successfully purchased and exported your static residential proxies, you can:
+
+- Integrate them with your web scraping tools
+- Set up proxy rotation systems
+- Use them for SEO monitoring
+- Implement them in your automated workflows
