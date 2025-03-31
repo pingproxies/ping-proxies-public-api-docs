@@ -37,22 +37,7 @@ headers = {
     "Content-Type": "application/json"
 }
 
-# Step 1: Get product catalog to find available products
-catalog_url = f"{BASE_URL}/user/checkout/catalog"
-catalog_response = requests.get(catalog_url, headers=headers)
-
-if catalog_response.status_code != 200:
-    print(f"Error retrieving product catalog: {catalog_response.status_code}")
-    print(catalog_response.text)
-    exit(1)
-
-catalog_data = catalog_response.json()
-print("Available products:")
-for product_code, product_info in catalog_data["data"].items():
-    if product_info["product_type"] == "isp":  # Looking for ISP (static residential) proxies
-        print(f"  - {product_code}: {product_info['product_name']}")
-
-# For this example, we'll purchase US static residential proxies (isp_us)
+# For this example, we'll directly use US static residential proxies
 product_code = "isp_us"  # Change this to your desired product code
 quantity = 5  # Change this to your desired quantity
 
@@ -131,21 +116,8 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
-// Step 1: Get product catalog to find available products
-axios.get(`${BASE_URL}/user/checkout/catalog`, { headers })
-  .then(catalogResponse => {
-    console.log('Available products:');
-    const catalogData = catalogResponse.data;
-    
-    // Filter and display ISP (static residential) products
-    Object.entries(catalogData.data).forEach(([productCode, productInfo]) => {
-      if (productInfo.product_type === 'isp') {
-        console.log(`  - ${productCode}: ${productInfo.product_name}`);
-      }
-    });
-    
-    // For this example, we'll purchase US static residential proxies (isp_us)
-    const productCode = 'isp_us';  // Change this to your desired product code
+// For this example, we'll directly use US static residential proxies
+const productCode = 'isp_us';  // Change this to your desired product code
     const quantity = 5;  // Change this to your desired quantity
 
     // Step 2: Create a checkout
@@ -218,31 +190,7 @@ $headers = [
     'Content-Type: application/json'
 ];
 
-// Step 1: Get product catalog to find available products
-$catalogUrl = $baseUrl . '/user/checkout/catalog';
-$ch = curl_init($catalogUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-$catalogResponse = curl_exec($ch);
-$catalogStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
-
-if ($catalogStatusCode != 200) {
-    echo "Error retrieving product catalog: " . $catalogStatusCode . "\n";
-    echo $catalogResponse . "\n";
-    exit(1);
-}
-
-$catalogData = json_decode($catalogResponse, true);
-echo "Available products:\n";
-foreach ($catalogData['data'] as $productCode => $productInfo) {
-    if ($productInfo['product_type'] === 'isp') {  // Looking for ISP (static residential) proxies
-        echo "  - " . $productCode . ": " . $productInfo['product_name'] . "\n";
-    }
-}
-
-// For this example, we'll purchase US static residential proxies (isp_us)
+// For this example, we'll directly use US static residential proxies
 $productCode = 'isp_us';  // Change this to your desired product code
 $quantity = 5;  // Change this to your desired quantity
 
@@ -342,51 +290,7 @@ func main() {
 	// Create HTTP client
 	client := &http.Client{}
 
-	// Step 1: Get product catalog to find available products
-	catalogURL := fmt.Sprintf("%s/user/checkout/catalog", baseURL)
-	catalogReq, err := http.NewRequest("GET", catalogURL, nil)
-	if err != nil {
-		fmt.Printf("Error creating catalog request: %v\n", err)
-		return
-	}
-
-	// Add authentication headers
-	catalogReq.Header.Add("X-API-Public-Key", apiPublicKey)
-	catalogReq.Header.Add("X-API-Private-Key", apiPrivateKey)
-
-	// Execute the catalog request
-	catalogResp, err := client.Do(catalogReq)
-	if err != nil {
-		fmt.Printf("Error getting catalog: %v\n", err)
-		return
-	}
-	defer catalogResp.Body.Close()
-
-	if catalogResp.StatusCode != 200 {
-		body, _ := ioutil.ReadAll(catalogResp.Body)
-		fmt.Printf("Error retrieving product catalog: %d\n", catalogResp.StatusCode)
-		fmt.Println(string(body))
-		return
-	}
-
-	// Parse the catalog response
-	var catalogData map[string]interface{}
-	if err := json.NewDecoder(catalogResp.Body).Decode(&catalogData); err != nil {
-		fmt.Printf("Error parsing catalog response: %v\n", err)
-		return
-	}
-
-	// Display available ISP (static residential) products
-	fmt.Println("Available products:")
-	productsData := catalogData["data"].(map[string]interface{})
-	for productCode, productInfoRaw := range productsData {
-		productInfo := productInfoRaw.(map[string]interface{})
-		if productInfo["product_type"] == "isp" {
-			fmt.Printf("  - %s: %s\n", productCode, productInfo["product_name"])
-		}
-	}
-
-	// For this example, we'll purchase US static residential proxies (isp_us)
+	// For this example, we'll directly use US static residential proxies
 	productCode := "isp_us" // Change this to your desired product code
 	quantity := 5           // Change this to your desired quantity
 
@@ -514,9 +418,9 @@ func main() {
 
 ## Process Overview
 
-1. **Catalog Retrieval**: 
-   - First, we retrieve the available products from the catalog endpoint
-   - This helps us identify the correct product code for the static residential proxies we want to purchase
+1. **Product Selection**: 
+   - We directly use the product code for US static residential proxies ("isp_us")
+   - You can find available product codes in your dashboard or using the catalog endpoint
 
 2. **Checkout Creation**:
    - We create a checkout using the product code, quantity, and billing cycle
