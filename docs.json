@@ -52,7 +52,9 @@
         "groups": [
           {
             "group": "Practical Examples",
-            "pages": ["examples-index"]
+            "pages": ["examples-index", 
+            "api-examples/retrieve-all-proxies-for-a-proxy-user"
+          ]
           },
           {
             "group": "Reselling Examples",
