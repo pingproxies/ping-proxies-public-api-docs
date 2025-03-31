@@ -53,7 +53,8 @@
           {
             "group": "Practical Examples",
             "pages": ["examples-index", 
-            "api-examples/retrieve-all-proxies-for-a-proxy-user"
+            "api-examples/retrieve-all-proxies-for-a-proxy-user",
+            "api-examples/search-proxy-user-by-metadata"
           ]
           },
           {
