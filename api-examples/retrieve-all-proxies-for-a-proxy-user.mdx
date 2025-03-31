@@ -1,0 +1,173 @@
+---
+title: "Get all proxies for a specific proxy user"
+description: "Learn how to retrieve all proxies associated with a specific proxy user, handling service restrictions"
+icon: "user-tag"
+---
+
+This example demonstrates how to fetch all proxies associated with a specific proxy user ID. The process involves:
+
+1. Retrieving the proxy user details to check for service restrictions
+2. If the user is not service-restricted, fetching all proxies across all services
+3. If the user is service-restricted, fetching proxies only from the services they have access to
+
+The code handles pagination to ensure you get the complete list of proxies even when there are many results.
+
+<CodeGroup>
+```python Python
+import requests
+import math
+
+# API credentials
+API_PUBLIC_KEY = "your_public_key"
+API_PRIVATE_KEY = "your_private_key"
+BASE_URL = "https://api.pingproxies.com/1.0/public"
+
+# Headers for authentication
+headers = {
+    "X-API-Public-Key": API_PUBLIC_KEY,
+    "X-API-Private-Key": API_PRIVATE_KEY
+}
+
+# Set the proxy user ID you want to get proxies for
+proxy_user_id = "your_proxy_user_id"
+
+# Initialize the list to store all proxies
+all_proxies = []
+
+# Step 1: Retrieve the proxy user details to check for service restrictions
+proxy_user_url = f"{BASE_URL}/user/proxy_user/retrieve/{proxy_user_id}"
+proxy_user_response = requests.get(proxy_user_url, headers=headers)
+
+if proxy_user_response.status_code != 200:
+    print(f"Error retrieving proxy user: {proxy_user_response.status_code}")
+    exit(1)
+
+proxy_user_data = proxy_user_response.json()["data"]
+is_service_restricted = proxy_user_data.get("proxy_user_is_service_restricted", False)
+
+# Step 2: Handle based on whether the user is service-restricted or not
+if not is_service_restricted:
+    # User is not service-restricted, get all proxies across all services
+    print(f"Proxy user {proxy_user_id} is not service-restricted. Fetching all proxies...")
+    
+    # Set up pagination variables
+    page = 1
+    per_page = 100  # You can adjust this value as needed
+    has_more_pages = True
+    
+    # Use the search endpoint with pagination
+    while has_more_pages:
+        search_url = f"{BASE_URL}/user/proxy/search"
+        params = {
+            "page": page,
+            "per_page": per_page
+        }
+        
+        # Make the request
+        search_response = requests.get(search_url, params=params, headers=headers)
+        
+        if search_response.status_code != 200:
+            print(f"Error searching proxies on page {page}: {search_response.status_code}")
+            break
+        
+        # Parse the response
+        search_data = search_response.json()
+        proxies = search_data.get("data", [])
+        
+        # Add the proxies to our list
+        all_proxies.extend(proxies)
+        
+        # Check if there are more pages
+        total_count = search_data.get("total_count", 0)
+        total_pages = math.ceil(total_count / per_page)
+        
+        if page >= total_pages:
+            has_more_pages = False
+        else:
+            page += 1
+else:
+    # User is service-restricted, fetch proxies only from the restricted services
+    print(f"Proxy user {proxy_user_id} is service-restricted. Fetching proxies from restricted services...")
+    
+    # Get the list of restricted services
+    restricted_service_ids = []
+    if "restricted_service_ids" in proxy_user_data:
+        for service_item in proxy_user_data["restricted_service_ids"]:
+            if isinstance(service_item, dict) and "value" in service_item:
+                restricted_service_ids.append(service_item["value"])
+            elif isinstance(service_item, str):
+                restricted_service_ids.append(service_item)
+    
+    # Fetch proxies for each restricted service
+    for service_id in restricted_service_ids:
+        print(f"Fetching proxies for service: {service_id}")
+        
+        # Set up pagination variables for this service
+        page = 1
+        per_page = 100  # You can adjust this value as needed
+        has_more_pages = True
+        
+        # Use the search endpoint with pagination and service_id filter
+        while has_more_pages:
+            search_url = f"{BASE_URL}/user/proxy/search"
+            params = {
+                "service_id": service_id,
+                "page": page,
+                "per_page": per_page
+            }
+            
+            # Make the request
+            search_response = requests.get(search_url, params=params, headers=headers)
+            
+            if search_response.status_code != 200:
+                print(f"Error searching proxies for service {service_id} on page {page}: {search_response.status_code}")
+                break
+            
+            # Parse the response
+            search_data = search_response.json()
+            proxies = search_data.get("data", [])
+            
+            # Add the proxies to our list
+            all_proxies.extend(proxies)
+            
+            # Check if there are more pages
+            total_count = search_data.get("total_count", 0)
+            total_pages = math.ceil(total_count / per_page)
+            
+            if page >= total_pages:
+                has_more_pages = False
+            else:
+                page += 1
+
+# At this point, all_proxies contains all the proxies associated with the proxy user
+print(f"Total proxies found: {len(all_proxies)}")
+
+# You can now work with the proxies as needed
+# Example: first_proxy = all_proxies[0] if all_proxies else None
+```
+</CodeGroup>
+
+## Key Concepts
+
+1. **User Service Restriction**: Some proxy users are restricted to specific services, which affects what proxies they can access.
+
+2. **Pagination Handling**: The example demonstrates proper pagination to retrieve all proxies, even when there are many results.
+
+3. **Service-Specific Filtering**: For service-restricted users, the code filters proxies by each allowed service ID.
+
+## Response Format
+
+The resulting `all_proxies` list will contain proxy objects with properties such as:
+
+- `proxy_id`: The unique identifier of the proxy
+- `proxy_ip_address`: The IP address of the proxy
+- `proxy_type`: The type of proxy (datacenter, ISP, etc.)
+- `country_id`: The country code of the proxy
+- `service_id`: The service ID that the proxy is associated with
+
+## Best Practices
+
+- Adjust the `per_page` parameter based on your needs - larger values mean fewer API calls but larger responses
+- Add error handling for production code
+- Consider implementing retry logic for temporary failures
+- For users with many restricted services, you might want to process services in parallel
