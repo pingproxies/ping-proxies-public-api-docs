@@ -7,7 +7,7 @@ icon: "search"
 # Examples
 
 - Find all proxy users associated with a specific department
-- Find proxy users with a budget within a certain range
+- Find proxy users with a employee_id within a certain range
 
 <CodeGroup>
 ```python Python
@@ -47,12 +47,12 @@ else:
     print(f"Error in exact match search: {exact_match_response.status_code}")
     print(exact_match_response.text)
 
-# Example 2: Search proxy users by metadata range (budget between 1000 and 5000)
-# This will find all proxy users that have a budget value between 1000 and 5000
+# Example 2: Search proxy users by metadata range (employee_id between 1000 and 5000)
+# This will find all proxy users that have a employee_id value between 1000 and 5000
 range_url = f"{BASE_URL}/proxy_user/search"
 range_params = {
-    "min_proxy_user_metadata.monthly_budget": 1000,
-    "max_proxy_user_metadata.monthly_budget": 5000
+    "min_proxy_user_metadata.employee_id": 1000,
+    "max_proxy_user_metadata.employee_id": 5000
 }
 
 # Make the API request
@@ -61,11 +61,11 @@ range_response = requests.get(range_url, headers=headers, params=range_params)
 # Check if the request was successful
 if range_response.status_code == 200:
     range_data = range_response.json()
-    print(f"\nFound {range_data['total_count']} proxy users with budget between 1000 and 5000:")
+    print(f"\nFound {range_data['total_count']} proxy users with employee_id between 1000 and 5000:")
     
     # Display the results
     for proxy_user in range_data['data']:
-        print(f"  - {proxy_user['proxy_user_id']}: Budget = {proxy_user.get('proxy_user_metadata', {}).get('monthly_budget', 'N/A')}")
+        print(f"  - {proxy_user['proxy_user_id']}: EmployeeId = {proxy_user.get('proxy_user_metadata', {}).get('employee_id', 'N/A')}")
 else:
     print(f"Error in range search: {range_response.status_code}")
     print(range_response.text)
@@ -112,14 +112,14 @@ const exactMatchSearch = async () => {
   }
 };
 
-// Example 2: Search proxy users by metadata range (budget between 1000 and 5000)
-// This will find all proxy users that have a budget value between 1000 and 5000
+// Example 2: Search proxy users by metadata range (employee_id between 1000 and 5000)
+// This will find all proxy users that have a employee_id value between 1000 and 5000
 const rangeSearch = async () => {
   try {
     // Create URL with query parameters
     const url = new URL(`${BASE_URL}/proxy_user/search`);
-    url.searchParams.append('min_proxy_user_metadata.monthly_budget', '1000');
-    url.searchParams.append('max_proxy_user_metadata.monthly_budget', '5000');
+    url.searchParams.append('min_proxy_user_metadata.employee_id', '1000');
+    url.searchParams.append('max_proxy_user_metadata.employee_id', '5000');
     
     // Make the API request
     const response = await fetch(url, { headers });
@@ -133,10 +133,10 @@ const rangeSearch = async () => {
     const data = await response.json();
     
     // Display the results
-    console.log(`\nFound ${data.total_count} proxy users with budget between 1000 and 5000:`);
+    console.log(`\nFound ${data.total_count} proxy users with employee_id between 1000 and 5000:`);
     data.data.forEach(proxyUser => {
-      const budget = proxyUser.proxy_user_metadata?.monthly_budget || 'N/A';
-      console.log(`  - ${proxyUser.proxy_user_id}: Budget = ${budget}`);
+      const employee_id = proxyUser.proxy_user_metadata?.employee_id || 'N/A';
+      console.log(`  - ${proxyUser.proxy_user_id}: EmployeeId = ${employee_id}`);
     });
   } catch (error) {
     console.error(`Error in range search: ${error.message}`);
@@ -198,9 +198,9 @@ if (curl_errno($ch)) {
     }
 }
 
-// Example 2: Search proxy users by metadata range (budget between 1000 and 5000)
-// This will find all proxy users that have a budget value between 1000 and 5000
-$rangeUrl = $baseUrl . '/proxy_user/search?min_proxy_user_metadata.monthly_budget=1000&max_proxy_user_metadata.monthly_budget=5000';
+// Example 2: Search proxy users by metadata range (employee_id between 1000 and 5000)
+// This will find all proxy users that have a employee_id value between 1000 and 5000
+$rangeUrl = $baseUrl . '/proxy_user/search?min_proxy_user_metadata.employee_id=1000&max_proxy_user_metadata.employee_id=5000';
 
 // Initialize cURL session (reusing the same handle)
 curl_setopt($ch, CURLOPT_URL, $rangeUrl);
@@ -217,13 +217,13 @@ if (curl_errno($ch)) {
     
     // Check if the request was successful
     if (isset($rangeData['total_count'])) {
-        echo "\nFound {$rangeData['total_count']} proxy users with budget between 1000 and 5000:\n";
+        echo "\nFound {$rangeData['total_count']} proxy users with employee_id between 1000 and 5000:\n";
         
         // Display the results
         foreach ($rangeData['data'] as $proxyUser) {
-            $budget = isset($proxyUser['proxy_user_metadata']['monthly_budget']) ? 
-                $proxyUser['proxy_user_metadata']['monthly_budget'] : 'N/A';
-            echo "  - {$proxyUser['proxy_user_id']}: Budget = $budget\n";
+            $employee_id = isset($proxyUser['proxy_user_metadata']['employee_id']) ? 
+                $proxyUser['proxy_user_metadata']['employee_id'] : 'N/A';
+            echo "  - {$proxyUser['proxy_user_id']}: EmployeeId = $employee_id\n";
         }
     } else {
         echo "Error in range search: " . json_encode($rangeData) . "\n";
@@ -332,8 +332,8 @@ func main() {
 		fmt.Printf("  - %v: %v\n", proxyUserID, metadata)
 	}
 
-	// Example 2: Search proxy users by metadata range (budget between 1000 and 5000)
-	// This will find all proxy users that have a budget value between 1000 and 5000
+	// Example 2: Search proxy users by metadata range (employee_id between 1000 and 5000)
+	// This will find all proxy users that have a employee_id value between 1000 and 5000
 	
 	// Build the URL with query parameters
 	rangeURL, err := url.Parse(BaseURL + "/proxy_user/search")
@@ -344,8 +344,8 @@ func main() {
 	
 	// Add query parameters
 	params = rangeURL.Query()
-	params.Add("min_proxy_user_metadata.monthly_budget", "1000")
-	params.Add("max_proxy_user_metadata.monthly_budget", "5000")
+	params.Add("min_proxy_user_metadata.employee_id", "1000")
+	params.Add("max_proxy_user_metadata.employee_id", "5000")
 	rangeURL.RawQuery = params.Encode()
 	
 	// Create a new request
@@ -388,7 +388,7 @@ func main() {
 	}
 	
 	// Display the results
-	fmt.Printf("\nFound %d proxy users with budget between 1000 and 5000:\n", rangeData.TotalCount)
+	fmt.Printf("\nFound %d proxy users with employee_id between 1000 and 5000:\n", rangeData.TotalCount)
 	for _, proxyUser := range rangeData.Data {
 		proxyUserID := proxyUser["proxy_user_id"]
 		metadata, ok := proxyUser["proxy_user_metadata"].(map[string]interface{})
@@ -396,12 +396,12 @@ func main() {
 			metadata = map[string]interface{}{}
 		}
 		
-		budget, ok := metadata["monthly_budget"]
+		employee_id, ok := metadata["employee_id"]
 		if !ok {
-			budget = "N/A"
+			employee_id = "N/A"
 		}
 		
-		fmt.Printf("  - %v: Budget = %v\n", proxyUserID, budget)
+		fmt.Printf("  - %v: EmployeeId = %v\n", proxyUserID, employee_id)
 	}
 }
 ```
@@ -474,13 +474,13 @@ public class SearchProxyUsersByMetadata {
             System.out.println(exactMatchResponse.body());
         }
         
-        // Example 2: Search proxy users by metadata range (budget between 1000 and 5000)
-        // This will find all proxy users that have a budget value between 1000 and 5000
+        // Example 2: Search proxy users by metadata range (employee_id between 1000 and 5000)
+        // This will find all proxy users that have a employee_id value between 1000 and 5000
         
         // Build the URL with query parameters
         String rangeUrl = BASE_URL + "/proxy_user/search" + 
-                "?min_proxy_user_metadata.monthly_budget=1000" +
-                "&max_proxy_user_metadata.monthly_budget=5000";
+                "?min_proxy_user_metadata.employee_id=1000" +
+                "&max_proxy_user_metadata.employee_id=5000";
         
         // Create a new request
         HttpRequest rangeRequest = HttpRequest.newBuilder()
@@ -503,19 +503,19 @@ public class SearchProxyUsersByMetadata {
             int totalCount = (int) rangeData.get("total_count");
             List<Map<String, Object>> proxyUsers = (List<Map<String, Object>>) rangeData.get("data");
             
-            System.out.println("\nFound " + totalCount + " proxy users with budget between 1000 and 5000:");
+            System.out.println("\nFound " + totalCount + " proxy users with employee_id between 1000 and 5000:");
             for (Map<String, Object> proxyUser : proxyUsers) {
                 String proxyUserId = (String) proxyUser.get("proxy_user_id");
                 
-                Object budget = "N/A";
+                Object employee_id = "N/A";
                 if (proxyUser.containsKey("proxy_user_metadata")) {
                     Map<String, Object> metadata = (Map<String, Object>) proxyUser.get("proxy_user_metadata");
-                    if (metadata.containsKey("monthly_budget")) {
-                        budget = metadata.get("monthly_budget");
+                    if (metadata.containsKey("employee_id")) {
+                        employee_id = metadata.get("employee_id");
                     }
                 }
                 
-                System.out.println("  - " + proxyUserId + ": Budget = " + budget);
+                System.out.println("  - " + proxyUserId + ": EmployeeId = " + employee_id);
             }
         } else {
             System.out.println("Error in range search: " + rangeResponse.statusCode());
@@ -543,5 +543,5 @@ The API returns a JSON response that includes:
 ## Common Applications
 
 - Group proxy users by department, project, or client
-- Find proxy users with budgets or usage limits in specific ranges
+- Find proxy users with employee_ids or usage limits in specific ranges
 - Track custom metadata like deployment dates, owner information, or cost centers

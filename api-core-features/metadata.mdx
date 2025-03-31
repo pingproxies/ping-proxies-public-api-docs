@@ -24,7 +24,7 @@ Metadata is stored as a JSON object with key-value pairs. For example:
   "department": "Marketing",
   "project": "Q2 Campaign",
   "is_priority": true,
-  "monthly_budget": 1500
+  "employee_id": 1500
 }
 ```
 
@@ -33,7 +33,7 @@ Metadata is stored as a JSON object with key-value pairs. For example:
 Metadata supports the following value types:
 
 - **String**: Text values (e.g., `"department": "Marketing"`)
-- **Integer**: Whole numbers (e.g., `"monthly_budget": 1500`)
+- **Integer**: Whole numbers (e.g., `"employee_id": 1500`)
 - **Float**: Decimal numbers (e.g., `"success_rate": 98.6`)
 - **Boolean**: True/false values (e.g., `"is_priority": true`)
 
@@ -91,8 +91,8 @@ The API allows filtering resources based on their metadata values. This is parti
 When searching, you can use the following formats:
 
 - **Exact match**: `proxy_user_metadata.department=Marketing`
-- **Minimum value**: `min_proxy_user_metadata.monthly_budget=1000`
-- **Maximum value**: `max_proxy_user_metadata.monthly_budget=2000`
+- **Minimum value**: `min_proxy_user_metadata.employee_id=1000`
+- **Maximum value**: `max_proxy_user_metadata.employee_id=2000`
 - **Contains substring**: `like_proxy_user_metadata.project=%Campaign%`
 - **Not equal**: `not_proxy_user_metadata.department=IT`
 - **Existence check**:
@@ -116,7 +116,7 @@ curl --request POST \
       "cost_center": "CC-45678",
       "project": "Summer Campaign",
       "is_priority": true,
-      "monthly_budget": 1500
+      "employee_id": 1500
     }
   }'
 
@@ -204,7 +204,7 @@ if __name__ == "__main__":
         "cost_center": "CC-45678",
         "project": "Summer Campaign",
         "is_priority": True,
-        "monthly_budget": 1500
+        "employee_id": 1500
     }
     
     create_result = create_proxy_user_with_metadata("john_marketing", user_metadata)
@@ -290,7 +290,7 @@ async function main() {
       cost_center: 'CC-45678',
       project: 'Summer Campaign',
       is_priority: true,
-      monthly_budget: 1500
+      employee_id: 1500
     };
     
     const createResult = await createProxyUserWithMetadata('john_marketing', userMetadata);
@@ -393,7 +393,7 @@ try {
         'cost_center' => 'CC-45678',
         'project' => 'Summer Campaign',
         'is_priority' => true,
-        'monthly_budget' => 1500
+        'employee_id' => 1500
     ];
     
     $createResult = createProxyUserWithMetadata($baseUrl, $headers, 'john_marketing', $userMetadata);
@@ -596,7 +596,7 @@ func main() {
 		"cost_center":    "CC-45678",
 		"project":        "Summer Campaign",
 		"is_priority":    true,
-		"monthly_budget": 1500,
+		"employee_id": 1500,
 	}
 	
 	createResult, err := CreateProxyUserWithMetadata("john_marketing", userMetadata)
@@ -759,7 +759,7 @@ public class PingProxiesMetadata {
             userMetadata.put("cost_center", "CC-45678");
             userMetadata.put("project", "Summer Campaign");
             userMetadata.put("is_priority", true);
-            userMetadata.put("monthly_budget", 1500);
+            userMetadata.put("employee_id", 1500);
             
             ApiResponse createResult = createProxyUserWithMetadata("john_marketing", userMetadata);
             System.out.println("Created proxy user: " + createResult.message);
