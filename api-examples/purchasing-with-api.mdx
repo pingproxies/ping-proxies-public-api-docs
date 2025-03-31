@@ -60,13 +60,9 @@ if checkout_response.status_code != 201:
 checkout_data = checkout_response.json()
 print(f"Checkout created successfully!")
 
-# Extract service ID from the response
-if "created" in checkout_data and len(checkout_data["created"]) > 0:
-    service_id = checkout_data["created"][0]
-    print(f"Service ID: {service_id}")
-else:
-    print("No service ID found in the response.")
-    exit(1)
+# Extract service ID directly from the response
+service_id = checkout_data["data"]["service_id"]
+print(f"Service ID: {service_id}")
 
 # In a production environment, you might want to add a polling mechanism
 # to check if the service is active before proceeding
@@ -132,10 +128,9 @@ const productCode = 'isp_us';  // Change this to your desired product code
     console.log('Checkout created successfully!');
     const checkoutData = checkoutResponse.data;
     
-    // Extract service ID from the response
-    if (checkoutData.created && checkoutData.created.length > 0) {
-      const serviceId = checkoutData.created[0];
-      console.log(`Service ID: ${serviceId}`);
+    // Extract service ID directly from the response
+    const serviceId = checkoutData.data.service_id;
+    console.log(`Service ID: ${serviceId}`);
       
       // In a production environment, you might want to add a polling mechanism
       // to check if the service is active before proceeding
@@ -153,8 +148,7 @@ const productCode = 'isp_us';  // Change this to your desired product code
       });
     } else {
       throw new Error('No service ID found in the response.');
-    }
-  })
+    })
   .then(exportResponse => {
     const exportData = exportResponse.data;
     const proxies = exportData.data;
@@ -222,14 +216,9 @@ if ($checkoutStatusCode != 201) {
 $checkoutData = json_decode($checkoutResponse, true);
 echo "Checkout created successfully!\n";
 
-// Extract service ID from the response
-if (isset($checkoutData['created']) && count($checkoutData['created']) > 0) {
-    $serviceId = $checkoutData['created'][0];
-    echo "Service ID: " . $serviceId . "\n";
-} else {
-    echo "No service ID found in the response.\n";
-    exit(1);
-}
+// Extract service ID directly from the response
+$serviceId = $checkoutData['data']['service_id'];
+echo "Service ID: " . $serviceId . "\n";
 
 // In a production environment, you might want to add a polling mechanism
 // to check if the service is active before proceeding
@@ -346,15 +335,10 @@ func main() {
 
 	fmt.Println("Checkout created successfully!")
 
-	// Extract service ID from the response
-	var serviceId string
-	if created, ok := checkoutData["created"].([]interface{}); ok && len(created) > 0 {
-		serviceId = created[0].(string)
-		fmt.Printf("Service ID: %s\n", serviceId)
-	} else {
-		fmt.Println("No service ID found in the response.")
-		return
-	}
+	// Extract service ID directly from the response
+	serviceIdData := checkoutData["data"].(map[string]interface{})
+	serviceId := serviceIdData["service_id"].(string)
+	fmt.Printf("Service ID: %s\n", serviceId)
 
 	// In a production environment, you might want to add a polling mechanism
 	// to check if the service is active before proceeding
