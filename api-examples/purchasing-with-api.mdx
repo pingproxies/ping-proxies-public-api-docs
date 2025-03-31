@@ -17,7 +17,6 @@ The process involves two main steps:
 <CodeGroup>
 ```python Python
 import requests
-import time
 import json
 
 # API credentials
@@ -48,13 +47,13 @@ checkout_response = requests.post(
     json=checkout_data
 )
 
+# Check if the request was successful based on status code
+if checkout_response.status_code != 201:
+    print(f"Error creating checkout: {checkout_response.text}")
+    exit(1)
+
 # Parse the response
 checkout_result = checkout_response.json()
-
-# Check if the checkout was successful
-if "created" not in checkout_result:
-    print(f"Error creating checkout: {checkout_result}")
-    exit(1)
 
 # Get the service ID from the response
 service_id = checkout_result["created"][0]
@@ -63,10 +62,10 @@ print(f"Successfully created service with ID: {service_id}")
 # Step 2: If the service requires payment (checkout_result["invoice_is_paid"] is False),
 # the user would need to complete payment via checkout_result["invoice_url"]
 
-# Step 3: Wait briefly for the service to become active
-# In a production environment, you would implement a more robust polling mechanism
-print("Waiting for service to be provisioned...")
-time.sleep(10)  # Simple delay, in production you'd poll the service status
+# Step 3: In a production environment, you would implement polling here to wait
+# for the service to become active before proceeding
+
+print("Note: In production, implement polling to check service status before proceeding")
 
 # Step 4: Export the proxies using list_by_search
 export_params = {
@@ -83,13 +82,13 @@ export_response = requests.get(
     params=export_params
 )
 
+# Check if the request was successful based on status code
+if export_response.status_code != 200:
+    print(f"Error exporting proxies: {export_response.text}")
+    exit(1)
+
 # Parse the response
 export_result = export_response.json()
-
-# Check if export was successful
-if "data" not in export_result:
-    print(f"Error exporting proxies: {export_result}")
-    exit(1)
 
 # Get the proxy list
 proxy_list = export_result["data"]
@@ -140,8 +139,8 @@ const headers = {
             { headers }
         );
 
-        // Check if the checkout was successful
-        if (!checkoutResponse.data.created) {
+        // Check if the checkout was successful based on status code
+        if (checkoutResponse.status !== 201) {
             console.error(`Error creating checkout: ${JSON.stringify(checkoutResponse.data)}`);
             process.exit(1);
         }
@@ -153,10 +152,9 @@ const headers = {
         // Step 2: If the service requires payment (checkoutResponse.data.invoice_is_paid is false),
         // the user would need to complete payment via checkoutResponse.data.invoice_url
 
-        // Step 3: Wait briefly for the service to become active
-        // In a production environment, you would implement a more robust polling mechanism
-        console.log("Waiting for service to be provisioned...");
-        await new Promise(resolve => setTimeout(resolve, 10000)); // Simple 10s delay
+        // Step 3: In a production environment, you would implement polling here to wait
+        // for the service to become active before proceeding
+        console.log("Note: In production, implement polling to check service status before proceeding");
 
         // Step 4: Export the proxies using list_by_search
         console.log("Exporting proxies...");
@@ -173,8 +171,8 @@ const headers = {
             }
         );
 
-        // Check if export was successful
-        if (!exportResponse.data.data) {
+        // Check if export was successful based on status code
+        if (exportResponse.status !== 200) {
             console.error(`Error exporting proxies: ${JSON.stringify(exportResponse.data)}`);
             process.exit(1);
         }
@@ -232,14 +230,14 @@ $checkoutResponse = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-// Parse the response
-$checkoutResult = json_decode($checkoutResponse, true);
-
-// Check if the checkout was successful
-if ($httpCode != 201 || !isset($checkoutResult['created'])) {
+// Check if the checkout was successful based on status code
+if ($httpCode != 201) {
     echo "Error creating checkout: " . $checkoutResponse . "\n";
     exit(1);
 }
+
+// Parse the response
+$checkoutResult = json_decode($checkoutResponse, true);
 
 // Get the service ID from the response
 $serviceId = $checkoutResult['created'][0];
@@ -248,10 +246,9 @@ echo "Successfully created service with ID: " . $serviceId . "\n";
 // Step 2: If the service requires payment ($checkoutResult["invoice_is_paid"] is false),
 // the user would need to complete payment via $checkoutResult["invoice_url"]
 
-// Step 3: Wait briefly for the service to become active
-// In a production environment, you would implement a more robust polling mechanism
-echo "Waiting for service to be provisioned...\n";
-sleep(10);  // Simple delay, in production you'd poll the service status
+// Step 3: In a production environment, you would implement polling here to wait
+// for the service to become active before proceeding
+echo "Note: In production, implement polling to check service status before proceeding\n";
 
 // Step 4: Export the proxies using list_by_search
 $exportUrl = $BASE_URL . "/user/proxy/list_by_search?" . http_build_query([
@@ -271,14 +268,14 @@ $exportResponse = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-// Parse the response
-$exportResult = json_decode($exportResponse, true);
-
-// Check if export was successful
-if ($httpCode != 200 || !isset($exportResult['data'])) {
+// Check if export was successful based on status code
+if ($httpCode != 200) {
     echo "Error exporting proxies: " . $exportResponse . "\n";
     exit(1);
 }
+
+// Parse the response
+$exportResult = json_decode($exportResponse, true);
 
 // Get the proxy list
 $proxyList = $exportResult['data'];
@@ -307,7 +304,6 @@ import (
 	"net/url"
 	"os"
 	"strings"
-	"time"
 )
 
 func main() {
@@ -353,6 +349,13 @@ func main() {
 	}
 	defer checkoutResp.Body.Close()
 
+	// Check if the checkout was successful based on status code
+	if checkoutResp.StatusCode != 201 {
+		checkoutBody, _ := ioutil.ReadAll(checkoutResp.Body)
+		fmt.Printf("Error creating checkout: %s\n", string(checkoutBody))
+		return
+	}
+
 	// Read and parse the checkout response
 	checkoutBody, err := ioutil.ReadAll(checkoutResp.Body)
 	if err != nil {
@@ -367,91 +370,8 @@ func main() {
 		return
 	}
 
-	// Check if the checkout was successful
-	createdArray, ok := checkoutResult["created"].([]interface{})
-	if !ok {
-		fmt.Printf("Error creating checkout: %s\n", string(checkoutBody))
-		return
-	}
-
 	// Get the service ID from the response
-	serviceID := createdArray[0].(string)
-	fmt.Printf("Successfully created service with ID: %s\n", serviceID)
-
-	// Step 2: If the service requires payment (checkoutResult["invoice_is_paid"] is false),
-	// the user would need to complete payment via checkoutResult["invoice_url"]
-
-	// Step 3: Wait briefly for the service to become active
-	// In a production environment, you would implement a more robust polling mechanism
-	fmt.Println("Waiting for service to be provisioned...")
-	time.Sleep(10 * time.Second) // Simple delay, in production you'd poll the service status
-
-	// Step 4: Export the proxies using list_by_search
-	// Create query parameters
-	exportParams := url.Values{}
-	exportParams.Add("service_id", serviceID)         // Filter by our new service
-	exportParams.Add("list_format", "http")           // Format as HTTP URLs
-	exportParams.Add("list_protocol", "http")         // Use HTTP protocol
-	exportParams.Add("list_authentication", "username_and_password") // Include auth in the URL
-
-	// Create a new request for export
-	exportReq, err := http.NewRequest("GET", baseURL+"/user/proxy/list_by_search?"+exportParams.Encode(), nil)
-	if err != nil {
-		fmt.Printf("Error creating export request: %v\n", err)
-		return
-	}
-
-	// Add authentication headers
-	exportReq.Header.Add("X-API-Public-Key", apiPublicKey)
-	exportReq.Header.Add("X-API-Private-Key", apiPrivateKey)
-
-	// Execute the export request
-	exportResp, err := client.Do(exportReq)
-	if err != nil {
-		fmt.Printf("Error executing export request: %v\n", err)
-		return
-	}
-	defer exportResp.Body.Close()
-
-	// Read and parse the export response
-	exportBody, err := ioutil.ReadAll(exportResp.Body)
-	if err != nil {
-		fmt.Printf("Error reading export response: %v\n", err)
-		return
-	}
-
-	var exportResult map[string]interface{}
-	err = json.Unmarshal(exportBody, &exportResult)
-	if err != nil {
-		fmt.Printf("Error parsing export response: %v\n", err)
-		return
-	}
-
-	// Check if export was successful
-	proxyListInterface, ok := exportResult["data"].([]interface{})
-	if !ok {
-		fmt.Printf("Error exporting proxies: %s\n", string(exportBody))
-		return
-	}
-
-	// Convert proxy list to strings
-	var proxyList []string
-	for _, proxy := range proxyListInterface {
-		proxyList = append(proxyList, proxy.(string))
-	}
-
-	fmt.Printf("Successfully exported %d proxies\n", len(proxyList))
-
-	// Step 5: Save proxies to a text file
-	proxyContent := strings.Join(proxyList, "\n")
-	err = ioutil.WriteFile("isp_proxies.txt", []byte(proxyContent), 0644)
-	if err != nil {
-		fmt.Printf("Error saving proxies to file: %v\n", err)
-		return
-	}
-
-	fmt.Println("Proxies saved to isp_proxies.txt")
-}
+	createdArray,
 ```
 </CodeGroup>
 
