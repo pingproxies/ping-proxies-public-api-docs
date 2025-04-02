@@ -4,12 +4,11 @@ description: "Learn how to fetch and analyze proxy usage data for a specific pro
 icon: "chart-line"
 ---
 
-This example demonstrates how to retrieve detailed analytics for a specific proxy user's activity on the residential network over a defined time period. You'll learn how to use the analytics endpoint to track usage patterns, monitor data consumption, and visualize request volumes with hourly granularity.
+This example demonstrates how to retrieve detailed analytics for a specific proxy user's activity on the residential network over a defined time period. You'll learn how to use the analytics endpoint to track usage patterns, monitor data consumption, and visualize request volumes with daily granularity.
 
 <CodeGroup>
 ```python Python
 import requests
-import json
 from datetime import datetime, timedelta
 
 # API credentials
@@ -23,7 +22,7 @@ headers = {
     "X-API-Private-Key": API_PRIVATE_KEY
 }
 
-def get_proxy_user_analytics(proxy_user_id, network="residential", days_ago=7, interval="hour"):
+def get_proxy_user_analytics(proxy_user_id, network="residential", days_ago=30, interval="day"):
     """
     Retrieve analytics for a specific proxy user on a given network.
     
@@ -81,14 +80,14 @@ def print_analytics_summary(analytics_data):
     print(f"Total Bandwidth Used: {data.get('total_bytes', 0) / 1024 / 1024:.2f} MB")
     
     # Print interval data
-    print("\n=== HOURLY BREAKDOWN ===")
+    print("\n=== DAILY BREAKDOWN ===")
     intervals = data.get("intervals", [])
     
     if not intervals:
         print("No interval data available")
         return
     
-    # Print the top 5 hours by request volume
+    # Print the top 5 days by request volume
     sorted_intervals = sorted(intervals, key=lambda x: x.get("requests", 0), reverse=True)
     for i, interval in enumerate(sorted_intervals[:5]):
         print(f"{i+1}. {interval.get('interval_name', 'Unknown')}")
@@ -101,8 +100,8 @@ if __name__ == "__main__":
     # Configure parameters
     PROXY_USER_ID = "your_proxy_user_id"  # Replace with your actual proxy user ID
     NETWORK_TYPE = "residential"          # Options: datacenter, isp, residential
-    DAYS_TO_ANALYZE = 7                   # Number of days to look back
-    INTERVAL = "hour"                     # Options: minute, hour, day, month
+    DAYS_TO_ANALYZE = 30                  # Number of days to look back
+    INTERVAL = "day"                      # Options: minute, hour, day, month
     
     # Fetch analytics data
     analytics = get_proxy_user_analytics(
@@ -114,18 +113,11 @@ if __name__ == "__main__":
     
     # Print summary
     print_analytics_summary(analytics)
-    
-    # Example of how to save the data to a file
-    with open("proxy_analytics.json", "w") as f:
-        json.dump(analytics, f, indent=2)
-    
-    print("\nAnalytics data has been saved to proxy_analytics.json")
 ```
 
 ```javascript JavaScript
 const axios = require('axios');
 const moment = require('moment');
-const fs = require('fs');
 
 // API credentials
 const API_PUBLIC_KEY = 'your_public_key';
@@ -141,8 +133,8 @@ async function getProxyUserAnalytics(options) {
   const {
     proxyUserId,
     network = 'residential',
-    daysAgo = 7,
-    interval = 'hour'
+    daysAgo = 30,
+    interval = 'day'
   } = options;
   
   // Calculate start and end dates
@@ -202,7 +194,7 @@ function printAnalyticsSummary(analyticsData) {
   console.log(`Total Bandwidth Used: ${((data.total_bytes || 0) / 1024 / 1024).toFixed(2)} MB`);
   
   // Print interval data
-  console.log('\n=== HOURLY BREAKDOWN ===');
+  console.log('\n=== DAILY BREAKDOWN ===');
   const intervals = data.intervals || [];
   
   if (!intervals.length) {
@@ -210,7 +202,7 @@ function printAnalyticsSummary(analyticsData) {
     return;
   }
   
-  // Print the top 5 hours by request volume
+  // Print the top 5 days by request volume
   const sortedIntervals = [...intervals].sort((a, b) => (b.requests || 0) - (a.requests || 0));
   sortedIntervals.slice(0, 5).forEach((interval, i) => {
     console.log(`${i+1}. ${interval.interval_name || 'Unknown'}`);
@@ -225,8 +217,8 @@ async function main() {
   // Configure parameters
   const PROXY_USER_ID = 'your_proxy_user_id';  // Replace with your actual proxy user ID
   const NETWORK_TYPE = 'residential';          // Options: datacenter, isp, residential
-  const DAYS_TO_ANALYZE = 7;                   // Number of days to look back
-  const INTERVAL = 'hour';                     // Options: minute, hour, day, month
+  const DAYS_TO_ANALYZE = 30;                  // Number of days to look back
+  const INTERVAL = 'day';                      // Options: minute, hour, day, month
   
   // Fetch analytics data
   const analytics = await getProxyUserAnalytics({
@@ -238,12 +230,6 @@ async function main() {
   
   // Print summary
   printAnalyticsSummary(analytics);
-  
-  // Save analytics data to file
-  if (analytics) {
-    fs.writeFileSync('proxy_analytics.json', JSON.stringify(analytics, null, 2));
-    console.log('\nAnalytics data has been saved to proxy_analytics.json');
-  }
 }
 
 main().catch(console.error);
@@ -265,7 +251,7 @@ $baseUrl = 'https://api.pingproxies.com/1.0/public';
  * @param string $interval Time interval for data grouping (minute, hour, day, month)
  * @return array|null Analytics data or null on error
  */
-function getProxyUserAnalytics($apiPublicKey, $apiPrivateKey, $baseUrl, $proxyUserId, $network = 'residential', $daysAgo = 7, $interval = 'hour') {
+function getProxyUserAnalytics($apiPublicKey, $apiPrivateKey, $baseUrl, $proxyUserId, $network = 'residential', $daysAgo = 30, $interval = 'day') {
     // Calculate start and end dates
     $endDate = new DateTime();
     $startDate = clone $endDate;
@@ -331,7 +317,7 @@ function printAnalyticsSummary($analyticsData) {
     echo "Total Bandwidth Used: " . number_format(($data['total_bytes'] ?? 0) / 1024 / 1024, 2) . " MB\n";
     
     // Print interval data
-    echo "\n=== HOURLY BREAKDOWN ===\n";
+    echo "\n=== DAILY BREAKDOWN ===\n";
     $intervals = $data['intervals'] ?? [];
     
     if (empty($intervals)) {
@@ -344,7 +330,7 @@ function printAnalyticsSummary($analyticsData) {
         return ($b['requests'] ?? 0) - ($a['requests'] ?? 0);
     });
     
-    // Print the top 5 hours by request volume
+    // Print the top 5 days by request volume
     for ($i = 0; $i < min(5, count($intervals)); $i++) {
         $interval = $intervals[$i];
         echo ($i + 1) . ". " . ($interval['interval_name'] ?? 'Unknown') . "\n";
@@ -358,8 +344,8 @@ function printAnalyticsSummary($analyticsData) {
 // Configure parameters
 $PROXY_USER_ID = 'your_proxy_user_id';  // Replace with your actual proxy user ID
 $NETWORK_TYPE = 'residential';          // Options: datacenter, isp, residential
-$DAYS_TO_ANALYZE = 7;                   // Number of days to look back
-$INTERVAL = 'hour';                     // Options: minute, hour, day, month
+$DAYS_TO_ANALYZE = 30;                  // Number of days to look back
+$INTERVAL = 'day';                      // Options: minute, hour, day, month
 
 // Fetch analytics data
 $analytics = getProxyUserAnalytics(
@@ -374,12 +360,6 @@ $analytics = getProxyUserAnalytics(
 
 // Print summary
 printAnalyticsSummary($analytics);
-
-// Save analytics data to file
-if ($analytics) {
-    file_put_contents('proxy_analytics.json', json_encode($analytics, JSON_PRETTY_PRINT));
-    echo "\nAnalytics data has been saved to proxy_analytics.json\n";
-}
 ?>
 ```
 
@@ -392,7 +372,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
 	"sort"
 	"time"
 )
@@ -509,7 +488,7 @@ func PrintAnalyticsSummary(analytics *AnalyticsResponse) {
 	fmt.Printf("Total Bandwidth Used: %.2f MB\n", float64(data.TotalBytes)/(1024*1024))
 	
 	// Print interval data
-	fmt.Println("\n=== HOURLY BREAKDOWN ===")
+	fmt.Println("\n=== DAILY BREAKDOWN ===")
 	intervals := data.Intervals
 	
 	if len(intervals) == 0 {
@@ -522,7 +501,7 @@ func PrintAnalyticsSummary(analytics *AnalyticsResponse) {
 		return intervals[i].Requests > intervals[j].Requests
 	})
 	
-	// Print the top 5 hours by request volume
+	// Print the top 5 days by request volume
 	count := 5
 	if len(intervals) < count {
 		count = len(intervals)
@@ -540,9 +519,9 @@ func PrintAnalyticsSummary(analytics *AnalyticsResponse) {
 func main() {
 	// Configure parameters
 	proxyUserID := "your_proxy_user_id"  // Replace with your actual proxy user ID
-	networkType := "residential"          // Options: datacenter, isp, residential
-	daysToAnalyze := 7                    // Number of days to look back
-	intervalType := "hour"                // Options: minute, hour, day, month
+	networkType := "residential"         // Options: datacenter, isp, residential
+	daysToAnalyze := 30                  // Number of days to look back
+	intervalType := "day"                // Options: minute, hour, day, month
 	
 	// Fetch analytics data
 	analytics, err := GetProxyUserAnalytics(proxyUserID, networkType, daysToAnalyze, intervalType)
@@ -553,23 +532,6 @@ func main() {
 	
 	// Print summary
 	PrintAnalyticsSummary(analytics)
-	
-	// Save analytics data to file
-	if analytics != nil {
-		jsonData, err := json.MarshalIndent(analytics, "", "  ")
-		if err != nil {
-			fmt.Printf("Error marshaling JSON: %v\n", err)
-			return
-		}
-		
-		err = ioutil.WriteFile("proxy_analytics.json", jsonData, 0644)
-		if err != nil {
-			fmt.Printf("Error writing file: %v\n", err)
-			return
-		}
-		
-		fmt.Println("\nAnalytics data has been saved to proxy_analytics.json")
-	}
 }
 ```
 
@@ -577,7 +539,6 @@ func main() {
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -591,7 +552,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProxyUserAnalytics {
 
@@ -709,7 +669,7 @@ public class ProxyUserAnalytics {
         System.out.printf("Total Bandwidth Used: %.2f MB%n", data.totalBytes / (1024.0 * 1024.0));
         
         // Print interval data
-        System.out.println("\n=== HOURLY BREAKDOWN ===");
+        System.out.println("\n=== DAILY BREAKDOWN ===");
         List<IntervalData> intervals = data.intervals;
         
         if (intervals == null || intervals.isEmpty()) {
@@ -721,7 +681,7 @@ public class ProxyUserAnalytics {
         List<IntervalData> sortedIntervals = new ArrayList<>(intervals);
         sortedIntervals.sort(Comparator.comparing(i -> -i.requests));
         
-        // Print the top 5 hours by request volume
+        // Print the top 5 days by request volume
         int count = Math.min(5, sortedIntervals.size());
         for (int i = 0; i < count; i++) {
             IntervalData interval = sortedIntervals.get(i);
@@ -737,8 +697,8 @@ public class ProxyUserAnalytics {
             // Configure parameters
             String PROXY_USER_ID = "your_proxy_user_id";  // Replace with your actual proxy user ID
             String NETWORK_TYPE = "residential";          // Options: datacenter, isp, residential
-            int DAYS_TO_ANALYZE = 7;                      // Number of days to look back
-            String INTERVAL = "hour";                     // Options: minute, hour, day, month
+            int DAYS_TO_ANALYZE = 30;                     // Number of days to look back
+            String INTERVAL = "day";                      // Options: minute, hour, day, month
             
             // Fetch analytics data
             AnalyticsResponse analytics = getProxyUserAnalytics(
@@ -750,12 +710,6 @@ public class ProxyUserAnalytics {
             
             // Print summary
             printAnalyticsSummary(analytics);
-            
-            // Save analytics data to file
-            if (analytics != null) {
-                mapper.writerWithDefaultPrettyPrinter().writeValue(new File("proxy_analytics.json"), analytics);
-                System.out.println("\nAnalytics data has been saved to proxy_analytics.json");
-            }
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
@@ -787,4 +741,13 @@ The analytics API returns a structured response with:
 1. **Usage Monitoring**: Track proxy consumption across different time periods
 2. **Billing Reconciliation**: Verify data usage against billing statements
 3. **Performance Analysis**: Identify peak usage times and potential bottlenecks
-4. **Project Attribution**: Analyze usage patterns by different
+4. **Project Attribution**: Analyze usage patterns by different proxy users
+5. **Network Comparison**: Compare usage across datacenter, ISP, and residential networks
+
+## Tips for Effective Analytics
+
+- **Adjust the time period** based on your monitoring needs (7, 30, or 90 days)
+- **Compare different intervals** (daily vs. hourly) to identify patterns at different granularities
+- **Filter by network type** to compare performance across different proxy infrastructures
+- **Track usage by proxy user** to attribute consumption to different teams or projects
+- **Monitor bandwidth consumption** to anticipate when you might need to upgrade your plan
