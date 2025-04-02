@@ -57,7 +57,9 @@
           },
           {
             "group": "Reselling Examples",
-            "pages": ["examples-index"]
+            "pages": ["examples-index",
+            "api-examples/retrieve-analytics-for-proxy-user"
+            ]
           }
         ]
       },
