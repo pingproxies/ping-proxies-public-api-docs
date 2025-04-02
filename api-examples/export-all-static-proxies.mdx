@@ -1,3 +1,5 @@
+I'll edit the content to simplify it to just one format and protocol while noting that you can change these parameters. Here's the revised version:
+
 ---
 title: "Exporting a list of all your static proxies"
 description: "Learn how to export your datacenter and ISP proxies to a list using the list_by_search endpoint"
@@ -23,22 +25,22 @@ headers = {
     "X-API-Private-Key": API_PRIVATE_KEY
 }
 
-def get_static_proxy_list(format_type="standard", protocol="http"):
+def get_static_proxy_list():
     """
     Retrieve all static proxies using the list_by_search endpoint.
     
-    Args:
-        format_type: Format of the returned proxies ("standard", "http", "socks5", "socks5h")
-        protocol: Protocol to use ("http" or "socks5")
-        
+    Note: You can modify format_type and protocol parameters to get different formats:
+    - format_type options: "standard", "http", "socks5", "socks5h"
+    - protocol options: "http" or "socks5"
+    
     Returns:
         List of formatted proxy strings
     """
     # Set up the parameters for list_by_search
     params = {
-        "list_format": format_type,  # Format of the returned proxies
-        "list_protocol": protocol,   # Protocol to use (http or socks5)
-        "list_version": "ipv4",      # IP version (ipv4 or ipv6)
+        "list_format": "standard",  # You can change this to "http", "socks5", or "socks5h"
+        "list_protocol": "http",    # You can change this to "socks5"
+        "list_version": "ipv4",     # IP version (ipv4 or ipv6)
         "list_authentication": "username_and_password"  # Authentication type
     }
     
@@ -61,12 +63,11 @@ def get_static_proxy_list(format_type="standard", protocol="http"):
     print(f"Successfully retrieved {len(proxy_list)} formatted proxies")
     return proxy_list
 
-def export_to_file(proxy_list, format_type="standard", filename=None):
+def export_to_file(proxy_list):
     """Export proxy list to a file."""
-    if not filename:
-        # Create a default filename with timestamp
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"proxies_{format_type}_{timestamp}.txt"
+    # Create a default filename with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"proxies_{timestamp}.txt"
     
     # Write the proxy list to a file
     with open(filename, "w") as file:
@@ -78,34 +79,16 @@ def export_to_file(proxy_list, format_type="standard", filename=None):
 
 # Example usage
 if __name__ == "__main__":
-    # Get HTTP proxies in different formats
-    standard_list = get_static_proxy_list("standard", "http")
-    http_list = get_static_proxy_list("http", "http")
+    # Get proxies in standard format
+    proxy_list = get_static_proxy_list()
     
-    # Get SOCKS proxies in different formats
-    socks5_list = get_static_proxy_list("socks5", "socks5")
-    socks5h_list = get_static_proxy_list("socks5h", "socks5")
+    # Export to file
+    if proxy_list:
+        export_to_file(proxy_list)
     
-    # Export to files
-    if standard_list:
-        export_to_file(standard_list, "standard")
-    if http_list:
-        export_to_file(http_list, "http")
-    if socks5_list:
-        export_to_file(socks5_list, "socks5")
-    if socks5h_list:
-        export_to_file(socks5h_list, "socks5h")
-    
-    # Print sample of each format
-    print("\nSample outputs:")
-    if standard_list:
-        print(f"Standard format: {standard_list[0]}")
-    if http_list:
-        print(f"HTTP format: {http_list[0]}")
-    if socks5_list:
-        print(f"SOCKS5 format: {socks5_list[0]}")
-    if socks5h_list:
-        print(f"SOCKS5H format: {socks5h_list[0]}")
+    # Print sample output
+    if proxy_list:
+        print(f"\nSample output: {proxy_list[0]}")
 ```
 
 ```javascript JavaScript
@@ -116,16 +99,19 @@ const BASE_URL = 'https://api.pingproxies.com/1.0/public';
 
 /**
  * Retrieve all static proxies using the list_by_search endpoint
- * @param {string} formatType - Format of the returned proxies (standard, http, socks5, socks5h)
- * @param {string} protocol - Protocol to use (http or socks5)
+ * 
+ * Note: You can modify formatType and protocol parameters to get different formats:
+ * - formatType options: "standard", "http", "socks5", "socks5h"
+ * - protocol options: "http" or "socks5"
+ * 
  * @returns {Promise<Array>} List of formatted proxy strings
  */
-async function getStaticProxyList(formatType = 'standard', protocol = 'http') {
+async function getStaticProxyList() {
   // Set up the parameters for list_by_search
   const url = new URL(`${BASE_URL}/user/proxy/list_by_search`);
   const params = {
-    'list_format': formatType,   // Format of the returned proxies
-    'list_protocol': protocol,   // Protocol to use (http or socks5)
+    'list_format': 'standard',   // You can change this to "http", "socks5", or "socks5h"
+    'list_protocol': 'http',     // You can change this to "socks5"
     'list_version': 'ipv4',      // IP version (ipv4 or ipv6)
     'list_authentication': 'username_and_password'  // Authentication type
   };
@@ -164,14 +150,13 @@ async function getStaticProxyList(formatType = 'standard', protocol = 'http') {
 /**
  * Export proxy list to a file
  * @param {Array} proxyList - List of proxy strings
- * @param {string} formatType - Format of the proxies
  * @returns {string} Filename of the exported file
  */
-function exportToFile(proxyList, formatType = 'standard') {
+function exportToFile(proxyList) {
   // In browser context, create a download
   if (typeof window !== 'undefined') {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename = `proxies_${formatType}_${timestamp}.txt`;
+    const filename = `proxies_${timestamp}.txt`;
     
     // Create a blob with the proxy list
     const content = proxyList.join('\n');
@@ -198,7 +183,7 @@ function exportToFile(proxyList, formatType = 'standard') {
   else if (typeof require !== 'undefined') {
     const fs = require('fs');
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename = `proxies_${formatType}_${timestamp}.txt`;
+    const filename = `proxies_${timestamp}.txt`;
     
     fs.writeFileSync(filename, proxyList.join('\n'));
     
@@ -213,41 +198,17 @@ function exportToFile(proxyList, formatType = 'standard') {
 
 // Example usage for Node.js
 async function main() {
-  // Get HTTP proxies in different formats
-  const standardList = await getStaticProxyList('standard', 'http');
-  const httpList = await getStaticProxyList('http', 'http');
+  // Get proxies in standard format
+  const proxyList = await getStaticProxyList();
   
-  // Get SOCKS proxies in different formats
-  const socks5List = await getStaticProxyList('socks5', 'socks5');
-  const socks5hList = await getStaticProxyList('socks5h', 'socks5');
-  
-  // Export to files
-  if (standardList.length > 0) {
-    exportToFile(standardList, 'standard');
-  }
-  if (httpList.length > 0) {
-    exportToFile(httpList, 'http');
-  }
-  if (socks5List.length > 0) {
-    exportToFile(socks5List, 'socks5');
-  }
-  if (socks5hList.length > 0) {
-    exportToFile(socks5hList, 'socks5h');
+  // Export to file
+  if (proxyList.length > 0) {
+    exportToFile(proxyList);
   }
   
-  // Print sample of each format
-  console.log('\nSample outputs:');
-  if (standardList.length > 0) {
-    console.log(`Standard format: ${standardList[0]}`);
-  }
-  if (httpList.length > 0) {
-    console.log(`HTTP format: ${httpList[0]}`);
-  }
-  if (socks5List.length > 0) {
-    console.log(`SOCKS5 format: ${socks5List[0]}`);
-  }
-  if (socks5hList.length > 0) {
-    console.log(`SOCKS5H format: ${socks5hList[0]}`);
+  // Print sample output
+  if (proxyList.length > 0) {
+    console.log(`\nSample output: ${proxyList[0]}`);
   }
 }
 
@@ -267,11 +228,13 @@ $baseUrl = 'https://api.pingproxies.com/1.0/public';
 /**
  * Retrieve all static proxies using the list_by_search endpoint
  * 
- * @param string $formatType Format of the returned proxies (standard, http, socks5, socks5h)
- * @param string $protocol Protocol to use (http or socks5)
+ * Note: You can modify format_type and protocol parameters to get different formats:
+ * - format_type options: "standard", "http", "socks5", "socks5h"
+ * - protocol options: "http" or "socks5"
+ * 
  * @return array List of formatted proxy strings
  */
-function getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl, $formatType = 'standard', $protocol = 'http') {
+function getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl) {
     // Headers for authentication
     $headers = [
         'X-API-Public-Key: ' . $apiPublicKey,
@@ -280,9 +243,9 @@ function getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl, $formatType
     
     // Set up the parameters for list_by_search
     $params = [
-        'list_format' => $formatType,      // Format of the returned proxies
-        'list_protocol' => $protocol,      // Protocol to use (http or socks5)
-        'list_version' => 'ipv4',          // IP version (ipv4 or ipv6)
+        'list_format' => 'standard',   // You can change this to "http", "socks5", or "socks5h"
+        'list_protocol' => 'http',     // You can change this to "socks5"
+        'list_version' => 'ipv4',      // IP version (ipv4 or ipv6)
         'list_authentication' => 'username_and_password'  // Authentication type
     ];
     
@@ -316,13 +279,12 @@ function getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl, $formatType
  * Export proxy list to a file
  * 
  * @param array $proxyList List of proxy strings
- * @param string $formatType Format of the proxies
  * @return string Filename of the exported file
  */
-function exportToFile($proxyList, $formatType = 'standard') {
+function exportToFile($proxyList) {
     // Create a default filename with timestamp
     $timestamp = date('Ymd_His');
-    $filename = "proxies_{$formatType}_{$timestamp}.txt";
+    $filename = "proxies_{$timestamp}.txt";
     
     // Write the proxy list to a file
     $file = fopen($filename, "w");
@@ -336,41 +298,17 @@ function exportToFile($proxyList, $formatType = 'standard') {
 }
 
 // Example usage
-// Get HTTP proxies in different formats
-$standardList = getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl, 'standard', 'http');
-$httpList = getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl, 'http', 'http');
+// Get proxies in standard format
+$proxyList = getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl);
 
-// Get SOCKS proxies in different formats
-$socks5List = getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl, 'socks5', 'socks5');
-$socks5hList = getStaticProxyList($apiPublicKey, $apiPrivateKey, $baseUrl, 'socks5h', 'socks5');
-
-// Export to files
-if (!empty($standardList)) {
-    exportToFile($standardList, 'standard');
-}
-if (!empty($httpList)) {
-    exportToFile($httpList, 'http');
-}
-if (!empty($socks5List)) {
-    exportToFile($socks5List, 'socks5');
-}
-if (!empty($socks5hList)) {
-    exportToFile($socks5hList, 'socks5h');
+// Export to file
+if (!empty($proxyList)) {
+    exportToFile($proxyList);
 }
 
-// Print sample of each format
-echo "\nSample outputs:\n";
-if (!empty($standardList)) {
-    echo "Standard format: " . $standardList[0] . "\n";
-}
-if (!empty($httpList)) {
-    echo "HTTP format: " . $httpList[0] . "\n";
-}
-if (!empty($socks5List)) {
-    echo "SOCKS5 format: " . $socks5List[0] . "\n";
-}
-if (!empty($socks5hList)) {
-    echo "SOCKS5H format: " . $socks5hList[0] . "\n";
+// Print sample output
+if (!empty($proxyList)) {
+    echo "\nSample output: " . $proxyList[0] . "\n";
 }
 ?>
 ```
@@ -402,7 +340,10 @@ type ProxyListResponse struct {
 }
 
 // GetStaticProxyList retrieves all static proxies using the list_by_search endpoint
-func GetStaticProxyList(formatType string, protocol string) ([]string, error) {
+// Note: You can modify formatType and protocol parameters to get different formats:
+// - formatType options: "standard", "http", "socks5", "socks5h"
+// - protocol options: "http" or "socks5"
+func GetStaticProxyList() ([]string, error) {
 	// Create a new HTTP client
 	client := &http.Client{}
 	
@@ -414,9 +355,9 @@ func GetStaticProxyList(formatType string, protocol string) ([]string, error) {
 	}
 	
 	q := u.Query()
-	q.Add("list_format", formatType)     // Format of the returned proxies
-	q.Add("list_protocol", protocol)     // Protocol to use (http or socks5)
-	q.Add("list_version", "ipv4")        // IP version (ipv4 or ipv6)
+	q.Add("list_format", "standard")    // You can change this to "http", "socks5", or "socks5h"
+	q.Add("list_protocol", "http")      // You can change this to "socks5"
+	q.Add("list_version", "ipv4")       // IP version (ipv4 or ipv6)
 	q.Add("list_authentication", "username_and_password")  // Authentication type
 	
 	u.RawQuery = q.Encode()
@@ -459,10 +400,10 @@ func GetStaticProxyList(formatType string, protocol string) ([]string, error) {
 }
 
 // ExportToFile exports proxy list to a file
-func ExportToFile(proxyList []string, formatType string) (string, error) {
+func ExportToFile(proxyList []string) (string, error) {
 	// Create a default filename with timestamp
 	timestamp := time.Now().Format("20060102_150405")
-	filename := fmt.Sprintf("proxies_%s_%s.txt", formatType, timestamp)
+	filename := fmt.Sprintf("proxies_%s.txt", timestamp)
 	
 	// Create file
 	file, err := os.Create(filename)
@@ -484,70 +425,24 @@ func ExportToFile(proxyList []string, formatType string) (string, error) {
 }
 
 func main() {
-	// Get HTTP proxies in different formats
-	standardList, err := GetStaticProxyList("standard", "http")
+	// Get proxies in standard format
+	proxyList, err := GetStaticProxyList()
 	if err != nil {
-		fmt.Printf("Error retrieving standard proxies: %v\n", err)
+		fmt.Printf("Error retrieving proxies: %v\n", err)
+		return
 	}
 	
-	httpList, err := GetStaticProxyList("http", "http")
-	if err != nil {
-		fmt.Printf("Error retrieving HTTP proxies: %v\n", err)
-	}
-	
-	// Get SOCKS proxies in different formats
-	socks5List, err := GetStaticProxyList("socks5", "socks5")
-	if err != nil {
-		fmt.Printf("Error retrieving SOCKS5 proxies: %v\n", err)
-	}
-	
-	socks5hList, err := GetStaticProxyList("socks5h", "socks5")
-	if err != nil {
-		fmt.Printf("Error retrieving SOCKS5H proxies: %v\n", err)
-	}
-	
-	// Export to files
-	if len(standardList) > 0 {
-		_, err := ExportToFile(standardList, "standard")
+	// Export to file
+	if len(proxyList) > 0 {
+		_, err := ExportToFile(proxyList)
 		if err != nil {
-			fmt.Printf("Error exporting standard proxies: %v\n", err)
+			fmt.Printf("Error exporting proxies: %v\n", err)
 		}
 	}
 	
-	if len(httpList) > 0 {
-		_, err := ExportToFile(httpList, "http")
-		if err != nil {
-			fmt.Printf("Error exporting HTTP proxies: %v\n", err)
-		}
-	}
-	
-	if len(socks5List) > 0 {
-		_, err := ExportToFile(socks5List, "socks5")
-		if err != nil {
-			fmt.Printf("Error exporting SOCKS5 proxies: %v\n", err)
-		}
-	}
-	
-	if len(socks5hList) > 0 {
-		_, err := ExportToFile(socks5hList, "socks5h")
-		if err != nil {
-			fmt.Printf("Error exporting SOCKS5H proxies: %v\n", err)
-		}
-	}
-	
-	// Print sample of each format
-	fmt.Println("\nSample outputs:")
-	if len(standardList) > 0 {
-		fmt.Printf("Standard format: %s\n", standardList[0])
-	}
-	if len(httpList) > 0 {
-		fmt.Printf("HTTP format: %s\n", httpList[0])
-	}
-	if len(socks5List) > 0 {
-		fmt.Printf("SOCKS5 format: %s\n", socks5List[0])
-	}
-	if len(socks5hList) > 0 {
-		fmt.Printf("SOCKS5H format: %s\n", socks5hList[0])
+	// Print sample output
+	if len(proxyList) > 0 {
+		fmt.Printf("\nSample output: %s\n", proxyList[0])
 	}
 }
 ```
@@ -585,17 +480,20 @@ public class ExportStaticProxies {
     
     /**
      * Retrieve all static proxies using the list_by_search endpoint
-     * @param formatType Format of the returned proxies (standard, http, socks5, socks5h)
-     * @param protocol Protocol to use (http or socks5)
+     * 
+     * Note: You can modify formatType and protocol parameters to get different formats:
+     * - formatType options: "standard", "http", "socks5", "socks5h"
+     * - protocol options: "http" or "socks5"
+     * 
      * @return List of formatted proxy strings
      */
-    public static List<String> getStaticProxyList(String formatType, String protocol) 
+    public static List<String> getStaticProxyList() 
             throws IOException, InterruptedException, URISyntaxException {
         
         // Build the URI with query parameters
         URI uri = new URI(String.format("%s/user/proxy/list_by_search", BASE_URL))
-                .resolve("?list_format=" + formatType
-                        + "&list_protocol=" + protocol
+                .resolve("?list_format=standard"        // You can change this to "http", "socks5", or "socks5h"
+                        + "&list_protocol=http"         // You can change this to "socks5"
                         + "&list_version=ipv4"
                         + "&list_authentication=username_and_password");
         
@@ -625,15 +523,14 @@ public class ExportStaticProxies {
     /**
      * Export proxy list to a file
      * @param proxyList List of proxy strings
-     * @param formatType Format of the proxies
      * @return Filename of the exported file
      */
-    public static String exportToFile(List<String> proxyList, String formatType) throws IOException {
+    public static String exportToFile(List<String> proxyList) throws IOException {
         // Create a default filename with timestamp
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timestamp = now.format(formatter);
-        String filename = String.format("proxies_%s_%s.txt", formatType, timestamp);
+        String filename = String.format("proxies_%s.txt", timestamp);
         
         // Write the proxy list to a file
         try (FileWriter writer = new FileWriter(filename)) {
@@ -648,41 +545,17 @@ public class ExportStaticProxies {
 
     public static void main(String[] args) {
         try {
-            // Get HTTP proxies in different formats
-            List<String> standardList = getStaticProxyList("standard", "http");
-            List<String> httpList = getStaticProxyList("http", "http");
+            // Get proxies in standard format
+            List<String> proxyList = getStaticProxyList();
             
-            // Get SOCKS proxies in different formats
-            List<String> socks5List = getStaticProxyList("socks5", "socks5");
-            List<String> socks5hList = getStaticProxyList("socks5h", "socks5");
-            
-            // Export to files
-            if (!standardList.isEmpty()) {
-                exportToFile(standardList, "standard");
-            }
-            if (!httpList.isEmpty()) {
-                exportToFile(httpList, "http");
-            }
-            if (!socks5List.isEmpty()) {
-                exportToFile(socks5List, "socks5");
-            }
-            if (!socks5hList.isEmpty()) {
-                exportToFile(socks5hList, "socks5h");
+            // Export to file
+            if (!proxyList.isEmpty()) {
+                exportToFile(proxyList);
             }
             
-            // Print sample of each format
-            System.out.println("\nSample outputs:");
-            if (!standardList.isEmpty()) {
-                System.out.println("Standard format: " + standardList.get(0));
-            }
-            if (!httpList.isEmpty()) {
-                System.out.println("HTTP format: " + httpList.get(0));
-            }
-            if (!socks5List.isEmpty()) {
-                System.out.println("SOCKS5 format: " + socks5List.get(0));
-            }
-            if (!socks5hList.isEmpty()) {
-                System.out.println("SOCKS5H format: " + socks5hList.get(0));
+            // Print sample output
+            if (!proxyList.isEmpty()) {
+                System.out.println("\nSample output: " + proxyList.get(0));
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -720,7 +593,7 @@ The `list_by_search` endpoint provides formatted proxy strings ready for use in 
 
 ### Example Output
 
-Here are examples of what the output might look like for each format:
+Here's what the output might look like depending on the format you choose:
 
 - **Standard format**: `123.456.78.90:8080`
 - **HTTP format**: `http://your_username:your_password@123.456.78.90:8080`
