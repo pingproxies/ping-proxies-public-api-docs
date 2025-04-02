@@ -1,3 +1,5 @@
+I'll extend the page by adding documentation about the `like_`, `exists_`, and `not_` operators for metadata searching without changing the existing code examples.
+
 ---
 title: "Search proxy users by metadata properties"
 description: "This guide demonstrates how to search for proxy users based on metadata values using both exact matching and range filtering with the Ping Proxies API."
@@ -532,16 +534,86 @@ public class SearchProxyUsersByMetadata {
 
 2. **Range Filtering**: Use `min_proxy_user_metadata.field_name` and `max_proxy_user_metadata.field_name` to search for proxy users with metadata values within a specific range.
 
-## Response Structure
+## Advanced Metadata Search Operators
 
-The API returns a JSON response that includes:
+In addition to exact matching and range filtering, the Ping Proxies API supports several advanced operators that provide more flexibility when searching proxy users by their metadata.
 
-- `total_count`: Total number of proxy users matching the search criteria
-- `data`: Array of proxy user objects, each containing their metadata
-- `page` and `per_page`: Pagination information
+### Pattern Matching with `like_`
 
-## Common Applications
+The `like_` operator allows you to search for proxy users with metadata fields that match a specific pattern. This is particularly useful for partial text matches.
 
-- Group proxy users by department, project, or client
-- Find proxy users with employee_ids or usage limits in specific ranges
-- Track custom metadata like deployment dates, owner information, or cost centers
+**Example: Find proxy users with email addresses from a specific domain**
+
+```
+like_proxy_user_metadata.email=@example.com
+```
+
+This will match any proxy user with an email field in their metadata that contains "@example.com".
+
+**Example: Find proxy users with names starting with a specific prefix**
+
+```
+like_proxy_user_metadata.name=John%
+```
+
+The `%` character acts as a wildcard. This query would match names like "John", "Johnny", "Johnson", etc.
+
+### Existence Checking with `exists_`
+
+The `exists_` operator allows you to find proxy users that have a particular metadata field defined, regardless of its value.
+
+**Example: Find proxy users that have a department field**
+
+```
+exists_proxy_user_metadata.department=true
+```
+
+This will return all proxy users that have the "department" field in their metadata, regardless of what department it is.
+
+**Example: Find proxy users without a specific field**
+
+```
+exists_proxy_user_metadata.end_date=false
+```
+
+This will return all proxy users that do not have an "end_date" field in their metadata.
+
+### Negation with `not_`
+
+The `not_` operator allows you to find proxy users where a metadata field does not match a specific value.
+
+**Example: Find proxy users not in the Marketing department**
+
+```
+not_proxy_user_metadata.department=Marketing
+```
+
+This will return all proxy users whose department field is not set to "Marketing".
+
+**Example: Find proxy users with employee_id outside a specific range**
+
+```
+not_min_proxy_user_metadata.employee_id=1000
+not_max_proxy_user_metadata.employee_id=5000
+```
+
+This will return proxy users whose employee_id is less than 1000 or greater than 5000.
+
+## Combining Search Operators
+
+You can combine multiple search operators to create complex queries.
+
+**Example: Find active proxy users in the Sales department with an email from example.com**
+
+```
+proxy_user_metadata.department=Sales
+proxy_user_metadata.status=active
+like_proxy_user_metadata.email=@example.com
+```
+
+**Example: Find proxy users with a project field but without an end_date**
+
+```
+exists_proxy_user_metadata.project=true
+exists_proxy_user_metadata.end_date=false
+```
