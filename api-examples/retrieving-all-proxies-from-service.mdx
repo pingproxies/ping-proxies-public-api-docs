@@ -586,16 +586,3 @@ public class GetProxiesByServiceId {
 1. **Service-based Filtering**: The search endpoint supports filtering proxies by service ID.
 2. **Multiple Formats**: You can retrieve proxies in various formats depending on your needs.
 3. **Full Proxy Details**: The returned data includes all proxy attributes, including ports, protocols, and location information.
-
-## Benefits of Service-Based Proxy Retrieval
-
-- **Organization**: Keep track of proxies belonging to different services
-- **Resource Management**: Monitor how many proxies are allocated to each service
-- **Automation**: Programmatically retrieve specific service proxies for task automation
-
-## Best Practices
-
-1. **Pagination**: For services with many proxies, implement pagination (using `page` and `per_page` parameters)
-2. **Error Handling**: Always check response status codes and handle errors gracefully
-3. **Caching**: Consider caching proxy information when appropriate to reduce API calls
-4. **Regular Updates**: Periodically refresh your cached proxy list as proxies may change
