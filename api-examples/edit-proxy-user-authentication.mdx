@@ -596,11 +596,7 @@ public class EditProxyUserAuthentication {
 
 ### IP Address Authentication
 
-IP address authentication restricts proxy access to specific IP addresses. This is useful for:
-
-- **Enhancing security** by only allowing connections from trusted locations
-- **Preventing unauthorized access** even if credentials are compromised
-- **Enforcing organizational policies** around proxy usage
+IP address authentication restricts proxy access to specific IP addresses.
 
 When adding IP addresses, specify all addresses that should have access. Any previous whitelist will be replaced.
 
@@ -609,7 +605,7 @@ When adding IP addresses, specify all addresses that should have access. Any pre
 Enabling strict security mode (`proxy_user_is_strict_security = true`) requires IP authentication to be used. This means:
 
 - Username/password authentication alone is no longer sufficient
-- Connections must come from a whitelisted IP address
+- Connections must come from a whitelisted IP address and have the correct username/password
 - If enabled without IP addresses, the proxy user will not be able to authenticate
 
 ### Password Updates
@@ -619,48 +615,3 @@ When updating passwords, ensure they meet these requirements:
 - Between 10-32 characters
 - Alphanumeric characters
 - Consider using a strong, unique password for each proxy user
-
-## Additional Options
-
-The proxy user edit endpoint supports updating several other properties:
-
-### Service Restrictions
-
-```python
-# Restrict proxy user to specific services
-payload = {
-    "proxy_user_is_service_restricted": True,
-    "restricted_service_ids": ["srv-12345", "srv-67890"]
-}
-```
-
-### Residential Bandwidth Limits
-
-```python
-# Set bandwidth limits for residential proxies (in bytes)
-payload = {
-    "proxy_user_residential_bytes_limit": 5368709120  # 5GB
-}
-```
-
-### Custom Metadata
-
-```python
-# Add custom metadata for organization and tracking
-payload = {
-    "proxy_user_metadata": {
-        "department": "Marketing",
-        "project": "Social Media Campaign",
-        "cost_center": "MKT-001",
-        "manager": "John Smith"
-    }
-}
-```
-
-## Best Practices
-
-1. **Audit regularly**: Review and update proxy user authentication settings periodically
-2. **Principle of least privilege**: Only grant access to necessary services and IPs
-3. **Rotate passwords**: Change passwords regularly for enhanced security
-4. **Use metadata**: Leverage metadata for better organization and tracking
-5. **Monitor usage**: Keep an eye on proxy usage patterns to detect potential security issues
