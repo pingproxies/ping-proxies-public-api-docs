@@ -131,20 +131,6 @@
             ]
           },
           {
-            "group": "Log",
-            "pages": [
-              "api-reference/log/retrieve-log",
-              "api-reference/log/search-logs"
-            ]
-          },
-          {
-            "group": "Log Summary",
-            "pages": [
-              "api-reference/log-summary/retrieve-log-summary",
-              "api-reference/log-summary/search-log-summary"
-            ]
-          },
-          {
             "group": "Product",
             "pages": [
               "api-reference/product/search-product"
