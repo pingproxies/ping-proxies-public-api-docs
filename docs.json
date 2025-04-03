@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Introduction",
+        "tab": "API Introduction",
         "groups": [
           {
             "group": "Getting Started",
@@ -48,7 +48,7 @@
         ]
       },
       {
-        "tab": "Examples",
+        "tab": "API Examples",
         "groups": [
           {
             "group": "Practical Examples",
