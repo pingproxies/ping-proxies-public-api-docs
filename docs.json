@@ -191,11 +191,6 @@
   },
   "anchors": [
     {
-      "name": "Community",
-      "icon": "discord",
-      "url": "https://discord.com/invite/ping-proxies-584021352940568578"
-    },
-    {
       "name": "Blog",
       "icon": "newspaper",
       "url": "https://pingproxies.com/blog"
@@ -209,9 +204,9 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "url": "mailto:support@pingproxies.com",
-        "href": "mailto:support@pingproxies.com"
+        "label": "Developer Support",
+        "url": "mailto:developers@pingproxies.com",
+        "href": "mailto:developers@pingproxies.com"
       }
     ]
   },
