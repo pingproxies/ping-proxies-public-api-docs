@@ -83,7 +83,12 @@ Example log summary object:
 The residential ledger specifically tracks bandwidth usage for residential proxies, which operate on a bandwidth-based billing model rather than a per-proxy model.
 
 - Tracks daily residential bandwidth usage at the customer account level
-- Records both usage (decrements) and top-ups (increments)
+- Records various types of bandwidth changes:
+  - Usage (decrements)
+  - Top-ups (increments when purchasing additional bandwidth)
+  - Service purchases (addition of bandwidth with new residential services)
+  - Refunds and adjustments (manual or automatic credits)
+- Provides a complete audit trail of all changes to your residential bandwidth allocation
 - Critical for billing and quota management
 
 Example residential ledger object:
@@ -162,36 +167,13 @@ GET /public/user/log_summary/search
 GET /public/user/log_summary/retrieve/{log_summary_id}
 ```
 
-## Best Practices for Analytics
+## Effective Monitoring Strategies
 
-1. **Short-term analysis**: Use raw logs for detailed troubleshooting of recent issues.
-2. **Medium-term analysis**: Use log summaries for analyzing patterns over weeks and months.
-3. **Long-term trends**: Use analytics graph endpoint with longer time intervals for identifying usage trends.
-4. **Residential monitoring**: Regularly check the residential ledger to avoid unexpected bandwidth depletion.
-5. **Regular exports**: Consider exporting summary data for your own long-term storage and analysis.
+For effective monitoring of your proxy usage:
 
-## Common Analytics Workflows
-
-### Analyzing Proxy Usage Over Time
-
-When analyzing proxy usage trends over time, you'll typically want to:
-
-1. **Define your time range**: Select an appropriate period for your analysis (last day, week, month, etc.)
-2. **Choose your interval**: Select the granularity of data points (minute, hour, day, month)
-3. **Apply filters**: Consider filtering by specific proxy users, network types, or hostnames
-4. **Analyze the results**: Look for patterns in request volume, data transfer, and error rates
-
-The `/analytics/graph` endpoint makes this process straightforward by automatically aggregating data from logs and log summaries based on your specified parameters.
-
-### Monitoring Residential Bandwidth
-
-For residential proxy users, monitoring bandwidth consumption is critical since it's a finite resource that directly impacts billing. A typical monitoring workflow includes:
-
-1. **Check current bandwidth status**: Use the `/residential/summary` endpoint to get your total allocation, usage, and remaining bandwidth
-2. **Analyze recent consumption patterns**: Use the `/residential_ledger/search` endpoint to review daily usage over the past weeks/months
-3. **Identify heavy usage periods**: Look for unusual spikes or steady increases in consumption
-4. **Set up alerts**: Implement notifications when bandwidth usage exceeds certain thresholds
-5. **Plan for top-ups**: Schedule bandwidth purchases before depletion to avoid service interruptions
+- Use the `/analytics/graph` endpoint for most usage monitoring scenarios
+- Only use `/log_summary` or `/log` endpoints when you need to see information on specific requests or detailed breakdowns by hostname, proxy user ID, or network on a daily basis
+- The `/residential_ledger` endpoints are best used specifically for monitoring daily residential bandwidth allocation changes
 
 ## Reference Table: Analytics Endpoints
 
@@ -203,5 +185,5 @@ For residential proxy users, monitoring bandwidth consumption is critical since 
 | `/log_summary/retrieve/{log_summary_id}` | Get specific log summary | 90+ days | Daily aggregation |
 | `/residential_ledger/search` | Search residential usage records | Indefinite | Daily usage |
 | `/residential_ledger/retrieve/{residential_ledger_id}` | Get specific residential usage entry | Indefinite | Daily usage |
-| `/analytics/graph` | Visualize usage patterns | Based on available logs | Configurable intervals |
+| `/analytics/graph` | Visualize usage patterns | Indefinite | Configurable intervals |
 | `/residential/summary` | Get overall residential bandwidth status | Current | Account-level summary |
