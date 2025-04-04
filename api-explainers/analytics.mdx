@@ -1,0 +1,207 @@
+---
+title: 'Analytics and Usage Tracking'
+description: 'Understanding the analytics, logging, and tracking systems in the Ping Proxies API'
+---
+
+# Analytics and Usage Tracking
+
+The Ping Proxies API provides comprehensive analytics and usage tracking capabilities to help you monitor and optimize your proxy infrastructure. This guide explains the different components of the tracking system, how they work together, and how to access them through the API.
+
+## Analytics Data Hierarchy
+
+Ping Proxies utilizes a multi-layer approach to track and analyze proxy usage:
+
+```
+Raw Logs (7 days) → Log Summaries (90+ days) → Analytics Graphs
+```
+
+Each level provides different granularity and retention periods, allowing both detailed troubleshooting and long-term trend analysis.
+
+## Log Objects
+
+### Raw Logs (`log`)
+
+Raw logs represent individual proxy requests and provide the most detailed information. They are stored for 7 days.
+
+- Tracked at the `proxy_user_id` level
+- Created for every single proxy request
+- Contains detailed information such as:
+  - Client IP address
+  - Request size in bytes
+  - HTTP status/error codes
+  - Precise request datetime
+  - Authentication type
+  - Hostname being accessed
+  - Geographic information (country, city)
+  - ASN information
+
+Example raw log object:
+
+```json
+{
+  "log_id": "123e4567-e89b-12d3-a456-426614174000",
+  "proxy_user_id": "stevejobs",
+  "log_network": "isp",
+  "log_protocol": "http",
+  "log_hostname": "apple.com",
+  "log_client_ip_address": "17.172.224.1",
+  "log_total_bytes": 5120,
+  "log_request_datetime": "2025-04-01 13:00:00",
+  "country_id": "us",
+  "city_alias": "cupertino",
+  "asn_id": 1299
+}
+```
+
+### Log Summaries (`log_summary`)
+
+Log summaries aggregate raw logs into daily summaries. They provide an efficient way to analyze usage patterns without storing every individual request.
+
+- Initially organized by `proxy_user_id`, `network`, and `hostname` for the first 90 days
+- After 90 days, further consolidated to just `proxy_user_id` and `network` level (hostname details are removed)
+- Includes metrics like:
+  - Total requests
+  - Total bytes transferred
+  - Success/error counts
+
+Example log summary object:
+
+```json
+{
+  "log_summary_id": "456e7890-e89b-12d3-a456-426614174000",
+  "proxy_user_id": "stevejobs",
+  "log_summary_network": "residential",
+  "log_summary_hostname": "apple.com",
+  "log_summary_requests": 100,
+  "log_summary_bytes": 10000,
+  "log_summary_period": "2025-04-01 00:00:00"
+}
+```
+
+### Residential Ledger (`residential_ledger`)
+
+The residential ledger specifically tracks bandwidth usage for residential proxies, which operate on a bandwidth-based billing model rather than a per-proxy model.
+
+- Tracks daily residential bandwidth usage at the customer account level
+- Records both usage (decrements) and top-ups (increments)
+- Critical for billing and quota management
+
+Example residential ledger object:
+
+```json
+{
+  "residential_ledger_id": "123e4567-e89b-12d3-a456-426614174000",
+  "residential_ledger_bytes": 128290101,
+  "residential_ledger_requests": 1244,
+  "residential_ledger_period_date": "2025-04-01",
+  "residential_ledger_reason": "usage"
+}
+```
+
+## Data Flow Process
+
+The tracking system follows specific data flows depending on the proxy type:
+
+### Datacenter and ISP Proxy Requests
+
+1. When a request is made through a datacenter or ISP proxy:
+   - A `log` record is created
+   - The corresponding `log_summary` is incremented or created if it doesn't exist
+
+### Residential Proxy Requests
+
+Residential proxies involve an additional tracking layer due to their bandwidth-based billing model:
+
+1. When a request is made through a residential proxy:
+   - A `log` record is created
+   - The corresponding `log_summary` is incremented or created
+   - The customer's `residential_ledger` usage record is incremented or created
+
+## Accessing Analytics Data
+
+### Residential Ledger Endpoints
+
+To monitor residential bandwidth usage:
+
+```
+GET /public/user/residential_ledger/search
+GET /public/user/residential_ledger/retrieve/{residential_ledger_id}
+```
+
+These endpoints allow you to track daily customer usage and top-ups for residential proxies.
+
+### Analytics Graph Endpoint
+
+For visualizing usage patterns and trends:
+
+```
+GET /public/user/analytics/graph
+```
+
+This powerful endpoint:
+- Automatically analyzes logs and log summary records
+- Produces summaries and graphing data over specified time periods
+- Supports filtering by proxy user, network, and hostname
+- Offers flexible time intervals (minute, hour, day, month)
+
+### Raw Log Endpoints
+
+For detailed troubleshooting within the 7-day retention window:
+
+```
+GET /public/user/log/search
+GET /public/user/log/retrieve/{log_id}
+```
+
+### Log Summary Endpoints
+
+For aggregated historical data analysis:
+
+```
+GET /public/user/log_summary/search
+GET /public/user/log_summary/retrieve/{log_summary_id}
+```
+
+## Best Practices for Analytics
+
+1. **Short-term analysis**: Use raw logs for detailed troubleshooting of recent issues.
+2. **Medium-term analysis**: Use log summaries for analyzing patterns over weeks and months.
+3. **Long-term trends**: Use analytics graph endpoint with longer time intervals for identifying usage trends.
+4. **Residential monitoring**: Regularly check the residential ledger to avoid unexpected bandwidth depletion.
+5. **Regular exports**: Consider exporting summary data for your own long-term storage and analysis.
+
+## Common Analytics Workflows
+
+### Analyzing Proxy Usage Over Time
+
+When analyzing proxy usage trends over time, you'll typically want to:
+
+1. **Define your time range**: Select an appropriate period for your analysis (last day, week, month, etc.)
+2. **Choose your interval**: Select the granularity of data points (minute, hour, day, month)
+3. **Apply filters**: Consider filtering by specific proxy users, network types, or hostnames
+4. **Analyze the results**: Look for patterns in request volume, data transfer, and error rates
+
+The `/analytics/graph` endpoint makes this process straightforward by automatically aggregating data from logs and log summaries based on your specified parameters.
+
+### Monitoring Residential Bandwidth
+
+For residential proxy users, monitoring bandwidth consumption is critical since it's a finite resource that directly impacts billing. A typical monitoring workflow includes:
+
+1. **Check current bandwidth status**: Use the `/residential/summary` endpoint to get your total allocation, usage, and remaining bandwidth
+2. **Analyze recent consumption patterns**: Use the `/residential_ledger/search` endpoint to review daily usage over the past weeks/months
+3. **Identify heavy usage periods**: Look for unusual spikes or steady increases in consumption
+4. **Set up alerts**: Implement notifications when bandwidth usage exceeds certain thresholds
+5. **Plan for top-ups**: Schedule bandwidth purchases before depletion to avoid service interruptions
+
+## Reference Table: Analytics Endpoints
+
+| Endpoint | Purpose | Retention | Granularity |
+|----------|---------|-----------|-------------|
+| `/log/search` | Search raw logs | 7 days | Individual requests |
+| `/log/retrieve/{log_id}` | Get specific raw log | 7 days | Individual request |
+| `/log_summary/search` | Search log summaries | 90+ days | Daily aggregations |
+| `/log_summary/retrieve/{log_summary_id}` | Get specific log summary | 90+ days | Daily aggregation |
+| `/residential_ledger/search` | Search residential usage records | Indefinite | Daily usage |
+| `/residential_ledger/retrieve/{residential_ledger_id}` | Get specific residential usage entry | Indefinite | Daily usage |
+| `/analytics/graph` | Visualize usage patterns | Based on available logs | Configurable intervals |
+| `/residential/summary` | Get overall residential bandwidth status | Current | Account-level summary |
