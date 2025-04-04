@@ -3,19 +3,18 @@ title: 'Analytics and Usage Tracking'
 description: 'Understanding the analytics, logging, and tracking systems in the Ping Proxies API'
 ---
 
-# Analytics and Usage Tracking
-
 The Ping Proxies API provides comprehensive analytics and usage tracking capabilities to help you monitor and optimize your proxy infrastructure. This guide explains the different components of the tracking system, how they work together, and how to access them through the API.
 
-## Analytics Data Hierarchy
+## Analytics Components
 
-Ping Proxies utilizes a multi-layer approach to track and analyze proxy usage:
+Ping Proxies employs multiple complementary systems to track and analyze proxy usage:
 
-```
-Raw Logs (7 days) → Log Summaries (90+ days) → Analytics Graphs
-```
+- **Raw Logs (`log`)**: Detailed individual request data, retained for 7 days
+- **Log Summaries (`log_summary`)**: Aggregated daily usage patterns, retained for 90+ days  
+- **Residential Ledger (`residential_ledger`)**: Residential bandwidth accounting records, retained indefinitely
+- **Analytics Graphs**: Visualizations generated from logs and summaries, with indefinite historical data access
 
-Each level provides different granularity and retention periods, allowing both detailed troubleshooting and long-term trend analysis.
+The `/analytics/graph` endpoint processes data from both logs and log summaries to provide comprehensive visualizations regardless of the age of the data being analyzed.
 
 ## Log Objects
 
@@ -166,6 +165,14 @@ For aggregated historical data analysis:
 GET /public/user/log_summary/search
 GET /public/user/log_summary/retrieve/{log_summary_id}
 ```
+
+## Effective Monitoring Strategies
+
+For effective monitoring of your proxy usage:
+
+- Use the `/analytics/graph` endpoint for most usage monitoring scenarios
+- Only use `/log_summary` or `/log` endpoints when you need to see information on specific requests or detailed breakdowns by hostname, proxy user ID, or network on a daily basis
+- The `/residential_ledger` endpoints are best used specifically for monitoring daily residential bandwidth allocation changes
 
 ## Reference Table: Analytics Endpoints
 
