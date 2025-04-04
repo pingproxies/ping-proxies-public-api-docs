@@ -1,0 +1,89 @@
+---
+title: 'Proxy User'
+description: 'Understanding the Proxy User object and its role in the Ping Proxies API'
+---
+
+# Proxy User
+
+The Proxy User object represents an authentication entity used to access proxies. It functions as a layer between your customer account and your proxies, enabling flexible access control, usage tracking, and bandwidth management.
+
+## Key Attributes
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `proxy_user_id` | string | Unique identifier for the proxy user (acts as username) |
+| `proxy_user_password` | string | Password for proxy authentication |
+| `proxy_user_is_service_restricted` | boolean | Whether access is restricted to specific services |
+| `proxy_user_is_strict_security` | boolean | Whether IP authentication is required |
+| `proxy_user_residential_bytes_limit` | integer | Maximum residential bandwidth allocation in bytes |
+| `proxy_user_residential_bytes_used` | integer | Used residential bandwidth in bytes |
+| `proxy_user_metadata` | object | Custom metadata for tracking and organization |
+| `ip_address_authentications` | array | List of IP addresses authorized to use this proxy user |
+| `restricted_service_ids` | array | List of service IDs this proxy user can access (if restricted) |
+
+## Authentication Methods
+
+Proxy Users support three authentication methods:
+
+1. **Username/Password Authentication**: Standard method using `proxy_user_id` and `proxy_user_password`
+2. **IP Authentication**: Access based on client IP address matching entries in `ip_address_authentications`
+3. **Combined Authentication**: Requiring both username/password and IP authentication when `proxy_user_is_strict_security` is enabled
+
+## Object Relationships
+
+The Proxy User acts as an intermediary between your customer account and your proxy services:
+
+```mermaid
+graph TD
+    Customer --> ProxyUser
+    ProxyUser --> Service1[Service]
+    ProxyUser --> Service2[Service]
+    Service1 --> Proxy1[Proxy]
+    Service1 --> Proxy2[Proxy]
+    Service2 --> Proxy3[Proxy]
+```
+
+## Related Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/public/user/proxy_user/create` | POST | Create a new proxy user |
+| `/public/user/proxy_user/retrieve/{proxy_user_id}` | GET | Retrieve a specific proxy user |
+| `/public/user/proxy_user/search` | GET | Search proxy users with filters |
+| `/public/user/proxy_user/edit/{proxy_user_id}` | PATCH | Edit an existing proxy user |
+| `/public/user/proxy_user/delete/{proxy_user_id}` | DELETE | Delete a proxy user |
+
+## Example Response
+
+```json
+{
+  "data": {
+    "proxy_user_id": "stevejobs",
+    "proxy_user_password": "apple1984",
+    "proxy_user_ip_address_authentication_limit": 3,
+    "proxy_user_is_default": false,
+    "proxy_user_is_deleted": false,
+    "proxy_user_is_service_restricted": false,
+    "proxy_user_is_strict_security": false,
+    "proxy_user_metadata": {
+      "resell_order_id": "APPL-9876-5432"
+    },
+    "proxy_user_residential_bytes_limit": 134142432,
+    "proxy_user_residential_bytes_used": 31223,
+    "residential_bytes_left": 134111209,
+    "ip_address_authentications": [
+      "193.222.13.1"
+    ],
+    "restricted_service_ids": []
+  },
+  "message": "Proxy User successfully retrieved."
+}
+```
+
+## Usage Notes
+
+- Each customer account can have multiple proxy users (limited by `customer_proxy_user_limit`)
+- The default proxy user is automatically created with each account
+- Proxy users can be used for both traditional proxies and residential services
+- Use proxy users to organize access to different proxy groups or for different teams
+- Metadata allows for custom organization (e.g., by department, project, or client)
