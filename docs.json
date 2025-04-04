@@ -36,6 +36,25 @@
             ]
           },
           {
+            "group": "Core Objects",
+            "pages": [
+              "api-objects/customer",
+              "api-objects/proxy_user",
+              "api-objects/service",
+              "api-objects/service_adjustment",
+              "api-objects/proxy",
+              "api-objects/residential_ledger",
+              "api-objects/log_summary",
+              "api-objects/log",
+              "api-objects/product",
+              "api-objects/asn",
+              "api-objects/continent",
+              "api-objects/country",
+              "api-objects/subdivision",
+              "api-objects/country"
+            ]
+          },
+          {
             "group": "Explainers",
             "pages": [
               "api-explainers/proxy-types",
