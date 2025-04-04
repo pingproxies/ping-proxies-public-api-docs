@@ -167,14 +167,6 @@ GET /public/user/log_summary/search
 GET /public/user/log_summary/retrieve/{log_summary_id}
 ```
 
-## Effective Monitoring Strategies
-
-For effective monitoring of your proxy usage:
-
-- Use the `/analytics/graph` endpoint for most usage monitoring scenarios
-- Only use `/log_summary` or `/log` endpoints when you need to see information on specific requests or detailed breakdowns by hostname, proxy user ID, or network on a daily basis
-- The `/residential_ledger` endpoints are best used specifically for monitoring daily residential bandwidth allocation changes
-
 ## Reference Table: Analytics Endpoints
 
 | Endpoint | Purpose | Retention | Granularity |
