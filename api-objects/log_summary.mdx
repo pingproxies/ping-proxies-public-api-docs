@@ -29,14 +29,6 @@ The Log Summary object connects several other entities in the Ping Proxies syste
 - **Logs**: Raw logs are aggregated into log summaries
 - **Residential Ledger**: Both log summaries and residential ledger track bandwidth usage, but serve different purposes (analytics vs. billing)
 
-```mermaid
-graph TD
-    Customer --> LogSummary
-    Customer --> ResidentialLedger[Residential Ledger]
-    ProxyUser --> LogSummary
-    Logs --> LogSummary
-```
-
 ## Related Endpoints
 
 | Endpoint | Description |
