@@ -1,0 +1,105 @@
+---
+title: 'Generating Residential Proxies'
+description: 'Learn how to generate and use residential proxies on our platform'
+---
+
+If you have available residential bandwidth on your account you can generate residential proxies on the Residential Generator dashboard section.
+
+You can generate 1,000 proxies at a time through the dashboard and you can do this an unlimited number of times.
+
+The generator will allow you to select your geolocation and carrier settings as well as the session type.
+
+## Syntax Generation
+
+You can also generate residential proxies via syntax generation. Our proxies have a standardized format and as long as you generate proxy information in this format then your proxies will be accepted by our network.
+
+### Basic Random Residential Proxy
+
+**Format**
+```
+residential.pingproxies.com:8000:{username}:{password}
+```
+
+**Example**
+```
+residential.pingproxies.com:8000:stevejobs:apple123
+```
+
+### Sticky Residential Proxy
+
+You can make a proxy have a sticky IP address by adding a session ID in this format: `_s_{random_alphanumeric}` to the username field of the proxy. Any requests with using a proxy with the same alphanumeric session ID will try to link you to the same IP address as the first request with that session ID.
+
+**Format**
+```
+residential.pingproxies.com:8000:{username}_s_{random_alphanumeric}:{password}
+```
+
+**Example of a Sticky Proxy**
+```
+residential.pingproxies.com:8000:stevejobs_s_we12NkllMSS:apple123
+```
+
+### Country Targeting
+
+You can make a proxy have a IP address from a specific country by adding a country ISO 3166 code in this format: `_c_{country_iso_code}` to the username field of the proxy. Any requests with using a proxy with the ISO code will return a proxy with an IP address from the selected country.
+
+**Format**
+```
+residential.pingproxies.com:8000:{username}_c_{country_iso_code}:{password}
+```
+
+**Example of a United Kingdom Proxy**
+```
+residential.pingproxies.com:8000:stevejobs_c_gb:apple123
+```
+
+### City Targeting
+
+You can make a proxy have a IP address from a specific city by adding city name or alias in this format: `_city_{city_alias}` to the username field of the proxy. Any requests with using a proxy with the city alias will return a proxy with an IP address from the selected city.
+
+You can find out a full list of available cities and their alias via the dashboard.
+
+**Format**
+```
+residential.pingproxies.com:8000:{username}_c_{country_iso_code_of_city}_city_{citry_alias}:{password}
+```
+
+**Example of a London Proxy**
+```
+residential.pingproxies.com:8000:stevejobs_c_gb_city_london:apple123
+```
+
+### ASN Targeting
+
+You can make a proxy have a IP address from a specific ASN / Carrier by adding ASN in this format: `_asn_{asn_number}` to the username field of the proxy. Any requests with using a proxy with the ASN number will return a proxy with an IP address from that network.
+
+You can find out a full list of available carriers and ASNs via the dashboard.
+
+**Format**
+```
+residential.pingproxies.com:8000:{username}_asn_{asn_number}:{password}
+```
+
+**Example of a AT&T Proxy**
+```
+residential.pingproxies.com:8000:stevejobs_asn_7018:apple123
+```
+
+### Combined Targeting
+
+You can combine any of the above targeting methods together to your proxy information to further limit the IP Addresses of your proxies.
+
+**Example of a AT&T Proxy in Charlotte, NC USA**
+```
+residential.pingproxies.com:8000:stevejobs_c_us_city_charlotte_asn_7018:apple123
+```
+
+**Example of a Sticky AT&T Proxy in Charlotte, NC USA**
+```
+residential.pingproxies.com:8000:stevejobs_c_us_city_charlotte_asn_7018_s_h12kJsas129:apple123
+```
+
+**Example of a Sticky United Kingdom Proxy**
+```
+residential.pingproxies.com:8000:stevejobs_c_gb_s_dvnwcNOod12312s:apple123
+```
