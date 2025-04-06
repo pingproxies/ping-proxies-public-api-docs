@@ -1,0 +1,39 @@
+---
+title: 'Proxy Authentication Types'
+description: 'Understanding and choosing between different proxy authentication methods'
+---
+
+Ping Proxies supports multiple authentication methods to provide flexible, secure access to your proxies. Our innovative Proxy User and IAM system lets you create and manage proxy users, track their usage, limit residential bandwidth, and link their access to specific proxies and services—all from our dashboard.
+
+## Authentication Methods
+
+### Proxy User Authentication
+
+This authentication type allows you to create a Proxy User and access all available proxies using their username and password credentials.
+
+- **Benefits**: Use consistent credentials across all your proxies
+- **Recommended for**: Resellers who want to assign each customer a dedicated proxy user with access to specific services
+
+### IP Authentication
+
+With IP authentication, you can access your static proxies without entering username and password credentials. This method works by:
+
+1. Creating a proxy user
+2. Attaching a whitelisted IP address to that user for authentication
+
+**Important**: Each whitelisted IP address must be unique and cannot be assigned to multiple proxy users.
+
+### Proxy Specific Authentication
+
+This method restricts access to a single static proxy by assigning unique credentials that work only with that specific proxy.
+
+- **Limitation**: Credentials cannot be used to access other proxies, even within the same service
+- **Analytics**: When using proxy-specific authentication, all analytics and usage will be attributed to your default account Proxy User
+
+## Choosing the Right Authentication Method
+
+- **For resellers**: Proxy User Authentication provides the best control and tracking
+- **For server applications**: IP Authentication eliminates the need to store credentials
+- **For specialized access control**: Proxy Specific Authentication offers the most granular security
+
+All authentication methods can be managed through our dashboard or programmatically via our API.
