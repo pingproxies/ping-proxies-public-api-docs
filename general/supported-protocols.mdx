@@ -1,0 +1,41 @@
+---
+title: 'Supported Protocols'
+description: 'Protocol support information for Ping Proxies services'
+---
+
+# Supported Protocols
+
+All proxy services from Ping Proxies support multiple connection protocols to ensure compatibility with a wide range of applications and use cases.
+
+## Protocol Support Matrix
+
+The table below details the protocol support across our various proxy services:
+
+| Service Type | HTTP/S | SOCKS5 TCP | SOCKS5 UDP |
+|--------------|--------|------------|------------|
+| Datacenter Proxies | ✅ | ✅ | ❌ |
+| Static Residential Proxies | ✅ | ✅ | ❌ |
+| Residential Bandwidth | ✅ | ✅ | ❌ |
+
+## HTTP/S Support
+
+Our proxies support HTTP and HTTPS connections, including SSL targets via CONNECT tunneling. This ensures that you can securely access encrypted websites and services through our proxy network.
+
+## SOCKS5 TCP Support
+
+All of our proxy services support SOCKS5 TCP connections, providing a versatile option for applications that require this protocol. SOCKS5 offers advantages for certain use cases where HTTP proxying might be insufficient.
+
+## Protocol Selection
+
+When connecting to our proxies, you can choose the protocol that best fits your needs:
+
+- Use **HTTP/S** for web browsing, data collection, and most general use cases
+- Use **SOCKS5 TCP** for applications that require TCP protocol support beyond HTTP
+
+## Configuring Your Connection
+
+The specific port you connect to will determine which protocol is used. Please refer to your proxy credentials for the correct port numbers for each protocol type.
+
+<Note>
+  While we support SOCKS5 TCP, we do not currently support SOCKS5 UDP connections. Applications requiring UDP protocol support may not function properly through our proxies.
+</Note>
