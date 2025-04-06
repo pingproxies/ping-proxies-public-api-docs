@@ -1,0 +1,43 @@
+---
+title: 'Editing a Proxy User'
+description: 'Learn how to edit your proxy users through the Ping Proxies dashboard'
+---
+
+You can edit your Proxy Users via our dashboard and Proxy User management section. Simply click edit next to a Proxy User and then you'll be able to edit their details.
+
+![Proxy User Management Page](/images/proxy-user-management.png)
+
+## Editable Attributes
+
+| Attribute | Limitation |
+|-----------|------------|
+| Proxy User Password | 8-16 Alphanumeric |
+| Proxy User Residential Bandwidth | Integer greater than current GB usage |
+| IP Authentications | Maximum of 3 per Proxy User |
+| Static Proxies Access | Limit by Service ID |
+
+## Editing Process
+
+1. Navigate to the Proxy User management section in your dashboard
+2. Find the proxy user you want to edit
+3. Click the "Edit" button next to their name
+4. Make your desired changes to any of the editable attributes
+5. Click "Save" to apply your changes
+
+## Password Requirements
+
+When editing a proxy user's password, remember that it must:
+- Be between 8 and 16 characters long
+- Contain only alphanumeric characters (letters and numbers)
+
+## Residential Bandwidth Allocation
+
+When adjusting residential bandwidth, you can only increase the allocation - you cannot reduce it below the current usage level. This prevents accidentally restricting access for proxy users who have already consumed bandwidth.
+
+## IP Authentication
+
+IP authentication allows proxy access based on client IP address without sending credentials in each request. You can add up to 3 IP addresses per proxy user for authentication purposes.
+
+## Service Restrictions
+
+You can limit a proxy user's access to specific proxy services by selecting the relevant Service IDs. This is useful for controlling which proxies a particular user can access.
