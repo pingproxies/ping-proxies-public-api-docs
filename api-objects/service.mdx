@@ -54,6 +54,7 @@ graph TD
     Service --> Proxies
     Service --> ServiceAdjustments
     Service --> Invoices
+    Service --> ResidentialLedger[Residential Ledger]
     Product --> Service
 ```
 
@@ -104,3 +105,15 @@ graph TD
 - The `service_metadata` field can be used to organize services by project, client, or department
 - When a service is canceled, all associated proxies are deprovisioned
 - To view proxies associated with a service, use the `proxies=true` parameter when retrieving the service
+
+## Residential Services
+
+Residential services have several unique characteristics:
+
+- They do not have static proxies attached to them, unlike datacenter and ISP services
+- Instead, they add bandwidth to your account's residential bandwidth pool
+- Bandwidth added through residential services never expires, even if the subscription is canceled
+- Each purchase creates a `residential_ledger` entry recording the bandwidth addition
+- Residential services can be paused and unpaused, a feature not available for other service types
+- When paused, billing stops but you retain access to any previously purchased bandwidth
+- You can access this bandwidth through dynamic residential proxies using the residential endpoints
