@@ -33,13 +33,18 @@ The Proxy User acts as an intermediary between your customer account and your pr
 
 ```mermaid
 graph TD
-    Customer --> ProxyUser
-    ProxyUser --> Service1[Service]
-    ProxyUser --> Service2[Service]
+    Customer --> ProxyUser1[Proxy User 1]
+    ProxyUser1 --> Service1[Service]
     Service1 --> Proxy1[Proxy]
-    Service1 --> Proxy2[Proxy]
-    Service2 --> Proxy3[Proxy]
+    ProxyUser1 --> LogSummary[Log Summary]
+    ProxyUser1 --> Log[Log]
 ```
+
+- **Customer**: A single customer can have multiple proxy users
+- **Services**: A proxy user can access multiple services (or be restricted to specific ones)
+- **Proxies**: Proxies are accessed through proxy users, which control authentication
+- **Logs**: Usage logs are associated with specific proxy users for tracking
+- **Log Summaries**: Aggregated usage data is linked to proxy users
 
 ## Related Endpoints
 
