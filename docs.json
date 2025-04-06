@@ -63,7 +63,7 @@
             "group": "Service Management",
             "pages": [
               "general/resizing-your-service",
-              "general/changing-payyment-cycle",
+              "general/changing-payment-cycle",
               "general/service-cancellation",
               "general/edit-payment-method"
             ]
