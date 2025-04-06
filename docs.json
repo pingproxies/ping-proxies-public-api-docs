@@ -15,55 +15,81 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["introduction"]
+            "pages": [
+              "general/introduction",
+              "general/account-registration",
+              "general/making-your-first-purchase"
+
+            ]
           },
           {
             "group": "Proxy Basics",
             "pages": [
-              "api-basics/authentication"
+              "general/supported-protocols",
+              "general/acceptable-usage-policy",
+              "general/anti-abuse-policy",
+              "general/restricted-domains"
             ]
           },
           {
             "group": "Static Proxies",
             "pages": [
-              "api-core-features/pagination"
+              "general/static-datacenter-proxies",
+              "general/static-residential-isp-proxies",
+              "general/static-proxy-replacements",
+              "general/listing-and-exporting-proxies"
             ]
           },
           {
             "group": "Residential Proxies",
             "pages": [
-              "api-objects/customer"
+              "general/explaining-residential-proxies",
+              "general/generating-residential-proxies",
+              "general/sticky-vs-rotating-residential-proxies",
+              "general/geolocating-targeting",
+              "general/isp-asn-targeting"
             ]
           },
           {
             "group": "Proxy Users & Authentication",
             "pages": [
-              "api-explainers/proxy-types"
+              "general/proxy-authentication-types",
+              "general/creating-a-proxy-user",
+              "general/editing-a-proxy-user"
             ]
           }
           ,
           {
             "group": "Service Management",
             "pages": [
-              "api-explainers/proxy-types"
+              "general/resizing-your-service",
+              "general/changing-payyment-cycle",
+              "general/service-cancellation",
+              "general/edit-payment-method"
             ]
           },
           {
             "group": "Billing Management",
             "pages": [
-              "api-explainers/proxy-types"
+              "general/billing-address",
+              "general/invoices",
+              "general/credit-and-payment-transactions",
+              "general/store-credit"              
             ]
           },
           {
             "group": "Account Management",
             "pages": [
-              "api-explainers/proxy-types"
+              "general/two-factor-authentication",
+              "general/changing-your-email-address",
+              "general/changing-your-password",
+              "general/forgot-password"
             ]
           },
           {
             "group": "Integration",
             "pages": [
-              "api-explainers/proxy-types"
+              "general/browser-integrations"
             ]
           }
         ]
@@ -73,7 +99,7 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["introduction"]
+            "pages": ["api/introduction"]
           },
           {
             "group": "API Basics",
@@ -132,7 +158,8 @@
         "groups": [
           {
             "group": "Practical Examples",
-            "pages": ["examples-index"
+            "pages": [
+              "api/examples-index"
           ]
           }
         ]
