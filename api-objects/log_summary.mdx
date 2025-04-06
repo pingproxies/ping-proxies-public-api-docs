@@ -27,14 +27,14 @@ The Log Summary object connects several other entities in the Ping Proxies syste
 - **Customer**: Each log summary is associated with a specific customer account
 - **Proxy User**: Log summaries track usage for specific proxy users
 - **Logs**: Raw logs are aggregated into log summaries
-- **Residential Ledger**: For residential proxies, log summaries relate to bandwidth consumption tracked in the ledger
+- **Residential Ledger**: Both log summaries and residential ledger track bandwidth usage, but serve different purposes (analytics vs. billing)
 
 ```mermaid
 graph TD
     Customer --> LogSummary
+    Customer --> ResidentialLedger[Residential Ledger]
     ProxyUser --> LogSummary
     Logs --> LogSummary
-    LogSummary --> ResidentialLedger[Residential Ledger]
 ```
 
 ## Related Endpoints
@@ -63,6 +63,7 @@ This provides an efficient way to analyze historical usage patterns without stor
 - The `log_summary_hostname` field is only available for summaries less than 90 days old
 - For residential proxies, the `log_summary_bytes` directly correlates with bandwidth consumption
 - Use the `/analytics/graph` endpoint for visualizing log summary data over time with flexible time intervals (minute, hour, day, month)
-- Log Summaries complement the Residential Ledger but serve a different purpose:
-  - Log Summaries focus on usage patterns across all proxy types
+- Log Summaries and Residential Ledger track related data but serve different purposes:
+  - Log Summaries focus on usage patterns and analytics across all proxy types
   - Residential Ledger specifically tracks bandwidth changes for billing purposes
+  - While not directly linked, the data from both should reconcile in aggregate
