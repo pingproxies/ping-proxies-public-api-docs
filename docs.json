@@ -20,7 +20,7 @@
           {
             "group": "Proxy Basics",
             "pages": [
-              "api-basics/authentication",
+              "api-basics/authentication"
             ]
           },
           {
