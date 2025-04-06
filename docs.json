@@ -39,12 +39,12 @@
             "group": "Core Objects",
             "pages": [
               "api-objects/customer",
-              "api-objects/proxy_user",
+              "api-objects/proxy-user",
               "api-objects/service",
-              "api-objects/service_adjustment",
+              "api-objects/service-adjustment",
               "api-objects/proxy",
-              "api-objects/residential_ledger",
-              "api-objects/log_summary",
+              "api-objects/residential-ledger",
+              "api-objects/log-summary",
               "api-objects/log",
               "api-objects/product",
               "api-objects/asn",
@@ -63,7 +63,7 @@
               "api-explainers/billing",
               "api-explainers/common-object-relationships",
               "api-explainers/proxy-users-and-access-control",
-              "api-explainers/service_adjustments"
+              "api-explainers/service-adjustments"
               
             ]
           }
