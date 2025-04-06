@@ -11,6 +11,64 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["introduction"]
+          },
+          {
+            "group": "Proxy Basics",
+            "pages": [
+              "api-basics/authentication",
+            ]
+          },
+          {
+            "group": "Static Proxies",
+            "pages": [
+              "api-core-features/pagination"
+            ]
+          },
+          {
+            "group": "Residential Proxies",
+            "pages": [
+              "api-objects/customer"
+            ]
+          },
+          {
+            "group": "Proxy Users & Authentication",
+            "pages": [
+              "api-explainers/proxy-types"
+            ]
+          }
+          ,
+          {
+            "group": "Service Management",
+            "pages": [
+              "api-explainers/proxy-types"
+            ]
+          },
+          {
+            "group": "Billing Management",
+            "pages": [
+              "api-explainers/proxy-types"
+            ]
+          },
+          {
+            "group": "Account Management",
+            "pages": [
+              "api-explainers/proxy-types"
+            ]
+          },
+          {
+            "group": "Integration",
+            "pages": [
+              "api-explainers/proxy-types"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Introduction",
         "groups": [
           {
