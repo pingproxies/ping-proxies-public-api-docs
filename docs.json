@@ -7,6 +7,9 @@
     "light": "#a192ec",
     "dark": "#5547eb"
   },
+  "style": {
+    "css": "img { border-radius: 8px; }"
+  },
   "favicon": "favicon.png",
   "navigation": {
     "tabs": [
