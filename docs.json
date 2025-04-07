@@ -9,9 +9,11 @@
   },
   "favicon": "favicon.png",
   "navigation": {
-    "tabs": [
+    "dropdowns": [
       {
-        "tab": "Documentation",
+        "dropdown": "Documentation",
+        "icon": "book-open",
+        "description": "Complete proxy documentation",
         "groups": [
           {
             "group": "Getting Started",
@@ -25,7 +27,6 @@
           {
             "group": "Proxy Basics",
             "icon": "book-open",
-            "collapsed": true,
             "pages": [
               "general/supported-protocols",
               "general/acceptable-usage-policy",
@@ -36,7 +37,6 @@
           {
             "group": "Static Proxies",
             "icon": "server",
-            "collapsed": true,
             "pages": [
               "general/static-datacenter-proxies",
               "general/static-residential-isp-proxies",
@@ -47,7 +47,6 @@
           {
             "group": "Residential Proxies",
             "icon": "home",
-            "collapsed": true,
             "pages": [
               "general/explaining-residential-proxies",
               "general/generating-residential-proxies",
@@ -59,7 +58,6 @@
           {
             "group": "Proxy Users & Authentication",
             "icon": "lock",
-            "collapsed": true,
             "pages": [
               "general/proxy-authentication-types",
               "general/creating-a-proxy-user",
@@ -69,7 +67,6 @@
           {
             "group": "Service Management",
             "icon": "settings",
-            "collapsed": true,
             "pages": [
               "general/resizing-your-service",
               "general/changing-payment-cycle",
@@ -80,7 +77,6 @@
           {
             "group": "Billing Management",
             "icon": "credit-card",
-            "collapsed": true,
             "pages": [
               "general/billing-address",
               "general/invoices",
@@ -91,7 +87,6 @@
           {
             "group": "Account Management",
             "icon": "user",
-            "collapsed": true,
             "pages": [
               "general/two-factor-authentication",
               "general/changing-your-email-address",
@@ -102,7 +97,6 @@
           {
             "group": "Integration",
             "icon": "puzzle",
-            "collapsed": true,
             "pages": [
               "general/browser-integrations"
             ]
@@ -110,7 +104,9 @@
         ]
       },
       {
-        "tab": "API Introduction",
+        "dropdown": "API Introduction",
+        "icon": "code",
+        "description": "Getting started with the API",
         "groups": [
           {
             "group": "Getting Started",
@@ -163,24 +159,27 @@
               "api-explainers/common-object-relationships",
               "api-explainers/proxy-users-and-access-control",
               "api-explainers/service-adjustments"
-              
             ]
           }
         ]
       },
       {
-        "tab": "API Examples",
+        "dropdown": "API Examples",
+        "icon": "code-branch",
+        "description": "Practical code examples",
         "groups": [
           {
             "group": "Practical Examples",
             "pages": [
               "api/examples-index"
-          ]
+            ]
           }
         ]
       },
       {
-        "tab": "API Reference",
+        "dropdown": "API Reference",
+        "icon": "brackets-curly",
+        "description": "Complete API reference",
         "groups": [
           {
             "group": "Customer",
