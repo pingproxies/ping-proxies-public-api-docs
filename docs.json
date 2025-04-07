@@ -46,7 +46,7 @@
                 ]
               },
               {
-                "icon": "home",
+                "icon": "house",
                 "group": "Residential Proxies",
                 "pages": [
                   "general/explaining-residential-proxies",
@@ -66,7 +66,7 @@
                 ]
               },
               {
-                "icon": "settings",
+                "icon": "sliders",
                 "group": "Service Management",
                 "pages": [
                   "general/resizing-your-service",
