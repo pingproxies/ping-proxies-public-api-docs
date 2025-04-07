@@ -26,11 +26,17 @@
             "group": "Proxy Basics",
             "icon": "book-open",
             "collapsed": true,
+            
             "pages": [
-              "general/supported-protocols",
-              "general/acceptable-usage-policy",
-              "general/anti-abuse-policy",
-              "general/restricted-domains"
+              {
+                "group": "Proxy Basics",
+                "pages": [
+                  "general/supported-protocols",
+                  "general/acceptable-usage-policy",
+                  "general/anti-abuse-policy",
+                  "general/restricted-domains"
+                ]
+              }
             ]
           },
           {
