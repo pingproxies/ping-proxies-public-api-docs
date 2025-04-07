@@ -8,7 +8,7 @@
     "dark": "#5547eb"
   },
   "style": {
-    "css": "img { border-radius: 8px; }"
+    "css": "img { border-radius: 16px; }"
   },
   "favicon": "favicon.png",
   "navigation": {
