@@ -24,11 +24,9 @@
           },
           {
             "group": "Proxy Basics",
-            "icon": "book-open",
-            "collapsed": true,
-            
             "pages": [
               {
+                "icon": "book-open",
                 "group": "Proxy Basics",
                 "pages": [
                   "general/supported-protocols",
