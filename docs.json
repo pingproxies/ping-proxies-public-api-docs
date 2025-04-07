@@ -58,7 +58,7 @@
               },
               {
                 "icon": "lock",
-                "group": "Proxy Users & Authentication",
+                "group": "Proxy Authentication",
                 "pages": [
                   "general/proxy-authentication-types",
                   "general/creating-a-proxy-user",
