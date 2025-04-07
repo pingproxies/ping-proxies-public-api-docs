@@ -23,7 +23,7 @@
             ]
           },
           {
-            "group": "Proxy Basics",
+            "group": "Documentation",
             "pages": [
               {
                 "icon": "book-open",
@@ -34,81 +34,74 @@
                   "general/anti-abuse-policy",
                   "general/restricted-domains"
                 ]
+              },
+              {
+                "icon": "server",
+                "group": "Static Proxies",
+                "pages": [
+                  "general/static-datacenter-proxies",
+                  "general/static-residential-isp-proxies",
+                  "general/static-proxy-replacements",
+                  "general/listing-and-exporting-proxies"
+                ]
+              },
+              {
+                "icon": "home",
+                "group": "Residential Proxies",
+                "pages": [
+                  "general/explaining-residential-proxies",
+                  "general/generating-residential-proxies",
+                  "general/sticky-vs-rotating-residential-proxies",
+                  "general/geolocation-targeting",
+                  "general/isp-asn-targeting"
+                ]
+              },
+              {
+                "icon": "lock",
+                "group": "Proxy Users & Authentication",
+                "pages": [
+                  "general/proxy-authentication-types",
+                  "general/creating-a-proxy-user",
+                  "general/editing-a-proxy-user"
+                ]
+              },
+              {
+                "icon": "settings",
+                "group": "Service Management",
+                "pages": [
+                  "general/resizing-your-service",
+                  "general/changing-payment-cycle",
+                  "general/service-cancellation",
+                  "general/edit-payment-method"
+                ]
+              },
+              {
+                "icon": "credit-card",
+                "group": "Billing Management",
+                "pages": [
+                  "general/billing-address",
+                  "general/invoices",
+                  "general/credit-and-payment-transactions",
+                  "general/store-credit"              
+                ]
+              },
+              {
+                "icon": "user",
+                "group": "Account Management",
+                "pages": [
+                  "general/two-factor-authentication",
+                  "general/changing-your-email-address",
+                  "general/changing-your-password",
+                  "general/forgot-password"
+                ]
+              },
+              {
+                "icon": "puzzle",
+                "group": "Integration",
+                "pages": [
+                  "general/browser-integrations"
+                ]
               }
-            ]
-          },
-          {
-            "group": "Static Proxies",
-            "icon": "server",
-            "collapsed": true,
-            "pages": [
-              "general/static-datacenter-proxies",
-              "general/static-residential-isp-proxies",
-              "general/static-proxy-replacements",
-              "general/listing-and-exporting-proxies"
-            ]
-          },
-          {
-            "group": "Residential Proxies",
-            "icon": "home",
-            "collapsed": true,
-            "pages": [
-              "general/explaining-residential-proxies",
-              "general/generating-residential-proxies",
-              "general/sticky-vs-rotating-residential-proxies",
-              "general/geolocation-targeting",
-              "general/isp-asn-targeting"
-            ]
-          },
-          {
-            "group": "Proxy Users & Authentication",
-            "icon": "lock",
-            "collapsed": true,
-            "pages": [
-              "general/proxy-authentication-types",
-              "general/creating-a-proxy-user",
-              "general/editing-a-proxy-user"
-            ]
-          },
-          {
-            "group": "Service Management",
-            "icon": "settings",
-            "collapsed": true,
-            "pages": [
-              "general/resizing-your-service",
-              "general/changing-payment-cycle",
-              "general/service-cancellation",
-              "general/edit-payment-method"
-            ]
-          },
-          {
-            "group": "Billing Management",
-            "icon": "credit-card",
-            "collapsed": true,
-            "pages": [
-              "general/billing-address",
-              "general/invoices",
-              "general/credit-and-payment-transactions",
-              "general/store-credit"              
-            ]
-          },
-          {
-            "group": "Account Management",
-            "icon": "user",
-            "collapsed": true,
-            "pages": [
-              "general/two-factor-authentication",
-              "general/changing-your-email-address",
-              "general/changing-your-password",
-              "general/forgot-password"
-            ]
-          },
-          {
-            "group": "Integration",
-            "icon": "puzzle",
-            "collapsed": true,
-            "pages": [
-              "general/browser-integrations"
             ]
           }
         ]
@@ -167,7 +160,6 @@
               "api-explainers/common-object-relationships",
               "api-explainers/proxy-users-and-access-control",
               "api-explainers/service-adjustments"
-              
             ]
           }
         ]
@@ -179,7 +171,7 @@
             "group": "Practical Examples",
             "pages": [
               "api/examples-index"
-          ]
+            ]
           }
         ]
       },
