@@ -30,6 +30,15 @@ The City object is connected to several other objects in the Ping Proxies API:
 - **Proxies**: Proxies can be geo-located in specific cities
 - **Residential Proxies**: Residential proxy generation can target specific cities
 
+```mermaid
+graph TD
+    Continent --> Country
+    Country --> Subdivision
+    Subdivision --> City
+    City --> Proxy
+    City --> GeneratedResidentialProxy
+```
+
 ## Related Endpoints
 
 | Endpoint | Description |
