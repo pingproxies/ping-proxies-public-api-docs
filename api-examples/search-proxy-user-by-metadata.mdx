@@ -51,8 +51,8 @@ else:
 # This will find all proxy users that have a employee_id value between 1000 and 5000
 range_url = f"{BASE_URL}/proxy_user/search"
 range_params = {
-    "min_proxy_user_metadata.employee_id": 1000,
-    "max_proxy_user_metadata.employee_id": 5000
+    "proxy_user_metadata.min_employee_id": 1000,
+    "proxy_user_metadata.max_employee_id": 5000
 }
 
 # Make the API request
@@ -118,8 +118,8 @@ const rangeSearch = async () => {
   try {
     // Create URL with query parameters
     const url = new URL(`${BASE_URL}/proxy_user/search`);
-    url.searchParams.append('min_proxy_user_metadata.employee_id', '1000');
-    url.searchParams.append('max_proxy_user_metadata.employee_id', '5000');
+    url.searchParams.append('proxy_user_metadata.min_employee_id', '1000');
+    url.searchParams.append('proxy_user_metadata.max_employee_id', '5000');
     
     // Make the API request
     const response = await fetch(url, { headers });
@@ -200,7 +200,7 @@ if (curl_errno($ch)) {
 
 // Example 2: Search proxy users by metadata range (employee_id between 1000 and 5000)
 // This will find all proxy users that have a employee_id value between 1000 and 5000
-$rangeUrl = $baseUrl . '/proxy_user/search?min_proxy_user_metadata.employee_id=1000&max_proxy_user_metadata.employee_id=5000';
+$rangeUrl = $baseUrl . '/proxy_user/search?proxy_user_metadata.min_employee_id=1000&proxy_user_metadata.max_employee_id=5000';
 
 // Initialize cURL session (reusing the same handle)
 curl_setopt($ch, CURLOPT_URL, $rangeUrl);
@@ -344,8 +344,8 @@ func main() {
 	
 	// Add query parameters
 	params = rangeURL.Query()
-	params.Add("min_proxy_user_metadata.employee_id", "1000")
-	params.Add("max_proxy_user_metadata.employee_id", "5000")
+	params.Add("proxy_user_metadata.min_employee_id", "1000")
+	params.Add("proxy_user_metadata.max_employee_id", "5000")
 	rangeURL.RawQuery = params.Encode()
 	
 	// Create a new request
@@ -479,8 +479,8 @@ public class SearchProxyUsersByMetadata {
         
         // Build the URL with query parameters
         String rangeUrl = BASE_URL + "/proxy_user/search" + 
-                "?min_proxy_user_metadata.employee_id=1000" +
-                "&max_proxy_user_metadata.employee_id=5000";
+                "?proxy_user_metadata.min_employee_id=1000" +
+                "&proxy_user_metadata.max_employee_id=5000";
         
         // Create a new request
         HttpRequest rangeRequest = HttpRequest.newBuilder()
@@ -530,7 +530,7 @@ public class SearchProxyUsersByMetadata {
 
 1. **Exact Metadata Matching**: Use `proxy_user_metadata.field_name` to search for proxy users with a specific value in their metadata.
 
-2. **Range Filtering**: Use `min_proxy_user_metadata.field_name` and `max_proxy_user_metadata.field_name` to search for proxy users with metadata values within a specific range.
+2. **Range Filtering**: Use `proxy_user_metadata.min_field_name` and `proxy_user_metadata.max_field_name` to search for proxy users with metadata values within a specific range.
 
 ## Advanced Metadata Search Operators
 
@@ -543,7 +543,7 @@ The `like_` operator allows you to search for proxy users with metadata fields t
 **Example: Find proxy users with email addresses from a specific domain**
 
 ```
-like_proxy_user_metadata.email=@example.com
+proxy_user_metadata.like_email=@example.com
 ```
 
 This will match any proxy user with an email field in their metadata that contains "@example.com".
@@ -551,7 +551,7 @@ This will match any proxy user with an email field in their metadata that contai
 **Example: Find proxy users with names starting with a specific prefix**
 
 ```
-like_proxy_user_metadata.name=John%
+proxy_user_metadata.like_name=John%
 ```
 
 The `%` character acts as a wildcard. This query would match names like "John", "Johnny", "Johnson", etc.
@@ -583,7 +583,7 @@ The `not_` operator allows you to find proxy users where a metadata field does n
 **Example: Find proxy users not in the Marketing department**
 
 ```
-not_proxy_user_metadata.department=Marketing
+proxy_user_metadata.not_department=Marketing
 ```
 
 This will return all proxy users whose department field is not set to "Marketing".
@@ -591,8 +591,8 @@ This will return all proxy users whose department field is not set to "Marketing
 **Example: Find proxy users with employee_id outside a specific range**
 
 ```
-not_min_proxy_user_metadata.employee_id=1000
-not_max_proxy_user_metadata.employee_id=5000
+proxy_user_metadata.not_min_employee_id=1000
+proxy_user_metadata.not_max_employee_id=5000
 ```
 
 This will return proxy users whose employee_id is less than 1000 or greater than 5000.
@@ -606,7 +606,7 @@ You can combine multiple search operators to create complex queries.
 ```
 proxy_user_metadata.department=Sales
 proxy_user_metadata.status=active
-like_proxy_user_metadata.email=@example.com
+proxy_user_metadata.like_email=@example.com
 ```
 
 **Example: Find proxy users with a project field but without an end_date**
