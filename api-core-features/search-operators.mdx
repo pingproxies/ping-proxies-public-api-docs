@@ -74,7 +74,7 @@ This returns proxy users that have a "department" key in their metadata.
 You can combine multiple operators in a single request to create complex queries:
 
 ```
-GET /public/user/proxy/search?proxy_type=isp&country_id=gb&min_proxy_creation_datetime=2023-01-01&not_country_id=us
+GET /public/user/proxy/search?proxy_type=isp&country_id=gb&not_country_id=us
 ```
 
 This returns active ISP proxies in Great Britain created after January 1, 2023.

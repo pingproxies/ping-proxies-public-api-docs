@@ -14,7 +14,7 @@ All search endpoints in the Ping Proxies API support the `sort_by` parameter, wh
 The simplest form of sorting uses a single field name without any suffix, which sorts in ascending order (A-Z, oldest to newest):
 
 ```
-GET /public/user/proxy/search?sort_by=proxy_creation_datetime
+GET /public/user/proxy/search?sort_by=proxy_last_update_datetime
 ```
 
 This sorts results by the creation datetime in ascending order (oldest to newest).
@@ -68,7 +68,7 @@ Sorting works in conjunction with pagination. When you specify both a sort order
 For example:
 
 ```
-GET /public/user/proxy/search?sort_by=proxy_creation_datetime_desc&page=2&per_page=25
+GET /public/user/proxy/search?sort_by=proxy_last_update_datetime_desc&page=2&per_page=25
 ```
 
 This returns the second page of proxies, with 25 proxies per page, sorted by creation date from newest to oldest.
@@ -79,7 +79,7 @@ This returns the second page of proxies, with 25 proxies per page, sorted by cre
 ```bash cURL
 # Sort by creation date (newest first)
 curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search?sort_by=proxy_creation_datetime_desc' \
+  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search?sort_by=proxy_last_update_datetime_desc' \
   --header 'X-API-Public-Key: your_public_key' \
   --header 'X-API-Private-Key: your_private_key'
 
@@ -119,7 +119,7 @@ headers = {
 # Sort by creation date (newest first)
 def get_newest_proxies(limit=10):
     params = {
-        "sort_by": "proxy_creation_datetime_desc",
+        "sort_by": "proxy_last_update_datetime_desc",
         "per_page": limit
     }
     
@@ -192,7 +192,7 @@ const headers = {
 // Sort by creation date (newest first)
 async function getNewestProxies(limit = 10) {
   const url = new URL(BASE_URL);
-  url.searchParams.append('sort_by', 'proxy_creation_datetime_desc');
+  url.searchParams.append('sort_by', 'proxy_last_update_datetime_desc');
   url.searchParams.append('per_page', limit);
   
   const response = await fetch(url, { headers });
@@ -289,7 +289,7 @@ function makeRequest($url, $headers) {
 
 // Sort by creation date (newest first)
 function getNewestProxies($baseUrl, $headers, $limit = 10) {
-    $url = $baseUrl . '?sort_by=proxy_creation_datetime_desc&per_page=' . $limit;
+    $url = $baseUrl . '?sort_by=proxy_last_update_datetime_desc&per_page=' . $limit;
     return makeRequest($url, $headers);
 }
 
@@ -404,7 +404,7 @@ func makeRequest(url string) (*ApiResponse, error) {
 
 // getNewestProxies gets proxies sorted by creation date (newest first)
 func getNewestProxies(limit int) (*ApiResponse, error) {
-	url := fmt.Sprintf("%s?sort_by=proxy_creation_datetime_desc&per_page=%d", baseURL, limit)
+	url := fmt.Sprintf("%s?sort_by=proxy_last_update_datetime_desc&per_page=%d", baseURL, limit)
 	return makeRequest(url)
 }
 
@@ -522,7 +522,7 @@ public class PingProxiesSorting {
     
     // Get proxies sorted by creation date (newest first)
     public static ApiResponse getNewestProxies(int limit) throws IOException, InterruptedException {
-        String url = BASE_URL + "?sort_by=proxy_creation_datetime_desc&per_page=" + limit;
+        String url = BASE_URL + "?sort_by=proxy_last_update_datetime_desc&per_page=" + limit;
         return makeRequest(url);
     }
     
