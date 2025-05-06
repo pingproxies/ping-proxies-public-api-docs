@@ -297,7 +297,8 @@
           {
             "group": "Product Updates & Changelog",
             "pages": [
-              "product-updates"
+              "product-updates",
+              "api-changelog"
             ]
           }
         ]
