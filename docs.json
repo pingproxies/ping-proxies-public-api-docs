@@ -290,7 +290,18 @@
             ]
           }
         ]
-      }
+      },
+      {
+        "tab": "Product Updates & Changelog",
+        "groups": [
+          {
+            "group": "Product Updates & Changelog",
+            "pages": [
+              "product-updates"
+            ]
+          }
+        ]
+      },
     ]
   },
   "anchors": [
