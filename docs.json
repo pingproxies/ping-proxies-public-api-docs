@@ -306,7 +306,7 @@
         "tab": "Product Updates",
         "groups": [
           {
-            "group": "Product Update Log",
+            "group": "Product Updates",
             "pages": [
               "product-updates"
             ]
