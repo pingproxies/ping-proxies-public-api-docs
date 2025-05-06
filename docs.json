@@ -292,13 +292,23 @@
         ]
       },
       {
-        "tab": "Product Updates & Changelog",
+        "tab": "API Changelog",
         "groups": [
           {
-            "group": "Product Updates & Changelog",
+            "group": "Public API Changelog",
             "pages": [
-              "product-updates",
               "api-changelog"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Product Updates",
+        "groups": [
+          {
+            "group": "Product Update Log",
+            "pages": [
+              "product-updates"
             ]
           }
         ]
