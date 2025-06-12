@@ -14,6 +14,10 @@ When you make a request to an endpoint that returns multiple items (like search 
 - Provides more predictable response times
 - Makes responses easier to process
 
+<Warning>
+  Some /search endpoints may return total_count as -1 in cases where the number of objects is too large to count efficiently and quickly.
+</Warning>
+
 ## Pagination Parameters
 
 Ping Proxies API uses the following query parameters to control pagination:
