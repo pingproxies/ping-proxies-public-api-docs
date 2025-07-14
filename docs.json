@@ -252,7 +252,9 @@
           {
             "group": "Analytics",
             "pages": [
-              "api-reference/proxy-analytics/graph-proxy-analytics"
+              "api-reference/proxy-analytics/graph-proxy-analytics",
+              "api-reference/proxy-analytics/breakdown-proxy-analytics"
+
             ]
           },
           {
