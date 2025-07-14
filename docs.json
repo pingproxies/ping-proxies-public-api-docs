@@ -212,6 +212,13 @@
             ]
           },
           {
+            "group": "Residential Availability",
+            "pages": [
+              "api-reference/residential-availability/search-residential-availability",
+              "api-reference/residential-availability/count-residential-availability"
+            ]
+          },
+          {
             "group": "Residential Ledger",
             "pages": [
               "api-reference/residential-ledger/retrieve-residential-ledger",
@@ -287,6 +294,14 @@
             "pages": [
               "api-reference/city/retrieve-city",
               "api-reference/city/search-city"
+            ]
+          }
+          ,
+          {
+            "group": "Zip Code",
+            "pages": [
+              "api-reference/zip-code/retrieve-zip-code",
+              "api-reference/zip-code/search-zip-code"
             ]
           }
         ]
