@@ -57,6 +57,21 @@ residential.pingproxies.com:8000:{username}_c_{country_iso_code}:{password}
 ```
 residential.pingproxies.com:8000:stevejobs_c_gb:apple123
 ```
+### State Targeting
+
+You can make a proxy have a IP address from a specific state by adding the state name in this format: `_state_{state_name}` to the username field of the proxy. Any requests with using a proxy with the state will return a proxy with an IP address from the selected state.
+
+You can find out a full list of available state and their names via the dashboard or via the API where you can find all US states through the `/subdivision/search` endpoint while filtering by `country_id=us`.
+
+**Format**
+```
+residential.pingproxies.com:8000:{username}_c_us_state_{state_name}:{password}
+```
+
+**Example of a Florida Proxy**
+```
+residential.pingproxies.com:8000:stevejobs_c_us_state_florida:apple123
+```
 
 ### City Targeting
 
@@ -66,12 +81,29 @@ You can find out a full list of available cities and their alias via the dashboa
 
 **Format**
 ```
-residential.pingproxies.com:8000:{username}_c_{country_iso_code_of_city}_city_{citry_alias}:{password}
+residential.pingproxies.com:8000:{username}_c_{country_iso_code_of_city}_city_{city_alias}:{password}
 ```
 
 **Example of a London Proxy**
 ```
 residential.pingproxies.com:8000:stevejobs_c_gb_city_london:apple123
+```
+### Zip Code Targeting
+
+You can make a proxy have a IP address from a specific ZIP code ID to the proxy in this format: `_zip_{zip_code_id}` to the username field of the proxy. Any requests with using a proxy with the ZIP code ID will return a proxy with an IP address from the selected ZIP code.
+
+You can find out a full list of available ZIP codes and their ID's via the dashboard or via the API where we have a `/zip_code/search` endpoint.
+
+Since ZIP codes represent a very specific, limited population area, it is unlikely we will have a large number of proxies online from every ZIP code at a single time. You can overcome this issue by ensuring the ZIP code you are targeting has currently online proxies using our `/residential_availability/search` endpoint and filtering by `zip_code_id`. Alternatively, you can see an interactive, live view of all ZIP codes and their current node count on the residential dashboard.
+
+**Format**
+```
+residential.pingproxies.com:8000:{username}_c_{country_iso_code_of_zip_code}_zip_{zip_code_id}:{password}
+```
+
+**Example of a ZIP Code 32808 Proxy**
+```
+residential.pingproxies.com:8000:stevejobs_c_us_zip_32808:apple123
 ```
 
 ### ASN Targeting
