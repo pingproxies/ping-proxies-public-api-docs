@@ -22,6 +22,17 @@
               "general/making-your-first-purchase"
             ]
           },
+            {
+              "group": "Trust & Safety",
+              "icon": "lock",
+              "pages": [
+                "general/acceptable-usage-policy",
+                "general/ethical-sourcing",
+                "general/kyc-policy",
+                "general/restricted-domains",
+                "general/anti-abuse-policy"
+              ]
+            },
           {
             "group": "Documentation",
             "pages": [
@@ -29,10 +40,7 @@
                 "icon": "book-open",
                 "group": "Proxy Basics",
                 "pages": [
-                  "general/supported-protocols",
-                  "general/acceptable-usage-policy",
-                  "general/anti-abuse-policy",
-                  "general/restricted-domains"
+                  "general/supported-protocols"
                 ]
               },
               {
@@ -98,9 +106,29 @@
               },
               {
                 "icon": "puzzle",
-                "group": "Integration",
+                "group": "Integrations",
                 "pages": [
-                  "general/browser-integrations"
+                  "general/integration/browser-integrations",
+                  "general/integration/safari",
+                  "general/integration/duckduckgo",
+                  "general/integration/microsoft-edge",
+                  "general/integration/foxyproxy",
+                  "general/integration/proxifier",
+                  "general/integration/curl",
+                  "general/integration/proxy-switchyomega",
+                  "general/integration/clonbrowser",
+                  "general/integration/dicloak",
+                  "general/integration/gologin",
+                  "general/integration/hayha",
+                  "general/integration/ixbrowser",
+                  "general/integration/lauth",
+                  "general/integration/mulogin",
+                  "general/integration/multilogin",
+                  "general/integration/nstbrowser",
+                  "general/integration/octobrowser",
+                  "general/integration/sessionbox",
+                  "general/integration/undetectable-browser",
+                  "general/integration/vmlogin"
                 ]
               }
             ]
