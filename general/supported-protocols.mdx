@@ -17,7 +17,9 @@ The table below details the protocol support across our various proxy services:
 
 ## HTTP/S Support
 
-Our proxies support HTTP and HTTPS connections, including SSL targets via CONNECT tunneling. This ensures that you can securely access encrypted websites and services through our proxy network.
+Our proxies support direct HTTP connections and the tunneling of HTTPS connections. HTTP connections tunnel HTTPS connections to SSL targets via CONNECT tunneling and your data remains encrypted as bytes are tunnelled from client to target server, and vice-versa. This ensures that you can securely access encrypted websites and services through our proxy network.
+
+We are beta testing direct HTTPS connection support with our residential proxy network and this should be more widely released in Q3/Q4 2025.
 
 ## SOCKS5 TCP Support
 
