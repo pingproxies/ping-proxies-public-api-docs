@@ -22,25 +22,17 @@
               "general/making-your-first-purchase"
             ]
           },
-            {
-              "group": "Trust & Safety",
-              "icon": "lock",
-              "pages": [
-                "general/acceptable-usage-policy",
-                "general/ethical-sourcing",
-                "general/kyc-policy",
-                "general/restricted-domains",
-                "general/anti-abuse-policy"
-              ]
-            },
           {
             "group": "Documentation",
+            "icon": "book",
             "pages": [
               {
                 "icon": "book-open",
                 "group": "Proxy Basics",
                 "pages": [
+                  "general/what-is-a-proxy",
                   "general/supported-protocols"
+
                 ]
               },
               {
@@ -49,7 +41,6 @@
                 "pages": [
                   "general/static-datacenter-proxies",
                   "general/static-residential-isp-proxies",
-                  "general/static-proxy-replacements",
                   "general/listing-and-exporting-proxies"
                 ]
               },
@@ -82,6 +73,15 @@
                   "general/changing-payment-cycle",
                   "general/service-cancellation",
                   "general/edit-payment-method"
+                ]
+              },
+              {
+                "icon": "chart-line",
+                "group": "Analytics and Debugging",
+                "pages": [
+                  "general/observability-overview",
+                  "general/live-network-activity",
+                  "general/debugging-and-error-codes"
                 ]
               },
               {
@@ -131,6 +131,25 @@
                   "general/integration/vmlogin"
                 ]
               }
+            ]
+          },
+          {
+            "group": "Trust & Safety",
+            "icon": "lock",
+            "pages": [
+              "general/acceptable-usage-policy",
+              "general/ethical-sourcing",
+              "general/kyc-policy",
+              "general/restricted-domains"
+            ]
+          },
+          {
+            "group": "Policies",
+            "icon": "pen",
+            "pages": [
+              "general/anti-abuse-policy",
+              "general/refund-policy",
+              "general/static-proxy-replacements"
             ]
           }
         ]
