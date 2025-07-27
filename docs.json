@@ -110,10 +110,12 @@
                 "group": "Integrations",
                 "pages": [
                   "general/integration/browser-integrations",
+                  "general/integration/android-iphone",
                   "general/integration/safari",
                   "general/integration/duckduckgo",
                   "general/integration/microsoft-edge",
                   "general/integration/foxyproxy",
+                  "general/integration/shadowrocket",
                   "general/integration/proxifier",
                   "general/integration/curl",
                   "general/integration/proxy-switchyomega",
