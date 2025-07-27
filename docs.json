@@ -19,7 +19,8 @@
             "pages": [
               "introduction",
               "general/account-registration",
-              "general/making-your-first-purchase"
+              "general/making-your-first-purchase",
+              "need-help"
             ]
           },
           {
@@ -380,13 +381,6 @@
       }
     ]
   },
-  "anchors": [
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://pingproxies.com/blog"
-    }
-  ],
   "openapi": "https://api.pingproxies.com/1.0/public/user/documentation/openapi.json",
   "logo": {
     "light": "https://ping-proxies-strapi.ams3.digitaloceanspaces.com/public/uploads/ping_logo_b83f7f9c6b.webp",
@@ -395,14 +389,15 @@
   "navbar": {
     "links": [
       {
-        "label": "Developer Support",
+        "label": "Support",
+        "url": "mailto:support@pingproxies.com",
+        "href": "mailto:support@pingproxies.com"
+      },
+      {
+        "label": "Developer Help",
         "url": "mailto:developers@pingproxies.com",
         "href": "mailto:developers@pingproxies.com"
       }
     ]
-  },
-  "footerSocials": {
-    "x": "https://x.com/pingproxies",
-    "linkedin": "https://uk.linkedin.com/company/ping-proxies"
   }
 }

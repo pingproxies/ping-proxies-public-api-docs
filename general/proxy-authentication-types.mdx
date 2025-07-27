@@ -3,7 +3,10 @@ title: 'Proxy Authentication Types'
 description: 'Understanding and choosing between different proxy authentication methods'
 ---
 
-Ping Proxies supports multiple authentication methods to provide flexible, secure access to your proxies. Our innovative Proxy User and IAM system lets you create and manage proxy users, track their usage, limit residential bandwidth, and link their access to specific proxies and services—all from our dashboard.
+<img src="/images/general/proxy-user-section.png"
+alt="Ping Proxies Proxy User Dashboard"/>
+
+Ping Proxies supports multiple authentication methods to provide flexible, secure access to your proxies. Our innovative [Proxy User and IAM system](https://dashboard.pingproxies.com/proxy-users) lets you create and manage proxy users, track their usage, limit residential bandwidth, and link their access to specific proxies and services—all from our dashboard.
 
 ## Authentication Methods
 
@@ -22,6 +25,12 @@ With IP authentication, you can access your static proxies without entering user
 2. Attaching a whitelisted IP address to that user for authentication
 
 **Important**: Each whitelisted IP address must be unique and cannot be assigned to multiple proxy users.
+
+<Warning>
+
+IP Authentication is not available on our rotating residential bandwidth network since the username parameters are used to inter targeting and geolocation settings.
+
+</Warning>
 
 ### Proxy Specific Authentication
 
