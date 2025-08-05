@@ -1,0 +1,433 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Proxy Tester Routes",
+    "version": "1.0",
+    "description": "Proxy tester specific routes extracted from the main API"
+  },
+  "paths": {
+    "/public/proxy_tester/proxy_test_run/create": {
+      "post": {
+        "description": "Test all provided proxies against urls",
+        "tags": [
+          "Proxy Tester"
+        ],
+        "summary": "Create Proxy Test",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProxyTestRunCreateRequest"
+              }
+            }
+          },
+          "description": "Test Run Request",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxyTestRunCreateResponse"
+                }
+              }
+            },
+            "description": "Successful proxy test creation"
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ]
+      }
+    },
+    "/public/proxy_tester/proxy_test_server/search": {
+      "get": {
+        "tags": [
+          "Proxy Tester"
+        ],
+        "summary": "Search active proxy test servers",
+        "description": "Search the currently active proxy test servers",
+        "operationId": "search-proxy-test-servers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxyTestServerSearchResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ]
+      }
+    },
+    "/public/proxy_tester/proxy_test_run/retrieve/{test_run_id}": {
+      "get": {
+        "tags": [
+          "Proxy Tester"
+        ],
+        "summary": "Retrieve proxy test results",
+        "description": "Retrieve the results from the given proxy test run",
+        "operationId": "retrieve-proxy-test",
+        "parameters": [
+          {
+            "name": "test_run_id",
+            "in": "path",
+            "description": "Test Run ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "proxy_test_run_password",
+            "in": "query",
+            "description": "Retrieve test run with password",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxyTestRunCreateResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProxyTestRunCreateRequest": {
+        "type": "object",
+        "properties": {
+          "proxies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "proxy_id": {
+                  "type": "string"
+                },
+                "proxy_string": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "proxy_id": "8ca1bf7f-7e8e-490e-ad0a-715e5eb060a6",
+                "proxy_string": "209.99.134.6:5702:ftrdddgq:518vrc41xyms"
+              }
+            ]
+          },
+          "proxy_tester_server_id": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "london-2-digitalocean-proxytester-1"
+            ]
+          },
+          "proxy_test_run_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "8ca1bf7f-7e8e-490e-ad0a-715e5eb060a6"
+          },
+          "urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "https://google.com"
+            ]
+          }
+        }
+      },
+      "ProxyTestRunCreateResponse": {
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "a23539ac-714d-4d88-9b05-a4f81432a9b9"
+            ]
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "proxy_test_result_id": {
+                        "type": "string"
+                      },
+                      "proxy_test_run_id": {
+                        "type": "string"
+                      },
+                      "proxy_tester_proxy_id": {
+                        "type": "string"
+                      },
+                      "proxy_test_result_url": {
+                        "type": "string"
+                      },
+                      "proxy_test_result_status_code": {
+                        "type": "integer"
+                      },
+                      "proxy_test_result_protocol": {
+                        "type": "string"
+                      },
+                      "proxy_test_result_response_time": {
+                        "type": "integer"
+                      },
+                      "proxy_test_server_id": {
+                        "type": "string"
+                      },
+                      "proxy_test_server_city_id": {
+                        "type": "integer"
+                      },
+                      "proxy_test_server_city_name": {
+                        "type": "string"
+                      },
+                      "proxy_test_server_country_id": {
+                        "type": "string"
+                      },
+                      "proxy_test_result_creation_datetime": {
+                        "type": "string"
+                      },
+                      "proxy_test_result_last_update_datetime": {
+                        "type": "string"
+                      },
+                      "proxy_username": {
+                        "type": "string"
+                      },
+                      "proxy_host": {
+                        "type": "string"
+                      },
+                      "proxy_port": {
+                        "type": "integer"
+                      },
+                      "proxy_ip_address": {
+                        "type": "string"
+                      },
+                      "proxy_exit_hostname": {
+                        "type": "string"
+                      },
+                      "proxy_country_id": {
+                        "type": "string"
+                      },
+                      "proxy_city_id": {
+                        "type": "integer"
+                      },
+                      "proxy_city_name": {
+                        "type": "string"
+                      },
+                      "proxy_asn_id": {
+                        "type": "integer"
+                      },
+                      "proxy_asn_name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "201a677b-214f-43f6-b457-76d8d196f815": {
+                "results": [
+                  {
+                    "proxy_test_result_id": "38c1c64b-af29-4e3d-93f2-4c1a1a313ac5",
+                    "proxy_test_run_id": "5b1494e7-663f-4af6-adf8-67ec8b18cf66",
+                    "proxy_tester_proxy_id": "db8cd8d3-bc99-4880-9a1d-233af9a35eda",
+                    "proxy_test_result_url": "https://google.com",
+                    "proxy_test_result_status_code": 200,
+                    "proxy_test_result_protocol": "http",
+                    "proxy_test_result_response_time": 224,
+                    "proxy_test_server_id": "london-2-digitalocean-proxytester-1",
+                    "proxy_test_server_city_id": 383210,
+                    "proxy_test_server_city_name": "London",
+                    "proxy_test_server_country_id": "gb",
+                    "proxy_test_result_creation_datetime": "2025-01-24 09:34:56",
+                    "proxy_test_result_last_update_datetime": "2025-01-24 09:34:56",
+                    "proxy_username": "ftrdddgq",
+                    "proxy_host": "148.135.178.94",
+                    "proxy_port": 5655,
+                    "proxy_ip_address": "148.135.178.94",
+                    "proxy_exit_hostname": "",
+                    "proxy_country_id": "fr",
+                    "proxy_city_id": 4137,
+                    "proxy_city_name": "New York City",
+                    "proxy_asn_id": 29802,
+                    "proxy_asn_name": "AS29802 HIVELOCITY, Inc."
+                  }
+                ]
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "Successfully returned proxy test data"
+          },
+          "proxy_test_result_created": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "a23539ac-714d-4d88-9b05-a4f81432a9b9"
+            ]
+          },
+          "proxy_tester_proxy_created": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "de2ee27b-f90b-4435-9728-1e65d14ce105"
+            ]
+          }
+        }
+      },
+      "ProxyTestServer": {
+        "type": "object",
+        "properties": {
+          "city_id": {
+            "type": "integer"
+          },
+          "city_name": {
+            "type": "string"
+          },
+          "country_id": {
+            "type": "string"
+          },
+          "proxy_test_server_active": {
+            "type": "boolean"
+          },
+          "proxy_test_server_creation_datetime": {
+            "type": "string"
+          },
+          "proxy_test_server_id": {
+            "type": "string"
+          },
+          "proxy_test_server_ip_address": {
+            "type": "string"
+          },
+          "proxy_test_server_last_update_datetime": {
+            "type": "string"
+          },
+          "proxy_test_server_password": {
+            "type": "string"
+          },
+          "proxy_test_server_port": {
+            "type": "integer"
+          },
+          "proxy_test_server_username": {
+            "type": "string"
+          }
+        }
+      },
+      "ProxyTestServerSearchResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "servers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProxyTestServer"
+                }
+              },
+              "proxy_test_server_id_closest": {
+                "type": "string"
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "APIPrivateKey": {
+        "description": " Private API key for user-level authentication.",
+        "in": "header",
+        "name": "X-API-Private-Key",
+        "type": "apiKey"
+      },
+      "APIPublicKey": {
+        "description": " Public API key for user-level authentication.",
+        "in": "header",
+        "name": "X-API-Public-Key",
+        "type": "apiKey"
+      }
+    }
+  }
+}
