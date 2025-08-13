@@ -12,7 +12,7 @@
         "tags": [
           "Proxy Tester"
         ],
-        "summary": "Create Proxy Test",
+        "summary": "Create Proxy",
         "requestBody": {
           "content": {
             "application/json": {

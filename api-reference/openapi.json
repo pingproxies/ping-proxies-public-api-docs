@@ -10540,9 +10540,6 @@
           "Zip Code"
         ]
       }
-    },
-    "/public/proxy_tester/proxy_test_run/create": {
-      "$ref": "proxy-tester-routes.json#/paths/~1public~1proxy_tester~1proxy_test_run~1create"
     }
   },
   "servers": [
