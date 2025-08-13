@@ -199,7 +199,8 @@
               "api-objects/continent",
               "api-objects/country",
               "api-objects/subdivision",
-              "api-objects/city"
+              "api-objects/city",
+              "api-objects/proxy-tester"
             ]
           },
           {

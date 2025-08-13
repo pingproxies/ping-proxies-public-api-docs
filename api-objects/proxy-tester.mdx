@@ -11,10 +11,12 @@ The core testing workflow that orchestrates proxy validation across multiple tes
 
 | Attribute | Type | Description |
 |-----------|------|-------------|
-| `proxy_test_run_id` | string (uuid) | Unique identifier for the test run |
+| `proxy_test_run_id` | string (uuid) (optional) | Unique identifier for the test run |
 | `proxies` | array | List of proxies to test with their configurations |
 | `urls` | array | Target URLs to test against |
-| `proxy_tester_server_id` | array | Test servers to use for validation |
+| `proxy_tester_server_id` | array (optional) | Test servers to use for validation |
+
+If not test server is provided, all test servers will be used.
 
 ### Proxy Test Result
 
@@ -58,9 +60,8 @@ graph TD
     B --> C[Distribute Tests Across Servers]
     C --> D[Execute Tests Against URLs]
     D --> E[Collect Results]
-    E --> F[Aggregate Performance Data]
-    F --> G[Return Test Results]
-    G --> H[Optional: Share Results]
+    E --> F[Return Test Results]
+    F --> G[Optional: Share Results]
 ```
 
 ## Related Endpoints
@@ -78,7 +79,6 @@ graph TD
 {
   "proxies": [
     {
-      "proxy_id": "8ca1bf7f-7e8e-490e-ad0a-715e5eb060a6",
       "proxy_string": "209.99.134.6:5702:ftrdddgq:518vrc41xyms"
     }
   ],
@@ -125,7 +125,6 @@ graph TD
 ## Usage Notes
 
 - **Multi-Location Testing**: Tests are executed from multiple geographic locations to verify proxy performance globally
-- **Comprehensive Validation**: Each proxy is tested against multiple URLs to ensure consistent functionality
 - **Performance Metrics**: Response times are measured to help identify the fastest proxies for your use case
 - **Geographic Accuracy**: Test results include both proxy exit location and test server location for geographic validation
 - **Batch Processing**: Multiple proxies can be tested simultaneously for efficiency
@@ -140,4 +139,3 @@ graph TD
 - **Regular Testing**: Implement regular proxy testing to maintain service quality
 - **Performance Monitoring**: Monitor response times to identify degraded proxies before they impact your operations
 - **Geographic Validation**: Verify that proxy exit locations match your targeting requirements
-- **Batch Size**: Balance between comprehensive testing and API rate limits when testing large proxy pools
