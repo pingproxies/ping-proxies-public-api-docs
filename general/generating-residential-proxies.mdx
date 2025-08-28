@@ -43,6 +43,26 @@ residential.pingproxies.com:8000:{username}_s_{random_alphanumeric}:{password}
 ```
 residential.pingproxies.com:8000:stevejobs_s_we12NkllMSS:apple123
 ```
+
+#### Session TTL (Time to Live)
+
+You can maintain the same IP address for a specific duration by adding a TTL parameter in this format: ``_ttl_{number}{unit}`` to the username field of the proxy. The unit can be `m` for minutes, `h` for hours or `d` for days. The session TTL parameter must be accompanied by a session ID.
+
+**Format**
+```
+residential.pingproxies.com:8000:{username}_s_{random_alphanumeric}_ttl_{number}{unit}:{password}
+```
+
+**Examples of Session TTL Proxy**
+```
+residential.pingproxies.com:8000:stevejobs_s_we12NkllMSS_ttl_30m:apple123
+residential.pingproxies.com:8000:stevejobs_s_we12NkllMSS_ttl_2h:apple123
+residential.pingproxies.com:8000:stevejobs_s_we12NkllMSS_ttl_1d:apple123
+```
+
+<Tip>The minimum TTL is **1 minute** and the maximum TTL is **7 days**. By default we try to hold the IP for as long as possible (7 days).</Tip>
+<Warning> While TTL parameters allow you to specify how long to maintain the same IP address, residential nodes cannot be guaranteed to be online for the entire duration. The IP address might change if the residential device goes offline before the TTL expires.</Warning>
+
 ### Enabling Smartpath
 
 [Smartpath®](/general/using-smartpath) is an intelligent, AI-driven proxy routing feature designed to optimize your residential proxy bandwidth usage by dynamically routing traffic through residential or datacenter IPs.
@@ -144,13 +164,6 @@ residential.pingproxies.com:8000:stevejobs_asn_7018:apple123
 ### Combined Targeting
 
 You can combine any of the above targeting methods together to your proxy information to further limit the IP Addresses of your proxies.
-
-<Warning>
-
-As of July 2025, there is an active bug when combining `state` and `asn` targeting. Please avoid combining these targeting options until resolved.
-
-</Warning>
-
 
 **Example of a AT&T Proxy in Charlotte, NC USA**
 ```
