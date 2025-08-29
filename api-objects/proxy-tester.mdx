@@ -12,11 +12,11 @@ The core testing workflow that orchestrates proxy validation across multiple tes
 | Attribute | Type | Description |
 |-----------|------|-------------|
 | `proxy_test_run_id` | string (uuid) (optional) | Unique identifier for the test run |
-| `proxies` | array | List of proxies to test with their configurations |
+| `proxies` | array | List of proxy objects to test with their configurations |
 | `urls` | array | Target URLs to test against |
 | `proxy_tester_server_id` | array (optional) | Test servers to use for validation |
 
-If not test server is provided, all test servers will be used.
+If no test server is provided, all test servers will be used.
 
 ### Proxy Test Result
 
@@ -27,7 +27,7 @@ Individual test results for each proxy-URL-server combination.
 | `proxy_test_result_id` | string (uuid) | Unique identifier for this specific test result |
 | `proxy_test_result_url` | string | The URL that was tested |
 | `proxy_test_result_status_code` | integer | HTTP status code returned |
-| `proxy_test_result_protocol` | string | Protocol used (http/https) |
+| `proxy_test_result_protocol` | string | Protocol used |
 | `proxy_test_result_response_time` | integer | Response time in milliseconds |
 | `proxy_test_server_id` | string | ID of the test server used |
 | `proxy_test_server_city_name` | string | City where the test server is located |
@@ -125,11 +125,11 @@ graph TD
 ## Usage Notes
 
 - **Multi-Location Testing**: Tests are executed from multiple geographic locations to verify proxy performance globally
-- **Performance Metrics**: Response times are measured to help identify the fastest proxies for your use case
+- **Performance Metrics**: Response times are measured to help identify performance/reliability issues
 - **Geographic Accuracy**: Test results include both proxy exit location and test server location for geographic validation
 - **Batch Processing**: Multiple proxies can be tested simultaneously for efficiency
 - **Result Sharing**: Test results can be shared securely with password protection
-- **Server Selection**: Choose specific test servers or let the system automatically select the closest ones
+- **Server Selection**: Choose specific test servers or let the system automatically select the closest one
 - **Authentication Testing**: Proxy authentication is validated as part of the testing process
 
 ## Best Practices

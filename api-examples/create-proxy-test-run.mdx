@@ -4,8 +4,6 @@ description: "Learn how to test a list of proxies, verify connectivity and perfo
 icon: "microscope"
 ---
 
-This example shows how to test a list of proxies from a text file against a random test server and output the results to a csv.
-
 <CodeGroup>
 
 ```python Python
@@ -1444,9 +1442,9 @@ public class ProxyTester {
 ## Key Features Explained
 
 ### 1. Bulk Proxy File Processing
-The example reads proxies from a text file where each line contains a proxy in the format `host:port:username:password`:
+The example reads proxies from a text file (proxies.txt) where each line contains a proxy in the format `host:port:username:password`:
 ```
-209.99.134.6:5702:ftrdddgq:518vrc41xyms
+209.99.134.6:5702:ftrdddga:518src41byms
 185.199.229.156:7492:username:password
 45.95.96.132:8691:user:pass
 ```
@@ -1458,9 +1456,9 @@ BATCH_SIZE = 50  # Adjust based on your needs and API limits
 ```
 
 ### 3. CSV Output with Required Fields
-The script writes comprehensive results to a timestamped CSV file with these columns:
+The script writes comprehensive results to a timestamped CSV file with the following columns:
 - **proxy_ip**: The IP address of the proxy
-- **proxy_port**: The port number
+- **proxy_port**: The port number of the proxy
 - **status_code**: HTTP status code returned
 - **response_time_ms**: Response time in milliseconds
 - **proxy_city** & **proxy_country**: Geographic location of the proxy
@@ -1472,12 +1470,9 @@ The script provides:
 - Error handling for file operations and API calls
 
 ### 5. File Setup Instructions
-Create a `proxies.txt` file in the same directory with your proxy list:
-```
-# One proxy per line in format: host:port:username:password
-209.99.134.6:5702:ftrdddgq:518vrc41xyms
-185.199.229.156:7492:another_user:another_pass
-45.95.96.132:8691:user3:pass3
-```
+1. Create a `proxies.txt` file in the same directory with your proxy list.
 
-The script will automatically generate a timestamped CSV file like `proxy_test_results_20250813_143022.csv` with all your test results.
+2. Run the script.
+
+3. The script will automatically generate a timestamped CSV file like `proxy_test_results_20250813_143022.csv` with
+all of your test results.
