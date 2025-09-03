@@ -6,7 +6,7 @@
     "description": "Proxy tester specific routes extracted from the main API"
   },
   "paths": {
-    "/public/proxy_tester/proxy_test_run/create": {
+    "/public/user/proxy_tester/proxy_test_run/create": {
       "post": {
         "description": "Test all provided proxies against urls",
         "tags": [
@@ -44,45 +44,7 @@
         ]
       }
     },
-    "/public/proxy_tester/proxy_test_server/search": {
-      "get": {
-        "tags": [
-          "Proxy Tester"
-        ],
-        "summary": "Search active proxy test servers",
-        "description": "Search the currently active proxy test servers",
-        "operationId": "search-proxy-test-servers",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProxyTestServerSearchResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIPrivateKey": [],
-            "APIPublicKey": []
-          }
-        ]
-      }
-    },
-    "/public/proxy_tester/proxy_test_run/retrieve/{test_run_id}": {
+    "/public/user/proxy_tester/proxy_test_run/retrieve/{test_run_id}": {
       "get": {
         "tags": [
           "Proxy Tester"
@@ -200,7 +162,7 @@
               "type": "string"
             },
             "example": [
-              "a23539ac-714d-4d88-9b05-a4f81432a9b9"
+              "5b1494e7-663f-4af6-adf8-67ec8b18cf66"
             ]
           },
           "data": {
@@ -288,7 +250,7 @@
               }
             },
             "example": {
-              "201a677b-214f-43f6-b457-76d8d196f815": {
+              "db8cd8d3-bc99-4880-9a1d-233af9a35eda": {
                 "results": [
                   {
                     "proxy_test_result_id": "38c1c64b-af29-4e3d-93f2-4c1a1a313ac5",
@@ -329,7 +291,7 @@
               "type": "string"
             },
             "example": [
-              "a23539ac-714d-4d88-9b05-a4f81432a9b9"
+              "38c1c64b-af29-4e3d-93f2-4c1a1a313ac5"
             ]
           },
           "proxy_tester_proxy_created": {
@@ -338,7 +300,7 @@
               "type": "string"
             },
             "example": [
-              "de2ee27b-f90b-4435-9728-1e65d14ce105"
+              "db8cd8d3-bc99-4880-9a1d-233af9a35eda"
             ]
           }
         }
