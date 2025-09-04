@@ -40,8 +40,8 @@ graph TD
 import requests
 import sys
 # API credentials
-API_PUBLIC_KEY = "your_public_key"
 API_PRIVATE_KEY = "your_private_key"
+API_PUBLIC_KEY = "your_public_key"
 BASE_URL = "https://api.pingproxies.com/1.0/public/user"
 
 # Headers
@@ -66,8 +66,8 @@ try:
     response = requests.post(f"{BASE_URL}/proxy_test_run/create", json=payload, headers=headers)
     if response.status_code != 200:
         print(f"❌ Error: {response.status_code}")
-  			print(f"Response: {response.text}")
-  			sys.exit(1)
+        print(f"Response: {response.text}")
+        sys.exit(1)
 
     result = response.json()
     print("\n✅ Proxy test created successfully!")
