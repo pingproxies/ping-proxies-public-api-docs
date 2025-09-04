@@ -11,13 +11,16 @@ The table below details the protocol support across our various proxy services:
 
 | Service Type | HTTP/S | SOCKS5 TCP | SOCKS5 UDP |
 |--------------|--------|------------|------------|
-| Datacenter Proxies | ✅ | ✅ | ❌ |
-| Static Residential Proxies | ✅ | ✅ | ❌ |
-| Residential Bandwidth | ✅ | ✅ | ❌ |
+| Datacenter Proxies | ✅ | ✅ | Coming Soon |
+| Static Residential Proxies | ✅ | ✅ | Coming Soon |
+| Residential Bandwidth | ✅ | ✅ | Coming Soon |
+<Note>
+  We do not support HTTP targets on our residential network to protect user security. You must ensure you are connecting to HTTPS targets via port 443.
+</Note>
 
 ## HTTP/S Support
 
-Our proxies support direct HTTP connections and the tunneling of HTTPS connections. HTTP connections tunnel HTTPS connections to SSL targets via CONNECT tunneling and your data remains encrypted as bytes are tunneled from client to target server, and vice-versa. This ensures that you can securely access encrypted websites and services through our proxy network.
+Our proxies support the tunneling of HTTPS connections. HTTP proxy connections tunnel HTTPS connections to SSL targets via CONNECT tunneling and your data remains encrypted as bytes are tunneled from client to target server, and vice-versa. This ensures that you can securely access encrypted websites and services through our proxy network.
 
 We are beta testing direct HTTPS connection support with our residential proxy network and this should be more widely released in Q3/Q4 2025.
 
