@@ -1,7 +1,12 @@
 ---
 title: 'Proxy Testing Overview'
-description: 'This guide explains how proxy testing works on the Ping Proxies API.'
+description: 'How proxy testing works on the Ping Proxies API.'
 ---
+
+In an increasingly interconnected world, measuring proxy performance across different regions is critical. Our global infrastructure spans the United States, Europe, and Asia, allowing you to test your proxies from multiple vantage points. This way, you gain a clear understanding of real-world latency and reliability, ensuring that your users experience consistently high performance, no matter where they are located.
+
+Below you can see how the Ping Proxies API distributes proxy tests across multiple servers and returns combined results.
+The Python script example shows how to simply create a test run for a single proxy.
 
 ## What happens when you create a proxy tester? 
 
@@ -18,7 +23,7 @@ graph TD
     C2 --> D
     C3 --> D
     
-    D --> E["Retrieve Proxy Test Results (optional)<br/><small>[GET] /public/proxy_test_run/retrieve/</small>"]:::userAction
+    D --> E["Proxy Test Results Returned"]:::userAction
     
     %% User actions styled in purple
     classDef userAction fill:#A192EC,stroke:#553c9a,stroke-width:2px,color:#fff

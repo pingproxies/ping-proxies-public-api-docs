@@ -111,6 +111,9 @@
           "proxies": {
             "type": "array",
             "items": {
+              "required": [
+                "proxy_string"
+              ],
               "type": "object",
               "properties": {
                 "proxy_id": {
@@ -118,8 +121,32 @@
                   "description": "ID that will be assigned to the proxy (optional)"
                 },
                 "proxy_string": {
-                  "type": "string",
-                  "description": "Proxy to test. These can be in the format IP:PORT:USERNAME:PASSWORD or SCHEME://USERNAME:PASSWORD@IP:PORT (scheme is optional)"
+                  "oneOf": [
+                    {
+                      "title": "Colon-separated format",
+                      "type": "string",
+                      "description": "Format: IP:PORT:USERNAME:PASSWORD",
+                      "example": "209.99.134.6:5702:ftrdddgq:518vrc41xyms"
+                    },
+                    {
+                      "title": "HTTP",
+                      "type": "string",
+                      "description": "Format: http://USERNAME:PASSWORD@IP:PORT",
+                      "example": "http://ftrdddgq:518vrc41xyms@209.99.134.6:5702"
+                    },
+                    {
+                      "title": "SOCKS",
+                      "type": "string",
+                      "description": "Format: socks://USERNAME:PASSWORD@IP:PORT",
+                      "example": "socks://ftrdddgq:518vrc41xyms@209.99.134.6:5702"
+                    },
+                    {
+                      "title": "socks5",
+                      "type": "string",
+                      "description": "Format: socks5://USERNAME:PASSWORD@IP:PORT",
+                      "example": "socks5://ftrdddgq:518vrc41xyms@209.99.134.6:5702"
+                    }
+                  ]
                 }
               }
             },
@@ -309,7 +336,7 @@
           "message": {
             "type": "string",
             "description": "Response message from the API",
-            "example": "Successfully returned proxy test data"
+            "example": "Successfully returned proxy test run"
           },
           "proxy_test_result_created": {
             "type": "array",

@@ -206,14 +206,14 @@
           {
             "group": "Explainers",
             "pages": [
-              "api-explainers/proxy-tester",
               "api-explainers/proxy-types",
               "api-explainers/residential-bandwidth",
               "api-explainers/analytics",
               "api-explainers/billing",
               "api-explainers/common-object-relationships",
               "api-explainers/proxy-users-and-access-control",
-              "api-explainers/service-adjustments"
+              "api-explainers/service-adjustments",
+              "api-explainers/proxy-tester"
             ]
           }
         ]
@@ -362,8 +362,7 @@
             "group": "Proxy Tester",
             "pages": [
               "api-reference/proxy-tester/create-proxy-test",
-              "api-reference/proxy-tester/search-proxy-test-servers",
-              "api-reference/proxy-tester/retrieve-proxy-test"
+              "api-reference/proxy-tester/search-proxy-test-servers"
             ]
           }
         ]
