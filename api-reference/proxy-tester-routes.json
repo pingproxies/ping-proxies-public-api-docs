@@ -274,10 +274,6 @@
                         "type": "string",
                         "description": "The exit ip address of the proxy"
                       },
-                      "proxy_exit_hostname": {
-                        "type": "string",
-                        "description": "The exit hostname address of the proxy"
-                      },
                       "proxy_country_id": {
                         "type": "string",
                         "description": "ID of the Country that the proxy was geolocated to"
@@ -324,7 +320,6 @@
                     "proxy_host": "148.135.178.94",
                     "proxy_port": 5655,
                     "proxy_ip_address": "148.135.178.94",
-                    "proxy_exit_hostname": null,
                     "proxy_country_id": "fr",
                     "proxy_city_id": 4137,
                     "proxy_city_name": "New York City",
