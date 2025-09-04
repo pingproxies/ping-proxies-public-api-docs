@@ -171,7 +171,7 @@ if __name__ == "__main__":
     PROXY_FILE = "proxies.txt"  # Text file with one proxy per line in format host:port:username:password
     OUTPUT_CSV = f"proxy_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     TARGET_URL = "https://pingproxies.com"
-    BATCH_SIZE = 50
+    BATCH_SIZE = 20
 
     # Step 1: Read proxies from file
     print("Reading proxies from file...")
@@ -407,7 +407,7 @@ async function main() {
     const PROXY_FILE = "proxies.txt"; // Text file with one proxy per line in format host:port:username:password
     const OUTPUT_CSV = `proxy_test_results_${new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)}.csv`;
     const TARGET_URL = "https://pingproxies.com";
-    const BATCH_SIZE = 50;
+    const BATCH_SIZE = 20;
 
     // Step 1: Read proxies from file
     console.log("Reading proxies from file...");
@@ -705,7 +705,7 @@ function main() {
     $PROXY_FILE = "proxies.txt"; // Text file with one proxy per line in format host:port:username:password
     $OUTPUT_CSV = "proxy_test_results_" . date('Ymd_His') . ".csv";
     $TARGET_URL = "https://pingproxies.com";
-    $BATCH_SIZE = 50;
+    $BATCH_SIZE = 20;
 
     // Initialize the proxy tester
     $proxyTester = new ProxyTester($API_PUBLIC_KEY, $API_PRIVATE_KEY);
@@ -1377,7 +1377,7 @@ public class ProxyTester {
         String OUTPUT_CSV = "proxy_test_results_" + 
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".csv";
         String TARGET_URL = "https://pingproxies.com";
-        int BATCH_SIZE = 50;
+        int BATCH_SIZE = 20;
 
         // Initialize the proxy tester
         ProxyTester proxyTester = new ProxyTester(API_PUBLIC_KEY, API_PRIVATE_KEY);
@@ -1468,7 +1468,7 @@ The example reads proxies from a text file (proxies.txt) where each line contain
 ### 2. Batch Processing
 To handle large proxy lists efficiently, the script processes proxies in configurable batches (default: 50 proxies per batch):
 ```python
-BATCH_SIZE = 50  # Adjust based on your needs and API limits
+BATCH_SIZE = 20  # Adjust based on your needs. Limit is currently 20.
 ```
 
 ### 3. CSV Output with Required Fields
