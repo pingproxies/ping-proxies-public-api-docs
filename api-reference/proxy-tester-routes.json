@@ -110,6 +110,8 @@
         "properties": {
           "proxies": {
             "type": "array",
+            "description": "The proxies to be tested",
+            "maxItems": 20,
             "items": {
               "required": [
                 "proxy_string"
