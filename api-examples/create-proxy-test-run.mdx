@@ -57,7 +57,7 @@ def get_available_test_servers():
         List of available test servers or None if request failed
     """
     response = requests.get(
-      f"{BASE_URL}/proxy_tester/proxy_test_server/search?proxy_test_server_active=true",
+      f"{BASE_URL}/proxy_test_server/search?proxy_test_server_active=true",
       headers=headers
     )
 
@@ -100,7 +100,7 @@ def create_bulk_proxy_test(proxy_strings, test_server_id, target_url="https://pi
 
     # Make request to create the proxy test
     response = requests.post(
-      f"{BASE_URL}/proxy_tester/proxy_test_run/create",
+      f"{BASE_URL}/proxy_test_run/create",
       json=payload,
       headers=headers
     )
@@ -273,7 +273,7 @@ async function readProxiesFromFile(filePath) {
 async function getAvailableTestServers() {
     try {
         const response = await fetch(
-            `${BASE_URL}/proxy_tester/proxy_test_server/search?proxy_test_server_active=true`,
+            `${BASE_URL}/proxy_test_server/search?proxy_test_server_active=true`,
             { headers }
         );
 
@@ -317,7 +317,7 @@ async function createBulkProxyTest(proxyStrings, testServerId, targetUrl = "http
     };
 
     try {
-        const response = await fetch(`${BASE_URL}/proxy_tester/proxy_test_run/create`, {
+        const response = await fetch(`${BASE_URL}/proxy_test_run/create`, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(payload)
@@ -548,7 +548,7 @@ class ProxyTester {
      * @return array|null List of available test servers or null if request failed
      */
     public function getAvailableTestServers() {
-        $url = $this->baseUrl . "/proxy_tester/proxy_test_server/search?proxy_test_server_active=true";
+        $url = $this->baseUrl . "/proxy_test_server/search?proxy_test_server_active=true";
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -599,7 +599,7 @@ class ProxyTester {
             'urls' => [$targetUrl]
         ];
 
-        $url = $this->baseUrl . "/proxy_tester/proxy_test_run/create";
+        $url = $this->baseUrl . "/proxy_test_run/create";
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -891,7 +891,7 @@ func (pt *ProxyTester) ReadProxiesFromFile(filePath string) ([]string, error) {
 
 // GetAvailableTestServers gets list of active proxy test servers
 func (pt *ProxyTester) GetAvailableTestServers() ([]ProxyTestServer, error) {
-	url := BaseURL + "/proxy_tester/proxy_test_server/search?proxy_test_server_active=true"
+	url := BaseURL + "/proxy_test_server/search?proxy_test_server_active=true"
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -947,7 +947,7 @@ func (pt *ProxyTester) CreateBulkProxyTest(proxyStrings []string, testServerID, 
 		return nil, fmt.Errorf("error marshaling request: %w", err)
 	}
 
-	url := BaseURL + "/proxy_tester/proxy_test_run/create"
+	url := BaseURL + "/proxy_test_run/create"
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payload))
 	if err != nil {
@@ -1192,7 +1192,7 @@ public class ProxyTester {
      */
     public JsonNode getAvailableTestServers() {
         try {
-            String url = baseUrl + "/proxy_tester/proxy_test_server/search?proxy_test_server_active=true";
+            String url = baseUrl + "/proxy_test_server/search?proxy_test_server_active=true";
             
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -1256,7 +1256,7 @@ public class ProxyTester {
             urls.add(targetUrl);
             payload.set("urls", urls);
 
-            String url = baseUrl + "/proxy_tester/proxy_test_run/create";
+            String url = baseUrl + "/proxy_test_run/create";
             
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))

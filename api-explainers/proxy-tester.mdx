@@ -7,7 +7,7 @@ description: 'This guide explains how proxy testing works on the Ping Proxies AP
 
 ```mermaid
 graph TD
-    A["Create Proxy Test Run<br/><small>[POST] /public/proxy_tester/proxy_test_run/create</small>"]:::userAction
+    A["Create Proxy Test Run<br/><small>[POST] /public/proxy_test_run/create</small>"]:::userAction
     A --> B[("Distribute Tests Across Servers")]:::systemAction
     
     B --> C1[("Server 1<br/>Execute Tests")]:::serverAction
@@ -18,7 +18,7 @@ graph TD
     C2 --> D
     C3 --> D
     
-    D --> E["Retrieve Proxy Test Results (optional)<br/><small>[GET] /public/proxy_tester/proxy_test_run/retrieve/</small>"]:::userAction
+    D --> E["Retrieve Proxy Test Results (optional)<br/><small>[GET] /public/proxy_test_run/retrieve/</small>"]:::userAction
     
     %% User actions styled in purple
     classDef userAction fill:#A192EC,stroke:#553c9a,stroke-width:2px,color:#fff
@@ -58,7 +58,7 @@ payload = {
     "urls": [TARGET_URL],
 }
 try:
-    response = requests.post(f"{BASE_URL}/proxy_tester/proxy_test_run/create", json=payload, headers=headers)
+    response = requests.post(f"{BASE_URL}/proxy_test_run/create", json=payload, headers=headers)
     if response.status_code != 200:
         print(f"❌ Error: {response.status_code}")
   			print(f"Response: {response.text}")
