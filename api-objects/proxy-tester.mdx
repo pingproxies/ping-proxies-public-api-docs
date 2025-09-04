@@ -1,7 +1,40 @@
 ---
-title: 'Proxy Tester'
+title: 'Proxy Testing'
 description: 'Understanding the Proxy Tester and its role in the Ping Proxies API'
 ---
+
+## Object Relationships
+
+The Continent object sits at the top of the geographic hierarchy in the Ping Proxies API:
+
+- **Proxy Test Run**: The whole test that has run
+- **Proxy Tester Proxy**: Each proxy that has been tested
+- **Proxy Test Result**: The result of the test for a given proxy
+- **Proxy Test Server**: The server being used for each proxy test
+
+In the scenario below, **proxy A** and **proxy B** are being tested against `test_server_gb` and `test_server_us`.
+
+The following objects are created:
+
+```mermaid
+graph TD
+    A[Proxy Test Run] --> B["Proxy Tester Proxy (A)"]
+    A --> C["Proxy Tester Proxy (B)"]
+    
+    B --> D["Proxy Test Result (1) <br/><small>test_server_gb</small>"]
+    B --> E["Proxy Test Result (2) <br/><small>test_server_us</small>"]
+    
+    C --> F["Proxy Test Result (3) <br/><small>test_server_gb</small>"]
+    C --> G["Proxy Test Result (4) <br/><small>test_server_us</small>"]
+    
+    classDef testRun fill:#A192EC,stroke:#553c9a,stroke-width:2px,color:#fff
+    classDef proxy fill:#48bb78,stroke:#1fb356,stroke-width:2px,color:#fff
+    classDef testResult fill:#4299e1,stroke:#2b6cb0,stroke-width:2px,color:#fff
+    
+    class A testRun
+    class B,C proxy
+    class D,E,F,G testResult
+```
 
 ## Key Components
 
@@ -12,11 +45,13 @@ The core testing workflow that orchestrates proxy validation across multiple tes
 | Attribute | Type | Description |
 |-----------|------|-------------|
 | `proxy_test_run_id` | string (uuid) (optional) | Unique identifier for the test run |
-| `proxies` | array | List of proxy objects to test with their configurations |
+| `proxies` | array | List of proxy objects to test with their configurations (Maximum 20)|
 | `urls` | array | Target URLs to test against |
 | `proxy_tester_server_id` | array (optional) | Test servers to use for validation |
 
 If no test server is provided, all test servers will be used.
+
+No more than 20 proxies can be tested in the same request.
 
 ### Proxy Test Result
 
@@ -52,18 +87,6 @@ Geographic test servers that perform the actual proxy validation.
 | `proxy_test_server_ip_address` | string | IP address of the test server |
 | `proxy_test_server_port` | integer | Port used by the test server |
 
-## Testing Workflow
-
-```mermaid
-graph TD
-    A[Submit Proxy Test Request] --> B[Validate Proxies]
-    B --> C[Distribute Tests Across Servers]
-    C --> D[Execute Tests Against URLs]
-    D --> E[Collect Results]
-    E --> F[Return Test Results]
-    F --> G[Optional: Share Results]
-```
-
 ## Related Endpoints
 
 | Endpoint | Description |
@@ -73,69 +96,3 @@ graph TD
 | `POST /public/proxy_tester/proxy_test_run/share/{test_run_id}` | Share test results with password protection |
 | `GET /public/proxy_tester/proxy_test_server/search` | Get available test servers |
 
-## Example Test Request
-
-```json
-{
-  "proxies": [
-    {
-      "proxy_string": "209.99.134.6:5702:ftrdddgq:518vrc41xyms"
-    }
-  ],
-  "proxy_tester_server_id": [
-    "london-2-digitalocean-proxytester-1",
-    "newyork-3-digitalocean-proxytester-1"
-  ],
-  "urls": [
-    "https://google.com",
-    "https://httpbin.org/ip"
-  ],
-  "proxy_test_run_id": "8ca1bf7f-7e8e-490e-ad0a-715e5eb060a6"
-}
-```
-
-## Example Test Results
-
-```json
-{
-  "data": {
-    "201a677b-214f-43f6-b457-76d8d196f815": {
-      "results": [
-        {
-          "proxy_test_result_id": "38c1c64b-af29-4e3d-93f2-4c1a1a313ac5",
-          "proxy_test_result_url": "https://google.com",
-          "proxy_test_result_status_code": 200,
-          "proxy_test_result_response_time": 224,
-          "proxy_test_server_city_name": "London",
-          "proxy_test_server_country_id": "gb",
-          "proxy_host": "148.135.178.94",
-          "proxy_port": 5655,
-          "proxy_country_id": "fr",
-          "proxy_city_name": "New York City",
-          "proxy_asn_name": "AS29802 HIVELOCITY, Inc."
-        }
-      ]
-    }
-  },
-  "message": "Successfully returned proxy test data",
-  "created": ["a23539ac-714d-4d88-9b05-a4f81432a9b9"]
-}
-```
-
-## Usage Notes
-
-- **Multi-Location Testing**: Tests are executed from multiple geographic locations to verify proxy performance globally
-- **Performance Metrics**: Response times are measured to help identify performance/reliability issues
-- **Geographic Accuracy**: Test results include both proxy exit location and test server location for geographic validation
-- **Batch Processing**: Multiple proxies can be tested simultaneously for efficiency
-- **Result Sharing**: Test results can be shared securely with password protection
-- **Server Selection**: Choose specific test servers or let the system automatically select the closest one
-- **Authentication Testing**: Proxy authentication is validated as part of the testing process
-
-## Best Practices
-
-- **Test Server Selection**: Use test servers in regions where you plan to use the proxies
-- **URL Variety**: Test against different types of websites (search engines, APIs, content sites) to ensure broad compatibility
-- **Regular Testing**: Implement regular proxy testing to maintain service quality
-- **Performance Monitoring**: Monitor response times to identify degraded proxies before they impact your operations
-- **Geographic Validation**: Verify that proxy exit locations match your targeting requirements

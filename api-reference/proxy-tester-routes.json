@@ -6,13 +6,13 @@
     "description": "Proxy tester specific routes extracted from the main API"
   },
   "paths": {
-    "/public/user/proxy_tester/proxy_test_run/create": {
+    "/public/user/proxy_test_run/create": {
       "post": {
         "description": "Test all provided proxies against urls",
         "tags": [
           "Proxy Tester"
         ],
-        "summary": "Create Proxy Test",
+        "summary": "Create Proxy Test Run",
         "requestBody": {
           "content": {
             "application/json": {
@@ -21,7 +21,7 @@
               }
             }
           },
-          "description": "Test Run Request",
+          "description": "Proxy Test Run Request",
           "required": true
         },
         "responses": {
@@ -44,12 +44,12 @@
         ]
       }
     },
-    "/public/user/proxy_tester/proxy_test_run/retrieve/{test_run_id}": {
+    "/public/user/proxy_test_run/retrieve/{test_run_id}": {
       "get": {
         "tags": [
           "Proxy Tester"
         ],
-        "summary": "Retrieve proxy test results",
+        "summary": "Retrieve Proxy Test Results",
         "description": "Retrieve the results from the given proxy test run",
         "operationId": "retrieve-proxy-test",
         "parameters": [
@@ -114,10 +114,12 @@
               "type": "object",
               "properties": {
                 "proxy_id": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "ID that will be assigned to the proxy (optional)"
                 },
                 "proxy_string": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Proxy to test. These can be in the format IP:PORT:USERNAME:PASSWORD or SCHEME://USERNAME:PASSWORD@IP:PORT (scheme is optional)"
                 }
               }
             },
@@ -130,6 +132,7 @@
           },
           "proxy_tester_server_id": {
             "type": "array",
+            "description": "ID of the server to test the proxy on (optional - all will be used if not provided)",
             "items": {
               "type": "string"
             },
@@ -137,13 +140,9 @@
               "london-2-digitalocean-proxytester-1"
             ]
           },
-          "proxy_test_run_id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "8ca1bf7f-7e8e-490e-ad0a-715e5eb060a6"
-          },
           "urls": {
             "type": "array",
+            "description": "URLs to test the proxy against",
             "items": {
               "type": "string"
             },
@@ -170,9 +169,11 @@
             "type": "object",
             "additionalProperties": {
               "type": "object",
+              "description": "Each proxy is under its ID as a key",
               "properties": {
                 "results": {
                   "type": "array",
+                  "description": "All tests are provided as a list",
                   "items": {
                     "type": "object",
                     "properties": {
@@ -307,6 +308,7 @@
           },
           "message": {
             "type": "string",
+            "description": "Response message from the API",
             "example": "Successfully returned proxy test data"
           },
           "proxy_test_result_created": {
@@ -395,23 +397,25 @@
         "type": "object",
         "properties": {
           "error": {
-            "type": "string"
+            "type": "string",
+            "example": "Not Found"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "example": "Could not find proxy test run"
           }
         }
       }
     },
     "securitySchemes": {
       "APIPrivateKey": {
-        "description": " Private API key for user-level authentication.",
+        "description": "Private API key for user-level authentication.",
         "in": "header",
         "name": "X-API-Private-Key",
         "type": "apiKey"
       },
       "APIPublicKey": {
-        "description": " Public API key for user-level authentication.",
+        "description": "Public API key for user-level authentication.",
         "in": "header",
         "name": "X-API-Public-Key",
         "type": "apiKey"

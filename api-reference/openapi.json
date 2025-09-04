@@ -52,7 +52,7 @@
             "api_request_client_ip_address": "122.33.24.33",
             "api_request_client_user_agent": "Chrome/2023.5.8",
             "api_request_creation_datetime": "2023-11-21 13:55:05.549007",
-            "api_request_duration": 251.498460769653,
+            "api_request_duration": 251.49846076965332,
             "api_request_id": "450337744011109b4275783f1b01e4fe",
             "api_request_method": "GET",
             "api_request_path": "/1.0/private/user/api_request/search",
@@ -77,7 +77,7 @@
                 "type": "string"
               },
               "api_request_duration": {
-                "example": 251.498460769653,
+                "example": 251.49846076965332,
                 "type": "number"
               },
               "api_request_id": {
@@ -116,7 +116,7 @@
               "api_request_client_ip_address": "122.33.24.33",
               "api_request_client_user_agent": "Chrome/2023.5.8",
               "api_request_creation_datetime": "2023-11-21 13:03:03.489068",
-              "api_request_duration": 511.291265487671,
+              "api_request_duration": 511.2912654876709,
               "api_request_id": "f80a7ddca2129da755204beb4b8d2d91",
               "api_request_method": "GET",
               "api_request_path": "/1.0/private/user/api_request/search",
@@ -126,7 +126,7 @@
               "api_request_client_ip_address": "122.33.24.33",
               "api_request_client_user_agent": "Chrome/2023.5.8",
               "api_request_creation_datetime": "2023-11-21 13:03:51.635727",
-              "api_request_duration": 364.698648452759,
+              "api_request_duration": 364.6986484527588,
               "api_request_id": "76950bf1aa4f1962ec758e905546d673",
               "api_request_method": "GET",
               "api_request_path": "/1.0/private/user/api_request/search",
@@ -158,7 +158,7 @@
                   "type": "string"
                 },
                 "api_request_duration": {
-                  "example": 511.291265487671,
+                  "example": 511.2912654876709,
                   "type": "number"
                 },
                 "api_request_id": {
@@ -2722,6 +2722,84 @@
         },
         "type": "object"
       },
+      "ProxyTestServer": {
+        "properties": {
+          "city_id": {
+            "example": 382717,
+            "type": "integer"
+          },
+          "country_id": {
+            "example": "us",
+            "type": "string"
+          },
+          "proxy_test_server_id": {
+            "example": "sanfrancisco-3-digitalocean-proxytester-1",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ProxyTestServerSuccessfulSearchResponse": {
+        "description": "Proxy Test Server search was successful.",
+        "example": {
+          "data": [
+            {
+              "city_id": "382717",
+              "country_id": "us",
+              "proxy_test_server_id": "sanfrancisco-3-digitalocean-proxytester-1"
+            }
+          ],
+          "item_count": 1,
+          "message": "Proxy Test Server search successful.",
+          "page": 1,
+          "per_page": 10,
+          "total_count": 1
+        },
+        "properties": {
+          "data": {
+            "description": "Array of Proxy Test Server items matching the search criteria up to the limit of per_page paramater.",
+            "items": {
+              "properties": {
+                "city_id": {
+                  "example": 382717,
+                  "type": "integer"
+                },
+                "country_id": {
+                  "example": "us",
+                  "type": "string"
+                },
+                "proxy_test_server_id": {
+                  "example": "sanfrancisco-3-digitalocean-proxytester-1",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "item_count": {
+            "description": "Total number of Proxy Test Server items returned in the data field.",
+            "type": "integer"
+          },
+          "message": {
+            "description": "Status message for the search.",
+            "type": "string"
+          },
+          "page": {
+            "description": "Current page number of the search results returned.",
+            "type": "integer"
+          },
+          "per_page": {
+            "description": "Number of Proxy Test Server items returned per page.",
+            "type": "integer"
+          },
+          "total_count": {
+            "description": "Total of Proxy Test Server items that match the search filter.",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
       "ProxyUser": {
         "properties": {
           "customer_id": {
@@ -4108,7 +4186,7 @@
             "type": "string"
           },
           "subdivision_name": {
-            "example": "Île-de-France",
+            "example": "\u00cele-de-France",
             "type": "string"
           },
           "subdivision_node_count": {
@@ -4125,7 +4203,7 @@
             "country_id": "fr",
             "subdivision_alias": "fr_idf",
             "subdivision_id": "fr-idf",
-            "subdivision_name": "Île-de-France",
+            "subdivision_name": "\u00cele-de-France",
             "subdivision_node_count": 1345
           },
           "message": "Subdivision successfully retrieved."
@@ -4147,7 +4225,7 @@
                 "type": "string"
               },
               "subdivision_name": {
-                "example": "Île-de-France",
+                "example": "\u00cele-de-France",
                 "type": "string"
               },
               "subdivision_node_count": {
@@ -4172,7 +4250,7 @@
               "country_id": "fr",
               "subdivision_alias": "fr_idf",
               "subdivision_id": "fr-idf",
-              "subdivision_name": "Île-de-France",
+              "subdivision_name": "\u00cele-de-France",
               "subdivision_node_count": 1345
             }
           ],
@@ -4200,7 +4278,7 @@
                   "type": "string"
                 },
                 "subdivision_name": {
-                  "example": "Île-de-France",
+                  "example": "\u00cele-de-France",
                   "type": "string"
                 },
                 "subdivision_node_count": {
@@ -8437,6 +8515,66 @@
         ]
       }
     },
+    "/public/user/proxy_test_server/search": {
+      "get": {
+        "description": "Search Proxy Test Servers using various filters.\n",
+        "parameters": [
+          {
+            "description": "ID of the Proxy Test Server",
+            "in": "query",
+            "name": "proxy_test_server_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "City ID of the Proxy Test Server",
+            "in": "query",
+            "name": "city_id",
+            "schema": {}
+          },
+          {
+            "description": "Country ID of the Proxy Test Server",
+            "in": "query",
+            "name": "country_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/sort_by"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxyTestServerSuccessfulSearchResponse"
+                }
+              }
+            },
+            "description": "Successful Proxy Test Server search"
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ],
+        "summary": "Search Proxy Test Servers",
+        "tags": [
+          "Proxy Test Server"
+        ]
+      }
+    },
     "/public/user/proxy_user/create": {
       "post": {
         "description": "This endpoint allows you to create a new proxy user.\n\nThe `proxy_user_id` and `proxy_user_password` can be provided or, if omitted, will be randomly generated.\n\nAdditional considerations when creating a Proxy User:\n- `proxy_user_is_strict_security`: If true, the Proxy User requires an IP address authentication list.\n- `restricted_service_ids`: A list of service IDs that the user is restricted to, if service restriction is enabled.\n- `ip_address_authentications` must be a list of valid IP addresses. Each IP address can only be used by one Proxy User.\n- `proxy_user_residential_bytes_limit`: An integer limiting residential traffic (must not be negative).\n",
@@ -8489,7 +8627,7 @@
                     "type": "boolean"
                   },
                   "proxy_user_metadata": {
-                    "description": "Arbitrary metadata object for the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Non-nested JSON object\n- Max 30 keys\n- Each value ≤ 300 chars\n- Total size ≤ 32KB\nDefaults to `{}` if not provided.\n",
+                    "description": "Arbitrary metadata object for the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Non-nested JSON object\n- Max 30 keys\n- Each value \u2264 300 chars\n- Total size \u2264 32KB\nDefaults to `{}` if not provided.\n",
                     "properties": {},
                     "type": "object"
                   },
@@ -8680,7 +8818,7 @@
                     "type": "boolean"
                   },
                   "proxy_user_metadata": {
-                    "description": "Arbitrary metadata object associated with the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Must be a non-nested JSON object.\n- Maximum 30 keys.\n- Each value's string representation ≤ 300 characters.\n- Total size ≤ 32KB.\n",
+                    "description": "Arbitrary metadata object associated with the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Must be a non-nested JSON object.\n- Maximum 30 keys.\n- Each value's string representation \u2264 300 characters.\n- Total size \u2264 32KB.\n",
                     "example": {
                       "internal_customer_id": "94266dc6-b29f-4499-a7a8-35232d186706"
                     },
@@ -8693,7 +8831,7 @@
                     "type": "string"
                   },
                   "proxy_user_residential_bytes_limit": {
-                    "description": "The residential bytes limit for the Proxy User (must be ≥ current usage).",
+                    "description": "The residential bytes limit for the Proxy User (must be \u2265 current usage).",
                     "example": 1000000,
                     "type": "integer"
                   },
@@ -9008,6 +9146,27 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "description": "The session ttl of the residential proxies you want returned in the search list",
+            "in": "query",
+            "name": "list_session_ttl",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Desired mode for residential network optimization",
+            "in": "query",
+            "name": "list_mode",
+            "schema": {
+              "default": "general",
+              "enum": [
+                "general",
+                "size",
+                "speed"
+              ]
+            }
           }
         ],
         "responses": {
@@ -9019,8 +9178,8 @@
                     "data": {
                       "description": "List of residential proxies.",
                       "example": [
-                        "socks5h://1_oGDQZ_c_gb_city_norwich_s_DDINPY7TQ0781XEO:vxqaFAA99F@residential.pingproxies.com:8000",
-                        "socks5h://1_oGDQZ_c_gb_city_norwich_s_XIINPY7TQ0781XEA:vxqaFAA99F@residential.pingproxies.com:8000"
+                        "socks5h://1_oGDQZ_c_gb_city_norwich_m_general_s_DDINPY7TQ0781XEO:vxqaFAA99F@residential.pingproxies.com:8000",
+                        "socks5h://1_oGDQZ_c_gb_city_norwich_m_general_s_XIINPY7TQ0781XEA:vxqaFAA99F@residential.pingproxies.com:8000"
                       ],
                       "items": {
                         "type": "string"
@@ -9668,7 +9827,7 @@
                     "type": "boolean"
                   },
                   "service_metadata": {
-                    "description": "Arbitrary metadata object associated with the service.\nConstraints\n  - Must be a valid, non-nested JSON object.\n  - Maximum 30 keys.\n  - Each value's string representation ≤ 300 characters.\n  - Total size ≤ 32KB.\n",
+                    "description": "Arbitrary metadata object associated with the service.\nConstraints\n  - Must be a valid, non-nested JSON object.\n  - Maximum 30 keys.\n  - Each value's string representation \u2264 300 characters.\n  - Total size \u2264 32KB.\n",
                     "properties": {},
                     "type": "object"
                   }
@@ -10608,6 +10767,12 @@
         "Subdivision",
         "City",
         "Zip Code"
+      ]
+    },
+    {
+      "name": "Proxy Testing",
+      "tags": [
+        "Proxy Test Server"
       ]
     }
   ]

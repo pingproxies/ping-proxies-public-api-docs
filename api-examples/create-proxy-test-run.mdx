@@ -19,7 +19,11 @@ API_PRIVATE_KEY = "your_private_key"
 BASE_URL = "https://api.pingproxies.com/1.0/public"
 
 # Headers for authentication
-headers = {"X-API-Public-Key": API_PUBLIC_KEY, "X-API-Private-Key": API_PRIVATE_KEY, "Content-Type": "application/json"}
+headers = {
+  "X-API-Public-Key": API_PUBLIC_KEY,
+  "X-API-Private-Key": API_PRIVATE_KEY,
+  "Content-Type": "application/json"
+}
 
 
 def read_proxies_from_file(file_path):
@@ -52,7 +56,10 @@ def get_available_test_servers():
     Returns:
         List of available test servers or None if request failed
     """
-    response = requests.get(f"{BASE_URL}/proxy_tester/proxy_test_server/search?proxy_test_server_active=true", headers=headers)
+    response = requests.get(
+      f"{BASE_URL}/proxy_tester/proxy_test_server/search?proxy_test_server_active=true",
+      headers=headers
+    )
 
     if response.status_code != 200:
         print(f"Error getting test servers: {response.status_code}")
@@ -84,10 +91,19 @@ def create_bulk_proxy_test(proxy_strings, test_server_id, target_url="https://pi
         proxies.append({"proxy_id": proxy_id, "proxy_string": proxy_string})
 
     # Create the request payload
-    payload = {"proxies": proxies, "proxy_tester_server_id": [test_server_id], "proxy_test_run_id": test_run_id, "urls": [target_url]}
+    payload = {
+      "proxies": proxies,
+      "proxy_tester_server_id": [test_server_id],
+      "proxy_test_run_id": test_run_id,
+      "urls": [target_url]
+    }
 
     # Make request to create the proxy test
-    response = requests.post(f"{BASE_URL}/proxy_tester/proxy_test_run/create", json=payload, headers=headers)
+    response = requests.post(
+      f"{BASE_URL}/proxy_tester/proxy_test_run/create",
+      json=payload,
+      headers=headers
+    )
 
     if response.status_code != 200:
         print(f"Error: {response.status_code}")

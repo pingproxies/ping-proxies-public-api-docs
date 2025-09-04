@@ -206,6 +206,7 @@
           {
             "group": "Explainers",
             "pages": [
+              "api-explainers/proxy-tester",
               "api-explainers/proxy-types",
               "api-explainers/residential-bandwidth",
               "api-explainers/analytics",
