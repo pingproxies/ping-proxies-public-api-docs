@@ -33,7 +33,6 @@
                 "pages": [
                   "general/what-is-a-proxy",
                   "general/supported-protocols"
-
                 ]
               },
               {
@@ -92,7 +91,7 @@
                   "general/billing-address",
                   "general/invoices",
                   "general/credit-and-payment-transactions",
-                  "general/store-credit"              
+                  "general/store-credit"
                 ]
               },
               {
@@ -162,7 +161,9 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["api-introduction"]
+            "pages": [
+              "api-introduction"
+            ]
           },
           {
             "group": "API Basics",
@@ -198,7 +199,8 @@
               "api-objects/continent",
               "api-objects/country",
               "api-objects/subdivision",
-              "api-objects/city"
+              "api-objects/city",
+              "api-objects/proxy-tester"
             ]
           },
           {
@@ -210,7 +212,8 @@
               "api-explainers/billing",
               "api-explainers/common-object-relationships",
               "api-explainers/proxy-users-and-access-control",
-              "api-explainers/service-adjustments"
+              "api-explainers/service-adjustments",
+              "api-explainers/proxy-tester"
             ]
           }
         ]
@@ -282,7 +285,7 @@
               "api-reference/service/retrieve-service",
               "api-reference/service/search-services",
               "api-reference/service/edit-service",
-              "api-reference/service/cancel-service" 
+              "api-reference/service/cancel-service"
             ]
           },
           {
@@ -305,7 +308,6 @@
             "pages": [
               "api-reference/proxy-analytics/graph-proxy-analytics",
               "api-reference/proxy-analytics/breakdown-proxy-analytics"
-
             ]
           },
           {
@@ -348,13 +350,19 @@
               "api-reference/city/retrieve-city",
               "api-reference/city/search-city"
             ]
-          }
-          ,
+          },
           {
             "group": "Zip Code",
             "pages": [
               "api-reference/zip-code/retrieve-zip-code",
               "api-reference/zip-code/search-zip-code"
+            ]
+          },
+          {
+            "group": "Proxy Tester",
+            "pages": [
+              "api-reference/proxy-tester/create-proxy-test",
+              "api-reference/proxy-tester/search-proxy-test-servers"
             ]
           }
         ]
