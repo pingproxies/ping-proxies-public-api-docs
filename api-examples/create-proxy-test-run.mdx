@@ -14,9 +14,9 @@ import random
 from datetime import datetime
 
 # API credentials
-API_PUBLIC_KEY = "your_public_key"
 API_PRIVATE_KEY = "your_private_key"
-BASE_URL = "https://api.pingproxies.com/1.0/public"
+API_PUBLIC_KEY = "your_public_key"
+BASE_URL = "https://api.pingproxies.com/1.0/public/user"
 
 # Headers for authentication
 headers = {
@@ -67,7 +67,7 @@ def get_available_test_servers():
         return None
 
     data = response.json()
-    return data["data"]["servers"]
+    return data["data"]
 
 
 def create_bulk_proxy_test(proxy_strings, test_server_id, target_url="https://pingproxies.com"):
@@ -233,7 +233,7 @@ const { v4: uuidv4 } = require('uuid');
 // API credentials
 const API_PUBLIC_KEY = "your_public_key";
 const API_PRIVATE_KEY = "your_private_key";
-const BASE_URL = "https://api.pingproxies.com/1.0/public";
+const BASE_URL = "https://api.pingproxies.com/1.0/public/user";
 
 // Headers for authentication
 const headers = {
@@ -285,7 +285,7 @@ async function getAvailableTestServers() {
         }
 
         const data = await response.json();
-        return data.data.servers;
+        return data.data;
     } catch (error) {
         console.log(`Error getting test servers: ${error.message}`);
         return null;
@@ -501,7 +501,7 @@ class ProxyTester {
     public function __construct($publicKey, $privateKey) {
         $this->apiPublicKey = $publicKey;
         $this->apiPrivateKey = $privateKey;
-        $this->baseUrl = "https://api.pingproxies.com/1.0/public";
+        $this->baseUrl = "https://api.pingproxies.com/1.0/public/user";
         $this->headers = [
             'X-API-Public-Key: ' . $this->apiPublicKey,
             'X-API-Private-Key: ' . $this->apiPrivateKey,
@@ -567,7 +567,7 @@ class ProxyTester {
         }
 
         $data = json_decode($response, true);
-        return $data['data']['servers'] ?? null;
+        return $data['data'] ?? null;
     }
 
     /**
@@ -796,7 +796,7 @@ import (
 )
 
 const (
-	BaseURL = "https://api.pingproxies.com/1.0/public"
+	BaseURL = "https://api.pingproxies.com/1.0/public/user"
 )
 
 // ProxyTester handles proxy testing operations
@@ -813,9 +813,7 @@ type ProxyTestServer struct {
 
 // ServersResponse represents the response from the servers endpoint
 type ServersResponse struct {
-	Data struct {
-		Servers []ProxyTestServer `json:"servers"`
-	} `json:"data"`
+	Data []ProxyTestServer `json:"data"`
 }
 
 // ProxyRequest represents a proxy in the test request
@@ -918,7 +916,7 @@ func (pt *ProxyTester) GetAvailableTestServers() ([]ProxyTestServer, error) {
 		return nil, fmt.Errorf("error decoding response: %w", err)
 	}
 
-	return serversResp.Data.Servers, nil
+	return serversResp.Data, nil
 }
 
 // CreateBulkProxyTest creates a proxy test for multiple proxies against a target URL
@@ -1034,12 +1032,12 @@ func main() {
 		APIPrivateKey = "your_private_key"
 		ProxyFile     = "proxies.txt" // Text file with one proxy per line
 		TargetURL     = "https://pingproxies.com"
-		BatchSize     = 50
+		BatchSize     = 20
 	)
 
 	// Generate timestamped output filename
 	outputCSV := fmt.Sprintf("proxy_test_results_%s.csv",
-		time.Now().Format("20060102_150405"))
+		time.Now().Format("20060102_120405"))
 
 	// Initialize the proxy tester
 	proxyTester := NewProxyTester(APIPublicKey, APIPrivateKey)
@@ -1155,7 +1153,7 @@ public class ProxyTester {
     public ProxyTester(String publicKey, String privateKey) {
         this.apiPublicKey = publicKey;
         this.apiPrivateKey = privateKey;
-        this.baseUrl = "https://api.pingproxies.com/1.0/public";
+        this.baseUrl = "https://api.pingproxies.com/1.0/public/user";
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(30))
                 .build();
@@ -1212,7 +1210,7 @@ public class ProxyTester {
             }
 
             JsonNode data = objectMapper.readTree(response.body());
-            return data.get("data").get("servers");
+            return data.get("data");
 
         } catch (Exception e) {
             System.err.println("Error getting test servers: " + e.getMessage());
@@ -1466,7 +1464,7 @@ The example reads proxies from a text file (proxies.txt) where each line contain
 ```
 
 ### 2. Batch Processing
-To handle large proxy lists efficiently, the script processes proxies in configurable batches (default: 50 proxies per batch):
+To handle large proxy lists efficiently, the script processes proxies in configurable batches (default: 20 proxies per batch):
 ```python
 BATCH_SIZE = 20  # Adjust based on your needs. Limit is currently 20.
 ```
@@ -1490,5 +1488,5 @@ The script provides:
 
 2. Run the script.
 
-3. The script will automatically generate a timestamped CSV file like `proxy_test_results_20250813_143022.csv` with
+3. The script will automatically generate a timestamped CSV file like `proxy_test_results_20220813_143022.csv` with
 all of your test results.

@@ -12,7 +12,7 @@ The Python script example shows how to simply create a test run for a single pro
 
 ```mermaid
 graph TD
-    A["Create Proxy Test Run<br/><small>[POST] /public/proxy_test_run/create</small>"]:::userAction
+    A["Create Proxy Test Run<br/><small>[POST] /public/user/proxy_test_run/create</small>"]:::userAction
     A --> B[("Distribute Tests Across Servers")]:::systemAction
     
     B --> C1[("Server 1<br/>Execute Tests")]:::serverAction
@@ -42,7 +42,7 @@ import sys
 # API credentials
 API_PUBLIC_KEY = "your_public_key"
 API_PRIVATE_KEY = "your_private_key"
-BASE_URL = "https://api.pingproxies.com/1.0/public"
+BASE_URL = "https://api.pingproxies.com/1.0/public/user"
 
 # Headers
 headers = {
