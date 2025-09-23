@@ -22,13 +22,13 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 #### MITM
 
 ### HTTP/3
-The CONNECT method, even when used with HTTP/3 proxies which operate over UDP and QUIC, still establishes a TCP connection to the target. If you wish to establish a UDP "connection" to the target, you need to use the as-yet unsupported (by everyone, everywhere) CONNECT-UDP method.
+The CONNECT method, even when used with HTTP/3 proxies which operate over UDP and QUIC, still establishes a TCP connection to the target. If you wish to establish a UDP using HTTP/3 "connection" to the target, you need to use the as-yet unsupported (by everyone, everywhere) CONNECT-UDP method. Alternatively, using SOCKS5 UDP.
 
 #### CONNECT
 #### MITM
 
-#### Fingerprinting
-When using a MITM style proxy, the proxy server is responsible for performing the TLS handshake with the target. As such, you end up with a TLS fingerprint (JA3/JA4) that might not be ideal for your use-case. Until the CONNECT-UDP method is added to our network (or other  providers) the best solution is to proxy  your HTTP/3 traffic over a SOCKS5 UDP proxy. The example below illustrates how you might do this.
+## HTTP/3 over SOCKS5 UDP - Controlling Your Fingerprint
+When using a MITM style proxy, the proxy server is responsible for performing the TLS handshake with the target. As such, you end up with a TLS fingerprint (JA3/JA4) that might not be ideal for your use-case. Until the CONNECT-UDP method is added to our network (or other  providers) the best solution is to proxy your HTTP/3 traffic over a SOCKS5 UDP proxy. The example below illustrates how you might do this.
 
 
 
