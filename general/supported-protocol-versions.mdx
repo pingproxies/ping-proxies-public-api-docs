@@ -7,11 +7,11 @@ description: 'Protocol version support information for Ping Proxies services'
 The tables in the sectionsbelow details TLS and specific protocol version support across each of these product lines.
 
 | Protocol | Supported | Cleartext to Proxy | HTTP to Proxy | HTTP to Target |
-|----------|-----------|-----------|-----------|-----|
-| SOCKS5  | ✅ | ✅ | ❌ |  ✅ |
-| HTTP/1  | ✅ | ✅ | ❌ |  ✅ |
-| HTTP/2  | ✅ | ✅ | ❌ |  ✅ |
-| HTTP/3  | ❌ | ❌ | ❌ |  ❌ |
+|----------|-----------|--------------------|---------------|----------------|
+| SOCKS5   |   ✅      |         ✅         |      ❌       |       ✅       |
+| HTTP/1   |   ✅      |         ✅         |      ❌       |       ✅       |
+| HTTP/2   |   ✅      |         ✅         |      ❌       |       ✅       |
+| HTTP/3   |   ❌      |         ❌         |      ❌       |       ❌       |
 
 Our Datacenter and ISP proxies support SOCKS5, HTTP/1 and HTTP/2. We do not provide IP based TLS certificates so all communication with the proxy must be cleartext. This **does not** mean your traffic is unencrypted. You will still do TLS to the target as long as your target supports TLS.
 
@@ -21,11 +21,11 @@ For HTTP/2, these product ranges only support HTTP/2 Prior Knowledge.
 
 ### Residential
 | Protocol | Supported | Cleartext to Proxy | HTTP to Proxy |  HTTP to Target |
-|----------|-----------|-----------|-----------|----|
-| SOCKS5  | ✅ | ✅ | ✅ | ✅ |
-| HTTP/1  | ✅ | ✅ | ✅ | ✅ |
-| HTTP/2  | ✅ | ✅ | ✅ | ✅ |
-| HTTP/3  | ✅ | ❌ | ✅ | ✅ |
+|----------|-----------|--------------------|---------------|-----------------|
+| SOCKS5   |    ✅     |         ✅         |       ✅      |      ✅         |
+| HTTP/1   |    ✅     |         ✅         |       ✅      |      ✅         |
+| HTTP/2   |    ✅     |         ✅         |       ✅      |      ✅         |
+| HTTP/3   |    ✅     |         ❌         |       ✅      |      ✅         |
 
 Our Residential proxies  support SOCKS5, HTTP/1, HTTP/2 and HTTP/3. We provide TLS certificates for our residential backconnects so all communication with the proxy can be encrypted - inlucding SOCKS5 if you so desire. Unlike competitors we support HTTP upgrades via ALPN. Simply set your proxy string to use the "HTTPS" scheme and your client will do the rest of the work, upgrading you to the best protocol for the job under the hood.
 
