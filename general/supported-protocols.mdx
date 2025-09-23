@@ -3,10 +3,9 @@ title: 'Supported Protocols'
 description: 'Protocol support information for Ping Proxies services'
 ---
 
-All proxy services from Ping Proxies support multiple connection protocols to ensure compatibility with a wide range of applications and use cases.
+All proxy services from Ping Proxies support multiple protocols on the same port to ensure compatibility and ease of use with a wide range of applications.
 
 ## Protocol Support Matrix
-
 The table below details the protocol support across our various proxy services:
 
 | Service Type | HTTP/S | SOCKS5 TCP | SOCKS5 UDP |
@@ -14,31 +13,56 @@ The table below details the protocol support across our various proxy services:
 | Datacenter Proxies | ✅ | ✅ | Coming Soon |
 | Static Residential Proxies | ✅ | ✅ | Coming Soon |
 | Residential Bandwidth | ✅ | ✅ | Coming Soon |
+
+
+The tables in the sectionsbelow details TLS and specific protocol verion support across each of these product lines.
+### Datacenter and ISP
+| Protocol | Supported | Cleartext to Proxy | Encrypted to Proxy |
+|----------|-----------|-----------|-----------|
+| SOCKS5  | ✅ | ✅ | ❌ |
+| HTTP/1  | ✅ | ✅ | ❌ |
+| HTTP/2  | ✅ | ✅ | ❌ |
+| HTTP/2  | ❌ | ❌ | ❌ |
+
+
+Our Datacenter and ISP proxies support SOCKS5, HTTP/1 and HTTP/2. We do not provide IP based TLS certificates so all communication with the proxy must be cleartext. This DOES NOT mean your traffic is unencrypted. You will still do TLS to the target as long as your target supports TLS.
+
+<Note>
+For HTTP/2, these product ranges only support the HTTP/2 Prior Knowledge.
+</Note>
+
+### Residential
+| Protocol | Supported | Cleartext to Proxy | Encrypted to Proxy |
+|----------|-----------|-----------|-----------|
+| SOCKS5  | ✅ | ✅ | ✅ |
+| HTTP/1  | ✅ | ✅ | ✅ |
+| HTTP/2  | ✅ | ✅ | ✅ |
+| HTTP/3  | ✅ | ❌ | ✅ |
+
+Our Residential proxies  support SOCKS5, HTTP/1, HTTP/2 and HTTP/3. We provide TLS certificates for our residential backconnects so all communication with the proxy can be encrypted - inlucding SOCKS5 if you so desire. Unlike competitors we support HTTP upgrades via ALPN. Simply set your proxy string to use the "HTTPS" scheme and your client will do the rest of the work, upgrading you to the best protocol for the job under the hood.
+
+<Note>
+For HTTP/2, we support Prior Knowledge and ALPN upgrades. We do not support HTTP/1 upgrades to HTTP/2 for security reasons.
+</Note>
+
 <Note>
   We do not support HTTP targets on our residential network to protect user security. You must ensure you are connecting to HTTPS targets via port 443.
 </Note>
 
 ## HTTP/S Support
+Our proxies support the tunneling of HTTPS connections. HTTP proxy connections tunnel HTTPS connections to SSL targets via CONNECT tunneling and
 
-Our proxies support the tunneling of HTTPS connections. HTTP proxy connections tunnel HTTPS connections to SSL targets via CONNECT tunneling and your data remains encrypted as bytes are tunneled from client to target server, and vice-versa. This ensures that you can securely access encrypted websites and services through our proxy network.
+HTTPS to the Proxy means that whentalking to our server to begin proxying, information such as your target website and your authentication credentials are encrypted. To do HTTPS to the Proxy, simply set "HTTPS" as the scheme in your proxy string (see tables  above for product support).
 
-We are beta testing direct HTTPS connection support with our residential proxy network and this should be more widely released in Q3/Q4 2025.
+HTTPS to the Target means that when talking to your end website ("https://www.pingproxies.com" for example), all data is encrypted and unreadable to anyone but you. This inlcudes us, we cannot see what you are doing either. To do HTTPS to the Target, simply set the scheme of your desired website to "HTTPS".
+
+To be clear, unencrypted connections to the proxy can still do encrypted connections to SSL targets via CONNECT tunneling your data remains encrypted as bytes are tunneled from client to target server, and vice-versa. This ensures that you can securely access encrypted websites and services through our proxy network.
 
 ## SOCKS5 TCP Support
-
 All of our proxy services support SOCKS5 TCP connections, providing a versatile option for applications that require this protocol. SOCKS5 offers advantages for certain use cases where HTTP proxying might be insufficient.
 
 ## Protocol Selection
-
 When connecting to our proxies, you can choose the protocol that best fits your needs:
 
-- Use **HTTP/S** for web browsing, data collection, and most general use cases
-- Use **SOCKS5 TCP** for applications that require TCP protocol support beyond HTTP
-
-## Configuring Your Connection
-
-The specific port you connect to will determine which protocol is used. Please refer to your proxy credentials for the correct port numbers for each protocol type.
-
-<Note>
-  While we support SOCKS5 TCP, we do not currently support SOCKS5 UDP connections. Applications requiring UDP protocol support may not function properly through our proxies.
-</Note>
+- Use *HTTP/S* for web browsing, data collection, and most general use cases
+- Use *SOCKS5 TCP* for applications that require TCP protocol support beyond HTTP
