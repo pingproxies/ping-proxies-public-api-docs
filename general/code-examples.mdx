@@ -15,10 +15,26 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 
 ### HTTP/1.1
 #### CONNECT
+The CONNECT method is very simple. Simply send your tyarget destination and proxy credentials to the proxy server in a request using the CONNECT method. The proxy server will establish a tunnel to that target server, send you a 200 OK telling you the proxy tunnel has been established, then blindly funnel bytes between you and your target.
+
 #### MITM
+MITM proxying is even simpler than the CONNECT method. Simply send your request directly to the server and it will forward it for you. Unfortunately, the  simplicity of MITM proxying is offset by security risks as you can no longer perform _TLS to the Target_ to encryp your data  and hide it from anyone listening and even the proxy server itself.
+
 
 ### HTTP/2
+HTTP/2 offers many advantages over HTTP/1.1. You can read about (or watch) these advantages in our blog _here_. To summarise however, HTTP/2 lets  you send multiple requests over the same connection, concurrently. Alllowing greater throughput with lower overhead.
+
+You can't just speak HTTP/2 with a server, as not all servers support it. Fortunately, there exist three methods turning a TCP connection into a HTTP/2 connection:
+
+- Prior Knowledge. Just asssume it speaks HTTP/2.
+- HTTP/1.1 Ugprade. Speak HTTP/1 to the server and ask it to do HTTP/2.
+- ALPN. When doing the TLS handshake, ask the server what protocols it supports.
+
+On our services, we support Prior Knowledge and ALPN. The examples below show how to use both methods.
+
 #### CONNECT
+CONNECTs with HTTP/2 work just the same as in HTTP/1.1, except you can send multiple of them over the same connection at the same time.
+
 #### MITM
 
 ### HTTP/3
