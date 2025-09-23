@@ -13,15 +13,15 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 ## HTTP
 HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by using the CONNECT method for  establishing TCP tunnels or acting as a man in the middle, directly forwariding any non-CONNECT requests it receives.
 
-### 1.1
+### HTTP/1.1
 #### CONNECT
 #### MITM
 
-### 2
+### HTTP/2
 #### CONNECT
 #### MITM
 
-### 3
+### HTTP/3
 The CONNECT method, even when used with HTTP/3 proxies which operate over UDP and QUIC, still establishes a TCP connection to the target. If you wish to establish a UDP "connection" to the target, you need to use the as-yet unsupported (by everyone, everywhere) CONNECT-UDP method.
 
 #### CONNECT
