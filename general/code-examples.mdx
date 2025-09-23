@@ -1,0 +1,35 @@
+---
+title: 'Code Examples'
+description: 'Code examples of how to use Ping Proxies services using Python'
+---
+
+## SOCKS5
+SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very good choice for things like gaming or VOIP (Voice over IP).
+
+### TCP
+### UDP
+
+
+## HTTP
+HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by using the CONNECT method for  establishing TCP tunnels or acting as a man in the middle, directly forwariding any non-CONNECT requests it receives.
+
+### 1.1
+#### CONNECT
+#### MITM
+
+### 2
+#### CONNECT
+#### MITM
+
+### 3
+The CONNECT method, even when used with HTTP/3 proxies which operate over UDP and QUIC, still establishes a TCP connection to the target. If you wish to establish a UDP "connection" to the target, you need to use the as-yet unsupported (by everyone, everywhere) CONNECT-UDP method.
+
+#### CONNECT
+#### MITM
+
+#### Fingerprinting
+When using a MITM style proxy, the proxy server is responsible for performing the TLS handshake with the target. As such, you end up with a TLS fingerprint (JA3/JA4) that might not be ideal for your use-case. Until the CONNECT-UDP method is added to our network (or other  providers) the best solution is to proxy  your HTTP/3 traffic over a SOCKS5 UDP proxy. The example below illustrates how you might do this.
+
+
+
+
