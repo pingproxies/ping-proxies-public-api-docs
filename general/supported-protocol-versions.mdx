@@ -43,6 +43,10 @@ All of our HTTP capable products - regardless of version - support two types of 
 - Firstly, using the CONNECT method which establishes a TCP tunnel to your target.
 - Secondly as a man in the middle (MITM) proxy, which reads your requests and forwards them  to your target.
 
+<Note>
+The MASUQE working group have defined two new HTTP methods "CONNECT-UDP" and "CONNECT-IP" for tunneling UDP and IP traffic respectively via a HTTP  connection. These methods are valid for all HTTP versions. We are actively contributing to our open source libraries to support these methods.
+</Note>
+
 CONNECT tunnels should be used in the majority of cases but especially when connecting to a TLS capable target. Any TCP based protocol can be spoken over a CONNECT tunnel, you aren't  limited to HTTP traffic only. As mentioned above, we can't see any of your traffic when  using a CONNECT tunnel to a TLS capable endpoint.
 
 When acting as a MITM, your requests are forwarded with minimal changes (we strip proxy specific headers). MITM proxies can be used to send requests to both cleartext and TLS capable endpoints. When communicating with a TLS capable endpoint and using as a MITM proxy, we can see the contents of your requests. If you do not desire this, use a CONNECT tunnel.
@@ -51,11 +55,7 @@ When acting as a MITM, your requests are forwarded with minimal changes (we stri
 MITM proxy requests sent to TLS capable endpoints might be modified for compatability with the target. If you send us HTTP/2 but the target only supports HTTP/1, we will adjust the protocol version.
 </Note>
 
-Typical proxy clients follow this simple rule: HTTPS requests go through a CONNECT tunnel, HTTP requests are sent MITM-style. We support other use-cases  so that when writing your own clients, we can fit any use-case.
-
-<Note>
-The MASUQE working group have defined two new HTTP methods "CONNECT-UDP" and "CONNECT-IP" for tunneling UDP and IP traffic respectively via a HTTP  connection. These methods are valid for all HTTP versions. We are actively contributing to our open source libraries to support these methods.
-</Note>
+Typical proxy clients follow this simple rule: HTTPS requests go through a CONNECT tunnel, HTTP requests are sent MITM-style. We support other use-cases so that when writing your own clients, we can fit any use-case.
 
 
 <CardGroup cols={1}>
