@@ -6,12 +6,12 @@ description: 'Protocol version support information for Ping Proxies services'
 ### Datacenter and ISP
 The tables in the sectionsbelow details TLS and specific protocol version support across each of these product lines.
 
-| Protocol | Supported | Cleartext to Proxy | Encrypted to Proxy | Encrypted to Target |
+| Protocol | Supported | Cleartext to Proxy | HTTP to Proxy | HTTP to Target |
 |----------|-----------|-----------|-----------|-----|
 | SOCKS5  | ✅ | ✅ | ❌ |  ✅ |
 | HTTP/1  | ✅ | ✅ | ❌ |  ✅ |
 | HTTP/2  | ✅ | ✅ | ❌ |  ✅ |
-| HTTP/3  | ❌ | ❌ | ❌ |  ✅ |
+| HTTP/3  | ❌ | ❌ | ❌ |  ❌ |
 
 Our Datacenter and ISP proxies support SOCKS5, HTTP/1 and HTTP/2. We do not provide IP based TLS certificates so all communication with the proxy must be cleartext. This **does not** mean your traffic is unencrypted. You will still do TLS to the target as long as your target supports TLS.
 
@@ -20,7 +20,7 @@ For HTTP/2, these product ranges only support HTTP/2 Prior Knowledge.
 </Note>
 
 ### Residential
-| Protocol | Supported | Cleartext to Proxy | Encrypted to Proxy |  Encrypted to Target |
+| Protocol | Supported | Cleartext to Proxy | HTTP to Proxy |  HTTP to Target |
 |----------|-----------|-----------|-----------|----|
 | SOCKS5  | ✅ | ✅ | ✅ | ✅ |
 | HTTP/1  | ✅ | ✅ | ✅ | ✅ |
