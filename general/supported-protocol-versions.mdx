@@ -51,7 +51,7 @@ When acting as a MITM, your requests are forwarded with minimal changes (we stri
 MITM proxy requests sent to TLS capable endpoints might be modified for compatability with the target. If you send us HTTP/2 but the target only supports HTTP/1, we will adjust the protocol version.
 </Note>
 
-Typical proxy clients follow this simple rule: HTTPS requests go through a CONNECT tunnel, HTTP requests are sent MITM-style. We supoprt other use-cases  so that when writing your own clients, we can fit any use-case.
+Typical proxy clients follow this simple rule: HTTPS requests go through a CONNECT tunnel, HTTP requests are sent MITM-style. We support other use-cases  so that when writing your own clients, we can fit any use-case.
 
 <Note>
 The MASUQE working group have defined two new HTTP methods "CONNECT-UDP" and "CONNECT-IP" for tunneling UDP and IP traffic respectively via a HTTP  connection. These methods are valid for all HTTP versions. We are actively contributing to our open source libraries to support these methods.
