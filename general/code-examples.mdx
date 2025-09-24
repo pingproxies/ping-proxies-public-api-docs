@@ -6,22 +6,106 @@ description: 'Code examples of how to use Ping Proxies services using Python'
 ## SOCKS5
 SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very good choice for things like gaming or VOIP (Voice over IP).
 
-### TCP
-### UDP
+<Accordion title = "SOCKS5 TCP">
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		def main():
+			print("Hello World!")
+		```
+	</Tab>
+
+ 	<Tab title="Rust">
+		```rust main.rs
+		[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```
+
+		There are many ways to proxy TCP using SOCKS5 in Rust. The example above uses `Reqwest`, Rust's most popular high-level HTTP client.
+
+		<Note>
+			The SOCKS5 proxy connector  in `Reqwest` was actually created by us in an effort to contribtue back to the open source community.
+		</Note>
+	</Tab>
+</Tabs>
+</Accordion>
+
+
+<Accordion title = "SOCKS5 UDP">
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		def main():
+			print("Hello World!")
+		```
+	</Tab>
+
+	<Tab title="Rust">
+		```rust main.rs
+		[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```
+	</Tab>
+</Tabs>
+</Accordion>
 
 
 ## HTTP
 HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by using the CONNECT method for  establishing TCP tunnels or acting as a man in the middle, directly forwariding any non-CONNECT requests it receives.
 
-### HTTP/1.1
-#### CONNECT
-The CONNECT method is very simple. Simply send your tyarget destination and proxy credentials to the proxy server in a request using the CONNECT method. The proxy server will establish a tunnel to that target server, send you a 200 OK telling you the proxy tunnel has been established, then blindly funnel bytes between you and your target.
+<Accordion title = "HTTP/1.1">
+<Accordion title = "HTTP/1.1 CONNECT">
+The CONNECT method is very simple. Simply send your target destination and proxy credentials to the proxy server in a request using the CONNECT method. The proxy server will establish a tunnel to that target server, send you a 200 OK telling you the proxy tunnel has been established, then blindly funnel bytes between you and your target.
 
-#### MITM
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		def main():
+			print("Hello World!")
+		```
+	</Tab>
+
+	<Tab title="Rust">
+		```rust main.rs
+		[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```
+		
+		There are many ways to proxy TCP using HTTP/1.1 in Rust. The example above uses `Reqwest`, Rust's most popular high-level HTTP client.
+	</Tab>
+</Tabs>
+</Accordion>
+
+<Accordion title = "HTTP/1.1 MITM">
 MITM proxying is even simpler than the CONNECT method. Simply send your request directly to the server and it will forward it for you. Unfortunately, the  simplicity of MITM proxying is offset by security risks as you can no longer perform _TLS to the Target_ to encryp your data  and hide it from anyone listening and even the proxy server itself.
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		def main():
+			print("Hello World!")
+		```
+	</Tab>
+
+	<Tab title="Rust">
+		```rust main.rs
+		[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```		
+	</Tab>
+</Tabs>
+</Accordion>
+</Accordion>
 
 
-### HTTP/2
+<Accordion title = "HTTP/2">
 HTTP/2 offers many advantages over HTTP/1.1. You can read about (or watch) these advantages in our blog _here_. To summarise however, HTTP/2 lets  you send multiple requests over the same connection, concurrently. Alllowing greater throughput with lower overhead.
 
 You can't just speak HTTP/2 with a server, as not all servers support it. Fortunately, there exist three methods turning a TCP connection into a HTTP/2 connection:
@@ -32,16 +116,91 @@ You can't just speak HTTP/2 with a server, as not all servers support it. Fortun
 
 On our services, we support Prior Knowledge and ALPN. The examples below show how to use both methods.
 
-#### CONNECT
+<Accordion title = "HTTP/2 CONNECT">
 CONNECTs with HTTP/2 work just the same as in HTTP/1.1, except you can send multiple of them over the same connection at the same time.
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		def main():
+			print("Hello World!")
+		```
+	</Tab>
 
-#### MITM
+	<Tab title="Rust">
+		```rust main.rs
+		[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```		
+	</Tab>
+</Tabs>
+</Accordion>
 
-### HTTP/3
+<Accordion title = "HTTP/2 MITM">
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		def main():
+			print("Hello World!")
+		```
+	</Tab>
+
+	<Tab title="Rust">
+		```rust main.rs
+		[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```		
+	</Tab>
+</Tabs>
+</Accordion>
+</Accordion>
+
+<Accordion title = "HTTP/3">
 The CONNECT method, even when used with HTTP/3 proxies which operate over UDP and QUIC, still establishes a TCP connection to the target. If you wish to establish a UDP using HTTP/3 "connection" to the target, you need to use the as-yet unsupported (by everyone, everywhere) CONNECT-UDP method. Alternatively, using SOCKS5 UDP.
 
-#### CONNECT
-#### MITM
+<Accordion title = "HTTP/3 CONNECT">
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		def main():
+			print("Hello World!")
+		```
+	</Tab>
+
+	<Tab title="Rust">
+		```rust main.rs
+		[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```		
+	</Tab>
+</Tabs>
+</Accordion>
+
+<Accordion title = "HTTP/3 MITM">
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		def main():
+			print("Hello World!")
+		```
+	</Tab>
+
+	<Tab title="Rust">
+		```rust main.rs
+		[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```		
+	</Tab>
+</Tabs>
+</Accordion>
+</Accordion>
 
 ## HTTP/3 over SOCKS5 UDP - Controlling Your Fingerprint
 When using a MITM style proxy, the proxy server is responsible for performing the TLS handshake with the target. As such, you end up with a TLS fingerprint (JA3/JA4) that might not be ideal for your use-case. Until the CONNECT-UDP method is added to our network (or other  providers) the best solution is to proxy your HTTP/3 traffic over a SOCKS5 UDP proxy. The example below illustrates how you might do this.
