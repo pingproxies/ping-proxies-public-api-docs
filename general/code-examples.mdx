@@ -17,6 +17,10 @@ Our two UDP servers, runnong on `demo.residential.pingproxies.com` also act as a
 In our examples we use these servers as our end targets. Feel free to use them in your own code for testing your proxies.
 
 
+<Note>
+All Python examples rely upon libraries and their implict behaviours to send specific types of requests (CONNECT vs MITM-style). All Rust examples are much more explicit and show exactly how the mechanisms of proxying work.
+</Note>
+
 ## SOCKS5
 SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very good choice for things like gaming or VOIP (Voice over IP).
 
@@ -29,7 +33,7 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 		PROXY_STRING = f"socks5://{USER}:{PASS}@residential.pingproxies.com:8123"
 		PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
 
-		TARGET = "http://demo.residential.pingproxies.com:40000"
+		TARGET = "https://demo.residential.pingproxies.com:40000"
 
 		def main():
 		    resp = requests.get(TARGET, proxies=PROXIES)
@@ -115,9 +119,18 @@ The CONNECT method is very simple. Simply send your target destination and proxy
 <Tabs>
 	<Tab title="Python">
 		```python main.py
+		import requests
+
+		PROXY_STRING = f"http://{USER}:{PASS}@residential.pingproxies.com:8123"
+		PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
+
+		TARGET = "https://demo.residential.pingproxies.com:40000"
+
 		def main():
-			print("Hello World!")
+		    resp = requests.get(TARGET, proxies=PROXIES)
 		```
+
+		`requests` lets us quickly establish a proxy connection and send a HTTP request over it. Any proxy request to a HTTPS target will use a CONNECT to establish the proxy tunnel.
 	</Tab>
 
 	<Tab title="Rust">
@@ -138,9 +151,18 @@ MITM proxying is even simpler than the CONNECT method. Simply send your request 
 <Tabs>
 	<Tab title="Python">
 		```python main.py
-		def main():
-			print("Hello World!")
+			import requests
+
+			PROXY_STRING = f"http://{USER}:{PASS}@residential.pingproxies.com:8123"
+			PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
+
+			TARGET = "https://demo.residential.pingproxies.com:40000"
+
+			def main():
+			    resp = requests.get(TARGET, proxies=PROXIES)
 		```
+
+		`requests` lets us quickly establish a proxy connection and send a HTTP request over it. Any proxy request to a HTTP target will use MITM-style proxy requests.
 	</Tab>
 
 	<Tab title="Rust">
@@ -168,13 +190,30 @@ You can't just speak HTTP/2 with a server, as not all servers support it. Fortun
 On our services, we support Prior Knowledge and ALPN. The examples below show how to use both methods.
 
 <Accordion title = "HTTP/2 CONNECT">
-CONNECTs with HTTP/2 work just the same as in HTTP/1.1, except you can send multiple of them over the same connection at the same time.
+CONNECTs with HTTP/2 work just the same as in HTTP/1.1, except you can send multiple of them over the same connection at the same time. In this example, we use ALPN to upgrade our connection to HTTP/2 and send a HTTP/2 CONNECT.
 <Tabs>
 	<Tab title="Python">
 		```python main.py
+		import httpx
+
+		PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
+
+		TARGET1 = "https://demo.residential.pingproxies.com:40000"
+		TARGET2 = "https://demo.residential.pingproxies.com:40001"
+		TARGET3 = "https://demo.residential.pingproxies.com:40002"
+
+
 		def main():
-			print("Hello World!")
+			# Three requests will all use the same TCP connection to the proxy thanks to ALPN and HTTP/2
+		    with httpx.Client(proxy=PROXY_STRING) as client:
+		        resp = client.get(TARGET1, proxy=PROXY_STRING)
+		        resp = client.get(TARGET2, proxy=PROXY_STRING)
+		        resp = client.get(TARGET3, proxy=PROXY_STRING)
 		```
+
+		`httpx` is a more modern and feature-rich HTTP library. Unlike `requests`, it supports versions other than HTTP/1.1 and will use ALPN  to upgrade requests (including those to a proxy) where possible.
+
+		By re-using a `httpx.Client`, the underlying TCP connection to the proxy server is kept for each client. As such, sending three requests requries only 4 TCP connections to be made. If this was done using HTTP/1.1, 6 TCP connections would need to be made (three to the proxy, three to the targets).
 	</Tab>
 
 	<Tab title="Rust">
@@ -191,10 +230,23 @@ CONNECTs with HTTP/2 work just the same as in HTTP/1.1, except you can send mult
 <Accordion title = "HTTP/2 MITM">
 <Tabs>
 	<Tab title="Python">
-		```python main.py
+		import httpx
+
+		PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
+
+		TARGET1 = "https://demo.residential.pingproxies.com:40000"
+		TARGET2 = "https://demo.residential.pingproxies.com:40001"
+		TARGET3 = "https://demo.residential.pingproxies.com:40002"
+
+
 		def main():
-			print("Hello World!")
+		    with httpx.Client(proxy=PROXY_STRING) as client:
+		        resp = client.get(TARGET1, proxy=PROXY_STRING)
+		        resp = client.get(TARGET2, proxy=PROXY_STRING)
+		        resp = client.get(TARGET3, proxy=PROXY_STRING)
 		```
+
+		As with HTTP/1.1, any requests to a HTTP target will be sent MITM-style. The connection is re-used, just as  it is in the HTTP/2 CONNECT example.
 	</Tab>
 
 	<Tab title="Rust">
@@ -210,7 +262,9 @@ CONNECTs with HTTP/2 work just the same as in HTTP/1.1, except you can send mult
 </Accordion>
 
 <Accordion title = "HTTP/3">
-The CONNECT method, even when used with HTTP/3 proxies which operate over UDP and QUIC, still establishes a TCP connection to the target. If you wish to establish a UDP using HTTP/3 "connection" to the target, you need to use the as-yet unsupported (by everyone, everywhere) CONNECT-UDP method. Alternatively, using SOCKS5 UDP.
+The CONNECT method, even when used with HTTP/3 proxies which operate over UDP and QUIC, still establishes a TCP connection to the target. If you wish to establish UDP proxy connection using HTTP/3 "connection" to the target, you need to use the as-yet unsupported (by everyone, everywhere) CONNECT-UDP method. Alternatively, using SOCKS5 UDP.
+
+This means that there is currently no way to use HTTP/3 to establish a tunnel over which you can send HTTP/3 traffic. MITM-style porxying does allow you to  send HTTP/3 requests to your end target however.
 
 <Accordion title = "HTTP/3 CONNECT">
 <Tabs>
