@@ -3,6 +3,20 @@ title: 'Code Examples'
 description: 'Code examples of how to use Ping Proxies services using Python'
 ---
 
+To help customers with debugging, Ping Proxies provides TCP and UDP servers for testing proxy connectivity.
+
+Our two TCP servers, running on `demo.residential.pingproxies.com` act an echo server and as an IP address reporting service.
+- GET requests to port 40000 will receive their IP address sent back to them. HTTP/1.1, HTTP/2 and HTTP/3 - both cleartext and protected by TLS - is supported.
+- Any bytes sent to port 40001 will be echo'd back.
+
+Our two UDP servers, runnong on `demo.residential.pingproxies.com` also act as an echo server and an IP address reporting service.
+- Any bytes sent to port 50000 will receive their IP address in response.
+- Any bytes sent to port 50001 will be echo'd back.
+
+
+In our examples we use these servers as our end targets. Feel free to use them in your own code for testing your proxies.
+
+
 ## SOCKS5
 SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very good choice for things like gaming or VOIP (Voice over IP).
 
@@ -10,9 +24,22 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 <Tabs>
 	<Tab title="Python">
 		```python main.py
+		import requests
+
+		PROXY_STRING = f"socks5://{USER}:{PASS}@residential.pingproxies.com:8123"
+		PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
+
+		TARGET = "http://demo.residential.pingproxies.com:40000"
+
 		def main():
-			print("Hello World!")
+		    resp = requests.get(TARGET, proxies=PROXIES)
 		```
+
+		`requests` allows us to quickly establish a SOCKS5 connection and send a HTTP request over it.
+
+		<Note>
+			Install `requests` with `pip install -U 'requests[socks]'`
+		</Note>
 	</Tab>
 
  	<Tab title="Rust">
@@ -26,7 +53,7 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 		There are many ways to proxy TCP using SOCKS5 in Rust. The example above uses `Reqwest`, Rust's most popular high-level HTTP client.
 
 		<Note>
-			The SOCKS5 proxy connector  in `Reqwest` was actually created by us in an effort to contribtue back to the open source community.
+			The SOCKS5 proxy connector in `Reqwest` was actually created by us in an effort to contribtue back to the open source community.
 		</Note>
 	</Tab>
 </Tabs>
@@ -34,12 +61,36 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 
 
 <Accordion title = "SOCKS5 UDP">
+For our UDP examples, we use the PingProxies UDP test server. This server, open and free to everyone, returns the IP addresss of any connection formed with it.
+
 <Tabs>
 	<Tab title="Python">
 		```python main.py
+		PROXY_URI = "residential.pingproxies.com"
+		PROXY_PORT = 8123
+
+		# Ping Proxies UDP-based IP reporting server
+		TARGET_URI = "demo.residential.pingproxies.com"
+		TARGET_PORT = 50000
+
 		def main():
-			print("Hello World!")
+		    # Bind UDP Socket
+		    ss = socks.socksocket(socket.AF_INET, socket.SOCK_DGRAM)
+
+		    # Proxy all datagrams through Ping Proxies UDP proxy
+		    ss.set_proxy(socks.SOCKS5, PROXY_URI, PROXY_PORT, False, USER, PASS)
+
+		    # Send a byte to the server and receive our IP address back
+		    ss.sendto(bytes(0x00), (TARGET_URI, TARGET_PORT))
+		    (ip, _) = ss.recvfrom(16)
+
 		```
+
+		For SOCKS UDP proxying we rely on `PySocks`, which provides an API like that of the `socket` module, except the data sent on the socket gets proxied.
+
+		<Note>
+		`PySocks` has a bug and performs UDP proxying slightly wrong - a result of them misunderstanding the  RFC. If you change the `False` to `True`, this will cause proxying to fail even though it should work fine. We have a PR to `PySocks` submitted and waiting to be merged.
+		</Note>
 	</Tab>
 
 	<Tab title="Rust">
