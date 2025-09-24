@@ -33,8 +33,6 @@
                 "pages": [
                   "general/what-is-a-proxy",
                   "general/supported-protocols",
-                  "general/supported-protocol-versions",
-                  "general/code-examples"
 
                 ]
               },
