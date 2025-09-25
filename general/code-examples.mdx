@@ -14,11 +14,12 @@ Our two UDP servers, runnong on `demo.residential.pingproxies.com` also act as a
 - Any bytes sent to port 50001 will be echo'd back.
 
 
+
 In our examples we use these servers as our end targets. Feel free to use them in your own code for testing your proxies.
 
-
 <Note>
-All Python examples rely upon libraries and their implict behaviours to send specific types of requests (CONNECT vs MITM-style). All Rust examples are much more explicit and show exactly how the mechanisms of proxying work.
+ - Python examples rely on implicit behaviours of modules to execute different proxying methods.
+ - Rust examples are more explicit and show exactly how the mechanisms of proxying work.
 </Note>
 
 ## SOCKS5
@@ -30,7 +31,13 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 		```python main.py
 		import requests
 
-		PROXY_STRING = f"socks5://{USER}:{PASS}@residential.pingproxies.com:8123"
+		USER = "..."
+		PASS = "..."
+
+		PROXY = "residential.pingproxies.com"
+		PORT = 8123
+
+		PROXY_STRING = f"socks5://{USER}:{PASS}@{PROXY}:{PORT}"
 		PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
 
 		TARGET = "https://demo.residential.pingproxies.com:40000"
@@ -48,9 +55,38 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 
  	<Tab title="Rust">
 		```rust main.rs
-		[tokio::main]
-		fn main() {
-			println!("Hello World!")
+		// tokio = { version = "1", features = ["full"] }
+		// reqwest = { version = "0.12", features = ["socks"] }
+
+		const USER: &str = "...";
+		const PASS: &str = "...";
+
+		const PROXY: &str = "residential.pingproxies.com"
+		const PORT: u16 = 8123;
+
+		const TARGET: &str = "https://demo.residential.pingproxies.com:40000";
+
+		#[tokio::main]
+		async fn main() {
+		    let proxy_string = format!("{USER}:{PASS}@{PROXY}:{PORT}");
+		    let proxy = reqwest::Proxy::all(proxy_string).expect("proxy failed to build");
+
+		    let client = reqwest::Client::builder()
+		        .proxy(proxy)
+		        .build()
+		        .expect("failed to build reqwest client");
+
+		    let res = client
+		        .get(TARGET)
+		        .send()
+		        .await
+		        .expect("failed sending/receiving request/resposne");
+
+		    let status = res.status();
+		    let body = res.text().await.expect("failed to read body");
+
+		    println!("Status: {status}");
+		    println!("{body}");
 		}
 		```
 
@@ -70,8 +106,13 @@ For our UDP examples, we use the PingProxies UDP test server. This server, open 
 <Tabs>
 	<Tab title="Python">
 		```python main.py
-		PROXY_URI = "residential.pingproxies.com"
-		PROXY_PORT = 8123
+		USER = "..."
+		PASS = "..."
+
+		PROXY = "residential.pingproxies.com"
+		PORT = 8123
+
+		PROXY_STRING = f"socks5://{USER}:{PASS}@{PROXY}:{PORT}"
 
 		# Ping Proxies UDP-based IP reporting server
 		TARGET_URI = "demo.residential.pingproxies.com"
@@ -121,7 +162,13 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 			```python main.py
 			import requests
 
-			PROXY_STRING = f"http://{USER}:{PASS}@residential.pingproxies.com:8123"
+			USER = "..."
+			PASS = "..."
+
+			PROXY = "residential.pingproxies.com"
+			PORT = 8123
+
+			PROXY_STRING = f"socks5://{USER}:{PASS}@{PROXY}:{PORT}"
 			PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
 
 			TARGET = "https://demo.residential.pingproxies.com:40000"
@@ -134,14 +181,52 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 		</Tab>
 
 		<Tab title="Rust">
+		
 			```rust main.rs
-			[tokio::main]
+			// ureq = "3"
+
+			const USER: &str = "...";
+			const PASS: &str = "...";
+
+			const PROXY: &str = "residential.pingproxies.com";
+			const PORT: u16 = 8123;
+
+			const TARGET: &str = "https://demo.residential.pingproxies.com:40000";
+
 			fn main() {
-				println!("Hello World!")
+			    let proxy = ureq::Proxy::builder(ureq::ProxyProtocol::Http)
+			        .username(USER)
+			        .password(PASS)
+			        .host(PROXY)
+			        .port(PORT)
+			        .build()
+			        .expect("failed to build proxy");
+
+			    let agent = ureq::Agent::config_builder()
+			        .proxy(Some(proxy))
+			        .build()
+			        .new_agent();
+
+			    let res = agent
+			        .get(TARGET)
+			        .call()
+			        .expect("failed sending/receiving request/response");
+
+			    let status = res.status();
+			    let body = res
+			        .into_body()
+			        .read_to_string()
+			        .expect("failed to read body");
+
+			    println!("Status: {status}");
+			    println!("{body}");
 			}
 			```
-		
-			There are many ways to proxy TCP using HTTP/1.1 in Rust. The example above uses `Reqwest`, Rust's most popular high-level HTTP client.
+			This example uses `ureq`, a syncrhonous library. For an async client, slightly modify the SOCKS TCP example.
+
+			<Note>
+				The CONNECT proxying logic underlying `ureq` (`ureq-proto`) was actually written by us to bring the library in-line with the RFC and ensure maximum compatability.
+			</Note>
 		</Tab>
 	</Tabs>
 	</Accordion>
@@ -229,6 +314,7 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 	<Accordion title = "HTTP/2 MITM">
 	<Tabs>
 		<Tab title="Python">
+			```python main.py
 			import httpx
 
 			PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
