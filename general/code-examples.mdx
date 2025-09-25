@@ -14,10 +14,11 @@ Our two UDP servers, running on `demo.residential.pingproxies.com` also act as a
 - Any bytes sent to port 50001 will be echo'd back.
 
 
-
 In our examples we use these servers as our end targets. Feel free to use them in your own code for testing your proxies.
 
 <Note>
+We try to showcase different libraries and methods for proxying. If an example uses a different library to the one you are using, check the other examples.
+
  - Python examples rely on implicit behaviours of modules to execute different proxying methods.
  - Rust examples are more explicit and show exactly how the mechanisms of proxying work.
 </Note>
@@ -29,6 +30,7 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 <Tabs>
 	<Tab title="Python">
 		```python main.py
+		# pip install -U 'requests[socks]'
 		import requests
 
 		USER = "..."
@@ -47,10 +49,6 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 		```
 
 		`requests` allows us to quickly establish a SOCKS5 connection and send a HTTP request over it.
-
-		<Note>
-			Install `requests` with `pip install -U 'requests[socks]'`
-		</Note>
 	</Tab>
 
  	<Tab title="Rust">
@@ -106,6 +104,11 @@ For our UDP examples, we use the PingProxies UDP test server. This server, open 
 <Tabs>
 	<Tab title="Python">
 		```python main.py
+		# pip install -U pysocks socket
+		import socks
+		import socket
+
+
 		USER = "..."
 		PASS = "..."
 
@@ -160,6 +163,7 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 	<Tabs>
 		<Tab title="Python">
 			```python main.py
+			# pip install -U requests
 			import requests
 
 			USER = "..."
@@ -222,7 +226,7 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 			    println!("{body}");
 			}
 			```
-			This example uses `ureq`, a syncrhonous library. For an async client, slightly modify the SOCKS TCP example.
+			This example uses `ureq`, a syncrhonous library. For an async client, slightly modify the Rust-based SOCKS TCP example (change the proxy string scheme from "socks5h" to "http")
 
 			<Note>
 				The CONNECT proxying logic underlying `ureq` (`ureq-proto`) was actually written by us to bring the library in-line with the RFC and ensure maximum compatability.
@@ -236,12 +240,16 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 	<Tabs>
 		<Tab title="Python">
 			```python main.py
+				# pip install -U requests
 				import requests
+
+				const USER: &str = "...";
+				const PASS: &str = "...";
 
 				PROXY_STRING = f"http://{USER}:{PASS}@residential.pingproxies.com:8123"
 				PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
 
-				TARGET = "https://demo.residential.pingproxies.com:40000"
+				TARGET = "http://demo.residential.pingproxies.com:40000"
 
 				def main():
 				    resp = requests.get(TARGET, proxies=PROXIES)
@@ -279,6 +287,7 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 	<Tabs>
 		<Tab title="Python">
 			```python main.py
+			# pip install -U httpx
 			import httpx
 
 			PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
@@ -297,7 +306,7 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 
 			`httpx` is a more modern and feature-rich HTTP library. Unlike `requests`, it supports versions other than HTTP/1.1 and will use ALPN  to upgrade requests (including those to a proxy) where possible.
 
-			By re-using a `httpx.Client`, the underlying TCP connection to the proxy server is kept for each client. As such, sending three requests requries only 4 TCP connections to be made. If this was done using HTTP/1.1, 6 TCP connections would need to be made (three to the proxy, three to the targets).
+			By re-using a `httpx.Client`, the underlying TCP connection to the proxy server is kept for each client. As such, sending three requests requires only 4 TCP connections to be made. If this was done using HTTP/1.1, 6 TCP connections would need to be made: three to the proxy and three to the targets.
 		</Tab>
 
 		<Tab title="Rust">
@@ -315,6 +324,7 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 	<Tabs>
 		<Tab title="Python">
 			```python main.py
+			# pip install -U httpx
 			import httpx
 
 			PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
