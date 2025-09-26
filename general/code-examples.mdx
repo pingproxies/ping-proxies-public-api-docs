@@ -624,26 +624,9 @@ When proxying HTTP/3 using a HTTP/3 MITM proxy, the proxy server is responsible 
 <Tabs>
 	<Tab title="Python">
 		```python main.py
-		# pip install -U httpx
-		import httpx
-
-		PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
-
-		TARGET1 = "https://demo.residential.pingproxies.com:40000"
-		TARGET2 = "https://demo.residential.pingproxies.com:40001"
-		TARGET3 = "https://demo.residential.pingproxies.com:40002"
-
 		def main():
-			# Three requests will all use the same TCP connection to the proxy thanks to ALPN and HTTP/2
-		    with httpx.Client(proxy=PROXY_STRING) as client:
-		        resp = client.get(TARGET1, proxy=PROXY_STRING)
-		        resp = client.get(TARGET2, proxy=PROXY_STRING)
-		        resp = client.get(TARGET3, proxy=PROXY_STRING)
+			print("Hello World!")
 		```
-
-		`httpx` is a more modern and feature-rich HTTP library. Unlike `requests`, it supports versions other than HTTP/1.1 and will use ALPN  to upgrade requests (including those to a proxy) where possible.
-
-		By re-using a `httpx.Client`, the underlying TCP connection to the proxy server is kept for each client. As such, sending three requests requires only 4 TCP connections to be made. If this was done using HTTP/1.1, 6 TCP connections would need to be made: three to the proxy and three to the targets.
 	</Tab>
 
 	<Tab title="Rust">
