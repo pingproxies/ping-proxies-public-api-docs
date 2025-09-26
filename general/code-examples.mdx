@@ -371,11 +371,226 @@ This means that there is currently no way to use HTTP/3 to establish a tunnel ov
 
 		<Tab title="Rust">
 			```rust main.rs
-			[tokio::main]
-			fn main() {
-				println!("Hello World!")
+			# tokio = { version = "1", features = ["full"] }
+			# rustls = {version = "0.23", features = ["ring"] }
+			# h3 = "0.0.8"
+			# h3-quinn = "0.0.10"
+			# quinn = { version = "0.11", features = ["runtime-tokio"] }
+			# http = "1"
+			# bytes = "1"
+
+			use std::sync::Arc;
+
+			use bytes::{Buf, BufMut};
+			use h3::error::StreamError;
+
+			const USER: &str = "...";
+			const PASS: &str = "...";
+
+			const PROXY: &str = "residential.pingproxies.com";
+			const PORT: u16 = 8123;
+			const RESOLVED_PROXY: SocketAddr = SocketAdrr::new(IpAddr::from([0, 0, 0, 0], PORT))
+
+			const TARGET: &str = "https://demo.residential.pingproxies.com:40000";
+
+
+			#[tokio::main]
+			async fn main() {
+			    rustls::crypto::ring::default_provider()
+			        .install_default()
+			        .expect("failed to install rustls crypto provider");
+
+			    let mut tls_config = rustls::ClientConfig::builder()
+			        .dangerous()
+			        .with_custom_certificate_verifier(Arc::new(BlindVerifier))
+			        .with_no_client_auth();
+			    tls_config.enable_early_data;
+			    tls_config.alpn_protocols = vec![b"h3".to_vec()];
+
+			    let client = {
+			        let mut client = h3_quinn::quinn::Endpoint::client(SocketAddr::new([0, 0, 0, 0].into(), 0)).unwrap();
+
+			        let config = quinn::crypto::rustls::QuicClientConfig::try_from(tls_config).unwrap();
+			        let config = quinn::ClientConfig::new(Arc::new(config));
+			        client.set_default_client_config(config);
+
+			        client
+			            .connect(RESOLVED_PROXY, PROXY)
+			            .unwrap()
+			            .await
+			            .unwrap()
+			    };
+
+			    let (mut conn, mut send_request) = h3::client::new(h3_quinn::Connection::new(client))
+			        .await
+			        .unwrap();
+
+			    let driver = async move {
+			        let err = std::future::poll_fn(|cx| conn.poll_close(cx)).await;
+			        if !err.is_h3_no_error() {
+			            return Err(err);
+			        } else {
+			            Ok(())
+			        }
+			    };
+
+				let target_name = http::Uri::from_static(TARGET).unwrap();
+
+			    let request = async move {
+			        println!("HANDSHAKE:");
+			        println!("==========");
+			        let req = http::Request::builder()
+			            .method(http::Method::CONNECT)
+			            .uri(&target_name)
+			            .header("Proxy-Authorization", proxy_auth)
+			            .body(())
+			            .unwrap();
+
+			        let bytes = request_to_bytes(req.clone());
+			        println!("REQUEST:\n{}", String::from_utf8_lossy(&bytes[..]));
+
+			        let mut stream = send_request.send_request(req).await.unwrap();
+			        let res = stream.recv_response().await.unwrap();
+
+			        println!("RESPONSE:\n{:?} {}", res.version(), res.status());
+			        println!("HEADERS:\n{:#?}", res.headers());
+
+			        println!("\n\nTUNNEL:");
+			        println!("=======");
+
+			        let mut req = http::Request::builder()
+			            .uri(&target_name)
+			            .header("Connection", "close")
+			            .body(())
+			            .unwrap();
+
+			        req.headers_mut().insert(
+			            "Host",
+			            target_name.authority().unwrap().as_str().parse().unwrap(),
+			        );
+
+			        let bytes = request_to_bytes(req);
+			        println!("REQUEST:\r{}", String::from_utf8_lossy(&bytes[..]));
+			        let _ = stream.send_data(bytes).await.unwrap();
+
+			        let mut bytes = bytes::BytesMut::with_capacity(4096);
+			        loop {
+			            let res = stream.recv_data().await;
+			            match res {
+			                Ok(Some(mut chunk)) => {
+			                    if chunk.has_remaining() {
+			                        let chunk = chunk.copy_to_bytes(chunk.remaining());
+			                        bytes.extend_from_slice(&chunk[..]);
+			                    }
+			                }
+
+			                Ok(None) => break,
+			                Err(err) if err.is_h3_no_error() => break,
+
+			                Err(err) => {
+			                    match err {
+			                        StreamError::RemoteTerminate { code, .. } => {
+			                            if code == h3::error::Code::H3_NO_ERROR {
+			                                break;
+			                            }
+
+			                            println!("ERROR: {err:#}");
+			                        }
+
+			                        _ => println!("ERROR: {err:#}"),
+			                    };
+			                }
+			            };
+			        }
+
+			        println!("RESPONSE:\n{}", String::from_utf8_lossy(&bytes[..]));
+			    };
+
+			    let (_, _) = tokio::join!(request, driver);
 			}
-			```		
+
+			#[derive(Debug)]
+			struct BlindVerifier;
+			impl rustls::client::danger::ServerCertVerifier for BlindVerifier {
+			    fn verify_server_cert(
+			        &self,
+			        end_entity: &rustls::pki_types::CertificateDer<'_>,
+			        intermediates: &[rustls::pki_types::CertificateDer<'_>],
+			        server_name: &rustls::pki_types::ServerName<'_>,
+			        ocsp_response: &[u8],
+			        now: rustls::pki_types::UnixTime,
+			    ) -> Result<rustls::client::danger::ServerCertVerified, rustls::Error> {
+			        Ok(rustls::client::danger::ServerCertVerified::assertion())
+			    }
+
+			    fn verify_tls12_signature(
+			        &self,
+			        message: &[u8],
+			        cert: &rustls::pki_types::CertificateDer<'_>,
+			        dss: &rustls::DigitallySignedStruct,
+			    ) -> Result<rustls::client::danger::HandshakeSignatureValid, rustls::Error> {
+			        Ok(rustls::client::danger::HandshakeSignatureValid::assertion())
+			    }
+
+			    fn verify_tls13_signature(
+			        &self,
+			        message: &[u8],
+			        cert: &rustls::pki_types::CertificateDer<'_>,
+			        dss: &rustls::DigitallySignedStruct,
+			    ) -> Result<rustls::client::danger::HandshakeSignatureValid, rustls::Error> {
+			        Ok(rustls::client::danger::HandshakeSignatureValid::assertion())
+			    }
+
+			    fn supported_verify_schemes(&self) -> Vec<rustls::SignatureScheme> {
+			        vec![
+			            rustls::SignatureScheme::RSA_PKCS1_SHA256,
+			            rustls::SignatureScheme::RSA_PKCS1_SHA384,
+			            rustls::SignatureScheme::RSA_PKCS1_SHA512,
+			            rustls::SignatureScheme::ECDSA_NISTP256_SHA256,
+			            rustls::SignatureScheme::ECDSA_NISTP384_SHA384,
+			            rustls::SignatureScheme::RSA_PSS_SHA256,
+			            rustls::SignatureScheme::RSA_PSS_SHA384,
+			            rustls::SignatureScheme::RSA_PSS_SHA512,
+			            rustls::SignatureScheme::ED25519,
+			        ]
+			    }
+			}
+
+			pub fn request_to_bytes(req: http::Request<()>) -> bytes::Bytes {
+			    let mut bytes = bytes::BytesMut::new();
+
+			    // Request line: METHOD PATH VERSION\r\n
+			    bytes.extend_from_slice(req.method().as_str().as_bytes());
+			    bytes.extend_from_slice(b" ");
+			    bytes.extend_from_slice(
+			        req.uri()
+			            .path_and_query()
+			            .map(|pq| pq.as_str())
+			            .unwrap_or("/")
+			            .as_bytes(),
+			    );
+
+			    bytes.extend_from_slice(b" ");
+			    bytes.extend_from_slice(format!("{:?}", req.version()).as_bytes());
+			    bytes.extend_from_slice(b"\r\n");
+
+			    // Headers
+			    for (name, value) in req.headers() {
+			        bytes.extend_from_slice(name.as_str().as_bytes());
+			        bytes.extend_from_slice(b": ");
+			        bytes.extend_from_slice(value.as_bytes());
+			        bytes.extend_from_slice(b"\r\n");
+			    }
+
+			    // Empty line
+			    bytes.extend_from_slice(b"\r\n");
+			    bytes.freeze()
+			}
+			```
+
+			This example shows how you can use the `h3` crate to execute a CONNECT request and proxy TCP trafific. If you wish to proxy traffic other than TCP, you'll need to use the CONNECT-UDP or CONNECT-IP methods.
+
+			HTTP/3 is still relatively new and unsuppoted. HTTP/3 proxying even more so.
 		</Tab>
 	</Tabs>
 	</Accordion>
@@ -402,8 +617,42 @@ This means that there is currently no way to use HTTP/3 to establish a tunnel ov
 </Accordion>
 
 ## HTTP/3 over SOCKS5 UDP - Controlling Your Fingerprint
-When using a MITM style proxy, the proxy server is responsible for performing the TLS handshake with the target. As such, you end up with a TLS fingerprint (JA3/JA4) that might not be ideal for your use-case. Until the CONNECT-UDP method is added to our network (or other  providers) the best solution is to proxy your HTTP/3 traffic over a SOCKS5 UDP proxy. The example below illustrates how you might do this.
+The example above shows how to proxy TCP traffic over a HTTP/3 connection. The examplebelow shows how to proxy HTTP/3 using a UDP proxy. Most proxy providers who talk about "HTTP/3 proxying" mean this second option. 
 
+When proxying HTTP/3 using a HTTP/3 MITM proxy, the proxy server is responsible for performing the TLS handshake with the target. As such, you end up with a TLS fingerprint (JA3/JA4) that might not be ideal for your use-case. Until the CONNECT-UDP method is added to our network (or other  providers) the best solution is to proxy your HTTP/3 traffic using this SOCKS 5 UDP socket method.
 
+<Tabs>
+	<Tab title="Python">
+		```python main.py
+		# pip install -U httpx
+		import httpx
 
+		PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
+
+		TARGET1 = "https://demo.residential.pingproxies.com:40000"
+		TARGET2 = "https://demo.residential.pingproxies.com:40001"
+		TARGET3 = "https://demo.residential.pingproxies.com:40002"
+
+		def main():
+			# Three requests will all use the same TCP connection to the proxy thanks to ALPN and HTTP/2
+		    with httpx.Client(proxy=PROXY_STRING) as client:
+		        resp = client.get(TARGET1, proxy=PROXY_STRING)
+		        resp = client.get(TARGET2, proxy=PROXY_STRING)
+		        resp = client.get(TARGET3, proxy=PROXY_STRING)
+		```
+
+		`httpx` is a more modern and feature-rich HTTP library. Unlike `requests`, it supports versions other than HTTP/1.1 and will use ALPN  to upgrade requests (including those to a proxy) where possible.
+
+		By re-using a `httpx.Client`, the underlying TCP connection to the proxy server is kept for each client. As such, sending three requests requires only 4 TCP connections to be made. If this was done using HTTP/1.1, 6 TCP connections would need to be made: three to the proxy and three to the targets.
+	</Tab>
+
+	<Tab title="Rust">
+		```rust main.rs
+		#[tokio::main]
+		fn main() {
+			println!("Hello World!")
+		}
+		```		
+	</Tab>
+</Tabs>
 
