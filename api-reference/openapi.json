@@ -8577,7 +8577,7 @@
     },
     "/public/user/proxy_user/create": {
       "post": {
-        "description": "This endpoint allows you to create a new proxy user.\n\nThe `proxy_user_id` and `proxy_user_password` can be provided or, if omitted, will be randomly generated.\n\nAdditional considerations when creating a Proxy User:\n- `proxy_user_is_strict_security`: If true, the Proxy User requires an IP address authentication list.\n- `restricted_service_ids`: A list of service IDs that the user is restricted to, if service restriction is enabled.\n- `ip_address_authentications` must be a list of valid IP addresses. Each IP address can only be used by one Proxy User.\n- `proxy_user_residential_bytes_limit`: An integer limiting residential traffic (must not be negative).\n",
+        "description": "Deprecation Warning: In October 2025, we plan on deprecating our current Public API endpoints for Proxy User authentication management. These endpoints will be updated to support a new and improved authentication framework. Please contact developer@pingproxies.com if you think you may be impacted. We are proactively reaching out to API users to discuss the change.\n\nThis endpoint allows you to create a new proxy user.\n\nThe `proxy_user_id` and `proxy_user_password` can be provided or, if omitted, will be randomly generated.\n\nAdditional considerations when creating a Proxy User:\n- `proxy_user_is_strict_security`: If true, the Proxy User requires an IP address authentication list.\n- `restricted_service_ids`: A list of service IDs that the user is restricted to, if service restriction is enabled.\n- `ip_address_authentications` must be a list of valid IP addresses. Each IP address can only be used by one Proxy User.\n- `proxy_user_residential_bytes_limit`: An integer limiting residential traffic (must not be negative).\n",
         "parameters": [
           {
             "description": "Content type for the request body as application/json.",
@@ -8769,7 +8769,7 @@
     },
     "/public/user/proxy_user/edit/{proxy_user_id}": {
       "patch": {
-        "description": "This endpoint allows a user to edit an existing Proxy User entry by providing the necessary `proxy_user_id`.\n",
+        "description": "Deprecation Warning: In October 2025, we plan on deprecating our current Public API endpoints for Proxy User authentication management. These endpoints will be updated to support a new and improved authentication framework. Please contact developer@pingproxies.com if you think you may be impacted. We are proactively reaching out to API users to discuss the change.\n\nThis endpoint allows a user to edit an existing Proxy User entry by providing the necessary `proxy_user_id`.\n",
         "parameters": [
           {
             "description": "ID of the proxy user record to edit.",
