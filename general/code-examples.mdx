@@ -243,10 +243,13 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 				# pip install -U requests
 				import requests
 
-				const USER: &str = "...";
-				const PASS: &str = "...";
+				USER = "..."
+				PASS = "..."
 
-				PROXY_STRING = f"http://{USER}:{PASS}@residential.pingproxies.com:8123"
+				PROXY = "residential.pingproxies.com"
+				PORT = 8123
+
+				PROXY_STRING = f"http://{USER}:{PASS}@{PORXY}:{PORT}"
 				PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
 
 				TARGET = "http://demo.residential.pingproxies.com:40000"
@@ -290,7 +293,13 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 			# pip install -U httpx
 			import httpx
 
-			PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
+			USER = "..."
+			PASS = "..."
+
+			PROXY = "residential.pingproxies.com"
+			PORT = 8123
+
+			PROXY_STRING = f"http://{USER}:{PASS}@{PORXY}:{PORT}"
 
 			TARGET1 = "https://demo.residential.pingproxies.com:40000"
 			TARGET2 = "https://demo.residential.pingproxies.com:40001"
@@ -327,7 +336,13 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 			# pip install -U httpx
 			import httpx
 
-			PROXY_STRING = f"https://{USER}:{PASS}@residential.pingproxies.com:8123"
+			USER = "..."
+			PASS = "..."
+
+			PROXY = "residential.pingproxies.com"
+			PORT = 8123
+
+			PROXY_STRING = f"http://{USER}:{PASS}@{PORXY}:{PORT}"
 
 			TARGET1 = "https://demo.residential.pingproxies.com:40000"
 			TARGET2 = "https://demo.residential.pingproxies.com:40001"
