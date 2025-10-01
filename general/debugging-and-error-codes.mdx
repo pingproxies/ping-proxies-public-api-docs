@@ -42,52 +42,56 @@ You can now go to the **Live Activity** section in your dashboard, locate the Lo
 - Internal error code (if failed)
 
 ## Common Error Codes and Troubleshooting
-
 We do not expose HTTP status codes due to TLS encryption. Instead, errors are represented by internal codes shown in the [**Live Network Activity Viewer**](https://dashboard.pingproxies.com/observability/live).
 
-Below is a comprehensive list of these codes with their descriptions:
+
+These errors are broken down into sub-categories.
+
+- Authentication Errors (1000 - 1999)
+- Routing Errors (2000 - 2999)
+- Connection Errors (3000 - 3999)
+- Tunneling Errors  (4000 - 4999)
+- General Errors (9000 - 9999)
+
+We also expose a single HTTP-style error code `301`, returned only when you try to reach a HTTP target on our residential network, which only allows HTTPS targets.
+
+Below is a comprehensive list of all error codes and their descriptions:
 
 | Error Code | Description |
 |------------|-------------|
 | **200**        | **Successful / No Error** |
-| 0–9        | Authentication failed or target blacklisted |
-| 10–19      | Internal service failed to execute |
-| 20–29      | Unrecognised protocol received |
-| 30–39      | Failed to connect to target |
-| 40–59      | Failed to establish proxy tunnel |
-| 90         | Error during connection |
-| 1000–1001  | Invalid credentials provided |
-| 1003       | Password is required |
-| 1004       | Username is required |
-| 1102       | Bandwidth limit exceeded for your plan |
-| 1103       | Too many concurrent connections |
-| 1104       | Authentication format is invalid |
-| 2001       | Your IP address is blocked |
-| 2002–2007  | Target website is restricted |
-| 2008       | Rate limit exceeded – please wait |
-| 2009       | Target port is not permitted |
-| 2010       | Connection limit reached |
-| 2011       | Target website is restricted |
-| 3001       | Internal server error occurred |
-| 3002       | Required parameters are missing |
-| 3003       | Unsupported protocol requested |
-| 3004       | Internal server error occurred |
-| 3200       | Failed to connect to target |
-| 4000       | Connection tunnel failed |
-| 9101       | Client connection error |
-| 9102       | Client communication failed |
-| 9103       | Target server unreachable |
-| 9104       | Target connection failed |
-| 9108       | Domain name could not be resolved |
-| 9200–9202  | Request format is invalid |
+
+    301          | Request redirected to HTTPS
+
+    1000 - 1100  | Failed to authenticate
+    1102         | Bandwidth limit exceeded for oyu plan
+    1103         | Too many concurrent connections
+    1104         | HTTP proxy authentication eader was badly formed
+
+    2000         | GeneralRouteError
+    2002         | Target website is restricted
+    2102         | Internal server error occurred
+
+    3000 - 3200  | Internal server error ocurred
+
+    4000 - 4102  | Internal server error occurred
+    4103         | Connection was unused for too long
+
+    9100 - 9104  | Unexpected EOF during operation. Not necessarily a bad thing.
+
+    9108         | General DNS failure
+    9109         | Domain name could not be resolved
+
+    9201         | Protocol used was badly formed. Check client and libraries.
+
+    9300         | We forcibly closed your connection. Your proxies might have expired.
+    9301         | Connection was used for too long
+
 
 ### Suggested Fixes
-
-- **Authentication Errors (0–9, 1000–1004)**: Verify your proxy username and password. Double-check authentication format.
-- **Target Restricted (2000 range)**: The target website or port may be blocked by your plan or region. Try a different network or contact support.
-- **Bandwidth or Connection Limits (1102–2010)**: Upgrade your plan or reduce simultaneous requests.
-- **Protocol Errors (20–29, 3003)**: Ensure you are using supported protocols like HTTP/HTTPS.
-- **Client Errors (9100s)**: Review your application’s outbound behavior—could be firewall, DNS, or socket related.
+- **Authentication Errors (1000-1100, 1104)**: Verify your proxy username and password. Double-check authentication format.
+- **Bandwidth or Connection Limits (1102, 1103)**: Upgrade your plan or reduce simultaneous requests.
+- **Target Restricted (2002)**: The target website or port may be blocked by your plan or region. Try a different network or contact support.
 
 ## Still Need Help?
 
