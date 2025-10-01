@@ -634,7 +634,7 @@ This means that there is currently no way to use HTTP/3 to establish a tunnel ov
 ## HTTP/3 over SOCKS5 UDP - Controlling Your Fingerprint
 The example above shows how to proxy TCP traffic over a HTTP/3 connection. The examplebelow shows how to proxy HTTP/3 using a UDP proxy. Most proxy providers who talk about "HTTP/3 proxying" mean this second option. 
 
-When proxying HTTP/3 using a HTTP/3 MITM proxy, the proxy server is responsible for performing the TLS handshake with the target. As such, you end up with a TLS fingerprint (JA3/JA4) that might not be ideal for your use-case. Until the CONNECT-UDP method is added to our network (or other  providers) the best solution is to proxy your HTTP/3 traffic using this SOCKS 5 UDP socket method.
+When proxying HTTP/3 using a HTTP/3 MITM proxy, the proxy server is responsible for performing the TLS handshake with the target. As such, you end up with a TLS fingerprint (JA3/JA4) that might not be ideal for your use-case. Until the CONNECT-UDP method becomes widespread, the best option is proxy your HTTP/3 traffic using SOCKS5 UDP proxies.
 
 <Tabs>
 	<Tab title="Python">
