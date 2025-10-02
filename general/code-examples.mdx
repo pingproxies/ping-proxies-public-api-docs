@@ -5,14 +5,10 @@ description: 'Code examples of how to use Ping Proxies services using Python'
 
 To help customers with debugging, Ping Proxies provides TCP and UDP servers for testing proxy connectivity.
 
-Our two TCP servers, running on `demo.residential.pingproxies.com` act an echo server and as an IP address reporting service.
-- GET requests to port 40000 will receive their IP address sent back to them. HTTP/1.1, HTTP/2 and HTTP/3 - both cleartext and protected by TLS - is supported.
-- Any bytes sent to port 40001 will be echo'd back.
-
-Our two UDP servers, running on `demo.residential.pingproxies.com` also act as an echo server and an IP address reporting service.
-- Any bytes sent to port 50000 will receive their IP address in response.
-- Any bytes sent to port 50001 will be echo'd back.
-
+- https://http-ip.tools.pingproxies.com. Responds to any HTTP request with your IP address.
+- tcp-echo.tools.pingproxies.com:40000. Accepts TCP connections and returns any bytes received.
+- udp-echo.tools.pingproxies.com:50000. Accepts UDP datagrams and  returns any bytes received.
+- udp-ip.tools.pingproxies.com:50001. Accepts UDP datagrams and returns your IP address.
 
 In our examples we use these servers as our end targets. Feel free to use them in your own code for testing your proxies.
 
@@ -42,7 +38,7 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 		PROXY_STRING = f"socks5://{USER}:{PASS}@{PROXY}:{PORT}"
 		PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
 
-		TARGET = "https://demo.residential.pingproxies.com:40000"
+		TARGET = "https://http-ip.tools.pingproxies.com"
 
 		def main():
 		    resp = requests.get(TARGET, proxies=PROXIES)
@@ -62,7 +58,7 @@ SOCKS proxies allow you to tunnel both TCP and UDP traffic, making them a very g
 		const PROXY: &str = "residential.pingproxies.com"
 		const PORT: u16 = 8123;
 
-		const TARGET: &str = "https://demo.residential.pingproxies.com:40000";
+		const TARGET: &str = "https://http-ip.tools.pingproxies.com";
 
 		#[tokio::main]
 		async fn main() {
@@ -118,8 +114,8 @@ For our UDP examples, we use the PingProxies UDP test server. This server, open 
 		PROXY_STRING = f"socks5://{USER}:{PASS}@{PROXY}:{PORT}"
 
 		# Ping Proxies UDP-based IP reporting server
-		TARGET_URI = "demo.residential.pingproxies.com"
-		TARGET_PORT = 50000
+		TARGET_URI = "udp-ip.tools.pingproxies.com"
+		TARGET_PORT = 50001
 
 		def main():
 		    # Bind UDP Socket
@@ -175,7 +171,7 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 			PROXY_STRING = f"socks5://{USER}:{PASS}@{PROXY}:{PORT}"
 			PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
 
-			TARGET = "https://demo.residential.pingproxies.com:40000"
+			TARGET = "https://http-ip.tools.pingproxies.com"
 
 			def main():
 			    resp = requests.get(TARGET, proxies=PROXIES)
@@ -195,7 +191,7 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 			const PROXY: &str = "residential.pingproxies.com";
 			const PORT: u16 = 8123;
 
-			const TARGET: &str = "https://demo.residential.pingproxies.com:40000";
+			const TARGET: &str = "https://http-ip.tools.pingproxies.com";
 
 			fn main() {
 			    let proxy = ureq::Proxy::builder(ureq::ProxyProtocol::Http)
@@ -236,7 +232,7 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 	</Accordion>
 
 	<Accordion title = "HTTP/1.1 MITM">
-	MITM proxying is even simpler than the CONNECT method. Simply send your request directly to the server and it will forward it for you. Unfortunately, the  simplicity of MITM proxying is offset by security risks as you can no longer perform _TLS to the Target_ to encryp your data  and hide it from anyone listening and even the proxy server itself.
+	MITM proxying is even simpler than the CONNECT method. Simply send your request directly to the server and it will forward it for you. Unfortunately, the  simplicity of MITM proxying is offset by security risks as you can no longer perform _TLS to the Target_ to encrypt your data  and hide it from anyone listening and even the proxy server itself.
 	<Tabs>
 		<Tab title="Python">
 			```python main.py
@@ -252,7 +248,7 @@ HTTP proxies can either tunnel TPC traffic, or HTTP request. They do this by usi
 				PROXY_STRING = f"http://{USER}:{PASS}@{PORXY}:{PORT}"
 				PROXIES = {"http": PROXY_STRING, "https": PROXY_STRING}
 
-				TARGET = "http://demo.residential.pingproxies.com:40000"
+				TARGET = "http://http-ip.tools.pingproxies.com"
 
 				def main():
 				    resp = requests.get(TARGET, proxies=PROXIES)
@@ -299,11 +295,11 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 			PROXY = "residential.pingproxies.com"
 			PORT = 8123
 
-			PROXY_STRING = f"http://{USER}:{PASS}@{PORXY}:{PORT}"
+			PROXY_STRING = f"https://{USER}:{PASS}@{PORXY}:{PORT}"
 
-			TARGET1 = "https://demo.residential.pingproxies.com:40000"
-			TARGET2 = "https://demo.residential.pingproxies.com:40001"
-			TARGET3 = "https://demo.residential.pingproxies.com:40002"
+			TARGET1 = "https://http-ip.tools.pingproxies.com"
+			TARGET2 = "https://http-ip.tools.pingproxies.com"
+			TARGET3 = "https://http-ip.tools.pingproxies.com"
 
 			def main():
 				# Three requests will all use the same TCP connection to the proxy thanks to ALPN and HTTP/2
@@ -314,8 +310,6 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 			```
 
 			`httpx` is a more modern and feature-rich HTTP library. Unlike `requests`, it supports versions other than HTTP/1.1 and will use ALPN  to upgrade requests (including those to a proxy) where possible.
-
-			By re-using a `httpx.Client`, the underlying TCP connection to the proxy server is kept for each client. As such, sending three requests requires only 4 TCP connections to be made. If this was done using HTTP/1.1, 6 TCP connections would need to be made: three to the proxy and three to the targets.
 		</Tab>
 
 		<Tab title="Rust">
@@ -342,11 +336,11 @@ On our services, we support Prior Knowledge and ALPN. The examples below show ho
 			PROXY = "residential.pingproxies.com"
 			PORT = 8123
 
-			PROXY_STRING = f"http://{USER}:{PASS}@{PORXY}:{PORT}"
+			PROXY_STRING = f"https://{USER}:{PASS}@{PORXY}:{PORT}"
 
-			TARGET1 = "https://demo.residential.pingproxies.com:40000"
-			TARGET2 = "https://demo.residential.pingproxies.com:40001"
-			TARGET3 = "https://demo.residential.pingproxies.com:40002"
+			TARGET1 = "http://http-ip.tools.pingproxies.com"
+			TARGET2 = "http://http-ip.tools.pingproxies.com"
+			TARGET3 = "http://http-ip.tools.pingproxies.com"
 
 			def main():
 			    with httpx.Client(proxy=PROXY_STRING) as client:
@@ -404,9 +398,10 @@ This means that there is currently no way to use HTTP/3 to establish a tunnel ov
 
 			const PROXY: &str = "residential.pingproxies.com";
 			const PORT: u16 = 8123;
+
 			const RESOLVED_PROXY: SocketAddr = SocketAdrr::new(IpAddr::from([0, 0, 0, 0], PORT))
 
-			const TARGET: &str = "https://demo.residential.pingproxies.com:40000";
+			const TARGET: &str = "https://http-ip.tools.pingproxies.com";
 
 
 			#[tokio::main]
