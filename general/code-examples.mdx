@@ -139,39 +139,45 @@ For our UDP examples, we use the PingProxies UDP test server. This server, open 
 
 	<Tab title="Rust">
 		```rust main.rs
-		// tokio = { version = "1", features = ["full"] }
-		// fast-socks5 = "0.10"
+			// tokio = { version = "1", features = ["full"] }
+			// fast-socks5 = "0.10"
 
-		const USER: &str = "...";
-		const PASS: &str = "...";
+			use fast_socks5::client::Socks5Datagram;
+			use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+			use tokio::net::TcpStream;
 
-		const RESOLVED_PROXY: SocketAddr = SocketAdrr::new(IpAddr::from([0, 0, 0, 0], PORT));
-		const PROXY: &str = "residential.pingproxies.com";
-		const PORT: u16 = 8123;
+			const USER: &str = "...";
+			const PASS: &str = "...";
 
-		const TARGET: &str = "https://http-ip.tools.pingproxies.com";
-		const TARGET_PORT: u16 = 50001;		
+			const PROXY: &str = "residential.pingproxies.com";
+			const PORT: u16 = 8123;
 
-		
-		#[tokio::main]
-		fn main() {
-			let socket =  {
-				let socket = TcpStream::connect(RESOLVED_PROXY).await.unwrap();
-				Socks5Datagram::bind_with_password(
-					socket,
-					client_addr,
-					USER,
-					PASS
-				).await.unwrap();
-			};
+			const TARGET: &str = "udp-ip.tools.pingproxies.com";
+			const TARGET_PORT: u16 = 50001;
 
-			socket.send_to(b"Hello", (TARGET, TARGET_PORT));
+			#[tokio::main]
+			async fn main() {
+			    let socket = {
+			        let socket = TcpStream::connect((PROXY, PORT)).await.unwrap();
+			        let local_addr = socket.local_addr().unwrap();
 
-			let buf = [0; 256];
-			let (len, _) = socket.recv_from(&mut buf).await?;
-			let msg =  std::string::from_utf8(&buf[..len]).unwrap();
-			println!("Proxy IP: {}");
-		}
+			        Socks5Datagram::bind_with_password(socket, local_addr, USER, PASS)
+			            .await
+			            .unwrap()
+			    };
+
+			    socket
+			        .send_to(b"Hello", (TARGET, TARGET_PORT))
+			        .await
+			        .unwrap();
+
+			    let mut buf = [0; 256];
+			    let (len, remote_addr) = socket.recv_from(&mut buf).await.unwrap();
+			    let msg = String::from_utf8(buf[..len].to_vec()).unwrap();
+
+			    println!("Recv From: {remote_addr}");
+			    println!("Proxy IP: {msg}");
+			}
 		```
 	</Tab>
 </Tabs>
