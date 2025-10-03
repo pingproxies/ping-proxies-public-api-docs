@@ -145,8 +145,8 @@ For our UDP examples, we use the PingProxies UDP test server. This server, open 
 		const USER: &str = "...";
 		const PASS: &str = "...";
 
-		const RESOLVED_PROXY: SocketAddr = SocketAdrr::new(IpAddr::from([0, 0, 0, 0], PORT))
-		const PROXY: &str = "residential.pingproxies.com"
+		const RESOLVED_PROXY: SocketAddr = SocketAdrr::new(IpAddr::from([0, 0, 0, 0], PORT));
+		const PROXY: &str = "residential.pingproxies.com";
 		const PORT: u16 = 8123;
 
 		const TARGET: &str = "https://http-ip.tools.pingproxies.com";
@@ -165,7 +165,7 @@ For our UDP examples, we use the PingProxies UDP test server. This server, open 
 				).await.unwrap();
 			};
 
-			socket.send_to(b"Hello", (TARGET, TARGET_PORT))
+			socket.send_to(b"Hello", (TARGET, TARGET_PORT));
 
 			let buf = [0; 256];
 			let (len, _) = socket.recv_from(&mut buf).await?;
@@ -413,13 +413,6 @@ This means that there is currently no way to use HTTP/3 to establish a tunnel ov
 
 	<Accordion title = "HTTP/3 CONNECT">
 	<Tabs>
-		<Tab title="Python">
-			```python main.py
-			def main():
-				print("Hello World!")
-			```
-		</Tab>
-
 		<Tab title="Rust">
 			```rust main.rs
 			// tokio = { version = "1", features = ["full"] }
@@ -648,6 +641,7 @@ This means that there is currently no way to use HTTP/3 to establish a tunnel ov
 				// quinn = { version = "0.11", features = ["runtime-tokio"] }
 				// http = "1"
 				// bytes = "1"
+
 				use std::sync::Arc;
 
 				use bytes::{Buf, BufMut};
@@ -853,6 +847,7 @@ When proxying HTTP/3 using a HTTP/3 MITM proxy, the proxy server is responsible 
 			// quinn = { version = "0.11", features = ["runtime-tokio"] }
 			// http = "1"
 			// bytes = "1"
+
 			use std::sync::Arc;
 
 			use bytes::{Buf, BufMut};
