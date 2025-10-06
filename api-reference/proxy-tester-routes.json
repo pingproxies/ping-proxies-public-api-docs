@@ -137,6 +137,12 @@
                       "example": "http://ftrdddgq:518vrc41xyms@209.99.134.6:5702"
                     },
                     {
+                      "title": "HTTPS",
+                      "type": "string",
+                      "description": "Format: https://USERNAME:PASSWORD@IP:PORT",
+                      "example": "https://ftrdddgq:518vrc41xyms@209.99.134.6:5702"
+                    },
+                    {
                       "title": "SOCKS",
                       "type": "string",
                       "description": "Format: socks://USERNAME:PASSWORD@IP:PORT",
