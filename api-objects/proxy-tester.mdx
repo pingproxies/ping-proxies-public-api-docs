@@ -61,7 +61,9 @@ Individual test results for each proxy-URL-server combination.
 |-----------|------|-------------|
 | `proxy_test_result_id` | string (uuid) | Unique identifier for this specific test result |
 | `proxy_test_result_url` | string | The URL that was tested |
-| `proxy_test_result_status_code` | integer | HTTP status code returned |
+| `proxy_test_result_is_successful` | boolean | Whether the test was successful |
+| `proxy_test_result_error_code` | integer | Error code that was returned |
+| `proxy_test_result_error_source` | integer | State at which the error was returned |
 | `proxy_test_result_protocol` | string | Protocol used |
 | `proxy_test_result_response_time` | integer | Response time in milliseconds |
 | `proxy_test_server_id` | string | ID of the test server used |

@@ -228,9 +228,17 @@
                         "type": "string",
                         "description": "URL that the proxy was tested against"
                       },
-                      "proxy_test_result_status_code": {
-                        "type": "integer",
-                        "description": "Status code that was returned"
+                      "proxy_test_result_is_successful": {
+                        "type": "boolean",
+                        "description": "Whether the proxy test was successful"
+                      },
+                      "proxy_test_result_error_code": {
+                        "type": "string",
+                        "description": "Error code that was returned"
+                      },
+                      "proxy_test_result_error_source": {
+                        "type": "string",
+                        "description": "Stage at which the error code that was returned"
                       },
                       "proxy_test_result_protocol": {
                         "type": "string",
@@ -313,7 +321,9 @@
                     "proxy_test_run_id": "5b1494e7-663f-4af6-adf8-67ec8b18cf66",
                     "proxy_tester_proxy_id": "db8cd8d3-bc99-4880-9a1d-233af9a35eda",
                     "proxy_test_result_url": "https://google.com",
-                    "proxy_test_result_status_code": 200,
+                    "proxy_test_result_is_successful": false,
+                    "proxy_test_result_error_code": "bad_request",
+                    "proxy_test_result_error_source": "target",
                     "proxy_test_result_protocol": "http",
                     "proxy_test_result_response_time": 224,
                     "proxy_test_server_id": "london-2-digitalocean-proxytester-1",

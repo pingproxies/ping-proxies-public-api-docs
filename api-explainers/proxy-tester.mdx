@@ -78,7 +78,7 @@ try:
         for run_id, test_data in result["data"].items():
             if "results" in test_data:
                 for test_result in test_data["results"]:
-                    status_code = test_result.get("proxy_test_result_status_code", "N/A")
+                    is_successful = test_result.get("proxy_test_result_is_successful", "N/A")
                     response_time = test_result.get("proxy_test_result_response_time", "N/A")
                     city = test_result.get("proxy_tester_proxy_city_name", "N/A")
                     country = test_result.get("proxy_tester_proxy_country_id", "N/A")
