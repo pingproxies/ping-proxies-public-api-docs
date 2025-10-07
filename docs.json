@@ -140,7 +140,7 @@
             "icon": "lock",
             "pages": [
               "general/acceptable-usage-policy",
-              "general/report-abuse",
+              "general/abuse-reporting-policy",
               "general/ethical-sourcing",
               "general/kyc-policy",
               "general/restricted-domains"
