@@ -20,9 +20,9 @@ BASE_URL = "https://api.pingproxies.com/1.0/public/user"
 
 # Headers for authentication
 headers = {
-  "X-API-Public-Key": API_PUBLIC_KEY,
-  "X-API-Private-Key": API_PRIVATE_KEY,
-  "Content-Type": "application/json"
+    "X-API-Public-Key": API_PUBLIC_KEY,
+    "X-API-Private-Key": API_PRIVATE_KEY,
+    "Content-Type": "application/json",
 }
 
 
@@ -57,8 +57,8 @@ def get_available_test_servers():
         List of available test servers or None if request failed
     """
     response = requests.get(
-      f"{BASE_URL}/proxy_test_server/search?proxy_test_server_active=true",
-      headers=headers
+        f"{BASE_URL}/proxy_test_server/search?proxy_test_server_active=true",
+        headers=headers,
     )
 
     if response.status_code != 200:
@@ -70,7 +70,9 @@ def get_available_test_servers():
     return data["data"]
 
 
-def create_bulk_proxy_test(proxy_strings, test_server_id, target_url="https://pingproxies.com"):
+def create_bulk_proxy_test(
+    proxy_strings, test_server_id, target_url="https://pingproxies.com"
+):
     """
     Create a proxy test for multiple proxies against a target URL
 
@@ -92,17 +94,15 @@ def create_bulk_proxy_test(proxy_strings, test_server_id, target_url="https://pi
 
     # Create the request payload
     payload = {
-      "proxies": proxies,
-      "proxy_tester_server_id": [test_server_id],
-      "proxy_test_run_id": test_run_id,
-      "urls": [target_url]
+        "proxies": proxies,
+        "proxy_tester_server_id": [test_server_id],
+        "proxy_test_run_id": test_run_id,
+        "urls": [target_url],
     }
 
     # Make request to create the proxy test
     response = requests.post(
-      f"{BASE_URL}/proxy_test_run/create",
-      json=payload,
-      headers=headers
+        f"{BASE_URL}/proxy_test_run/create", json=payload, headers=headers
     )
 
     if response.status_code != 200:
@@ -130,7 +130,8 @@ def write_results_to_csv(results, output_file):
     headers_csv = [
         "proxy_ip",
         "proxy_port",
-        "status_code",
+        "is_successful",
+        "error_code",
         "response_time_ms",
         "proxy_city",
         "proxy_country",
@@ -152,10 +153,11 @@ def write_results_to_csv(results, output_file):
                     row = [
                         result.get("proxy_tester_proxy_host", ""),
                         result.get("proxy_tester_proxy_port", ""),
-                        result.get("proxy_test_result_status_code", ""),
+                        result.get("proxy_test_result_is_successful", ""),
+                        result.get("proxy_test_result_error_code", ""),
                         result.get("proxy_test_result_response_time", ""),
                         result.get("proxy_tester_proxy_city_name", ""),
-                        result.get("proxy_tester_proxy_country_id", "").upper(),
+                        result.get("proxy_tester_proxy_country_id", ""),
                     ]
                     writer.writerow(row)
 
@@ -178,7 +180,9 @@ if __name__ == "__main__":
     proxy_list = read_proxies_from_file(PROXY_FILE)
 
     if not proxy_list:
-        print("No proxies found in file. Please check the file exists and contains valid proxy strings.")
+        print(
+            "No proxies found in file. Please check the file exists and contains valid proxy strings."
+        )
         exit(1)
 
     # Step 2: Get available test servers
@@ -200,7 +204,9 @@ if __name__ == "__main__":
         batch_num = (i // BATCH_SIZE) + 1
         total_batches = (len(proxy_list) + BATCH_SIZE - 1) // BATCH_SIZE
 
-        print(f"\nProcessing batch {batch_num}/{total_batches} ({len(batch)} proxies)...")
+        print(
+            f"\nProcessing batch {batch_num}/{total_batches} ({len(batch)} proxies)..."
+        )
 
         # Create the proxy test for this batch
         batch_results = create_bulk_proxy_test(batch, test_server_id, TARGET_URL)
@@ -353,7 +359,8 @@ async function writeResultsToCSV(results, outputFile) {
     const csvHeaders = [
         "proxy_ip",
         "proxy_port", 
-        "status_code",
+        "is_successful",
+        "error_code",
         "response_time_ms",
         "proxy_city",
         "proxy_country"
@@ -372,7 +379,8 @@ async function writeResultsToCSV(results, outputFile) {
                 const row = [
                     result.proxy_tester_proxy_host || "",
                     result.proxy_tester_proxy_port || "",
-                    result.proxy_test_result_status_code || "",
+                    result.proxy_test_result_is_successful || "",
+                    result.proxy_test_result_error_code || "",
                     result.proxy_test_result_response_time || "",
                     result.proxy_tester_proxy_city_name || "",
                     (result.proxy_tester_proxy_country_id || "").toUpperCase()
@@ -638,7 +646,8 @@ class ProxyTester {
         $csvHeaders = [
             'proxy_ip',
             'proxy_port',
-            'status_code',
+            'is_successful',
+            'error_code',
             'response_time_ms',
             'proxy_city',
             'proxy_country'
@@ -663,7 +672,8 @@ class ProxyTester {
                     $row = [
                         $result['proxy_tester_proxy_host'] ?? '',
                         $result['proxy_tester_proxy_port'] ?? '',
-                        $result['proxy_test_result_status_code'] ?? '',
+                        $result['proxy_test_result_is_successful'] ?? '',
+                        $result['proxy_test_result_error_code'] ?? '',
                         $result['proxy_test_result_response_time'] ?? '',
                         $result['proxy_tester_proxy_city_name'] ?? '',
                         strtoupper($result['proxy_tester_proxy_country_id'] ?? '')
@@ -833,9 +843,10 @@ type TestRequest struct {
 // TestResult represents individual proxy test result
 type TestResult struct {
 	ProxyTesterProxyHost        string `json:"proxy_tester_proxy_host"`
-	ProxyTesterProxyPort        string `json:"proxy_tester_proxy_port"`
-	ProxyTestResultStatusCode   string `json:"proxy_test_result_status_code"`
-	ProxyTestResultResponseTime string `json:"proxy_test_result_response_time"`
+	ProxyTesterProxyPort        int `json:"proxy_tester_proxy_port"`
+	ProxyTestResultIsSuccessful bool `json:"proxy_test_result_is_successful"`
+	ProxyTestResultErrorCode    string `json:"proxy_test_result_error_code"`
+	ProxyTestResultResponseTime int `json:"proxy_test_result_response_time"`
 	ProxyTesterProxyCityName    string `json:"proxy_tester_proxy_city_name"`
 	ProxyTesterProxyCountryID   string `json:"proxy_tester_proxy_country_id"`
 }
@@ -995,7 +1006,8 @@ func (pt *ProxyTester) WriteResultsToCSV(allResults []TestResult, outputFile str
 	headers := []string{
 		"proxy_ip",
 		"proxy_port",
-		"status_code",
+		"is_successful",
+		"error_code",
 		"response_time_ms",
 		"proxy_city",
 		"proxy_country",
@@ -1009,9 +1021,10 @@ func (pt *ProxyTester) WriteResultsToCSV(allResults []TestResult, outputFile str
 	for _, result := range allResults {
 		row := []string{
 			result.ProxyTesterProxyHost,
-			result.ProxyTesterProxyPort,
-			result.ProxyTestResultStatusCode,
-			result.ProxyTestResultResponseTime,
+			fmt.Sprintf("%d", result.ProxyTesterProxyPort),
+			fmt.Sprintf("%t", result.ProxyTestResultIsSuccessful),
+			result.ProxyTestResultErrorCode,
+			fmt.Sprintf("%d", result.ProxyTestResultResponseTime),
 			result.ProxyTesterProxyCityName,
 			strings.ToUpper(result.ProxyTesterProxyCountryID),
 		}
@@ -1297,7 +1310,8 @@ public class ProxyTester {
         String[] csvHeaders = {
             "proxy_ip",
             "proxy_port", 
-            "status_code",
+            "is_successful",
+            "error_code",
             "response_time_ms",
             "proxy_city",
             "proxy_country"
@@ -1324,7 +1338,8 @@ public class ProxyTester {
                     String[] row = {
                         getJsonValue(result, "proxy_tester_proxy_host"),
                         getJsonValue(result, "proxy_tester_proxy_port"),
-                        getJsonValue(result, "proxy_test_result_status_code"),
+                        getJsonValue(result, "proxy_test_result_is_successful"),
+                        getJsonValue(result, "proxy_test_result_error_code"),
                         getJsonValue(result, "proxy_test_result_response_time"),
                         getJsonValue(result, "proxy_tester_proxy_city_name"),
                         getJsonValue(result, "proxy_tester_proxy_country_id").toUpperCase()

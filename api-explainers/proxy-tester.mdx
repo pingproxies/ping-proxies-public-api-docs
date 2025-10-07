@@ -79,11 +79,13 @@ try:
             if "results" in test_data:
                 for test_result in test_data["results"]:
                     is_successful = test_result.get("proxy_test_result_is_successful", "N/A")
+                    error_code = test_result.get("proxy_test_result_error_code", "N/A")
                     response_time = test_result.get("proxy_test_result_response_time", "N/A")
                     city = test_result.get("proxy_tester_proxy_city_name", "N/A")
                     country = test_result.get("proxy_tester_proxy_country_id", "N/A")
                     print(f"\nTest Results:")
-                    print(f"Status Code: {status_code}")
+                    print(f"Is Successful: {is_successful}")
+                    print(f"Error Code: {error_code}")
                     print(f"Response Time: {response_time}ms")
                     print(f"Location: {city}, {country}")
 
