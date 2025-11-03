@@ -114,61 +114,13 @@ Response:
 {
   "data": [
     "socks5h://stevejobs_c_gb_city_london_s_DDINPY7TQ0781XEO:apple1984@residential.pingproxies.com:8000",
-    "socks5h://stevejobs_c_gb_city_london_s_XIINPY7TQ0781XEA:apple1984@residential.pingproxies.com:8000",
-    "socks5h://stevejobs_c_gb_city_london_s_PPINPY7TQ0781XEB:apple1984@residential.pingproxies.com:8000",
-    "socks5h://stevejobs_c_gb_city_london_s_QQINPY7TQ0781XEC:apple1984@residential.pingproxies.com:8000",
-    "socks5h://stevejobs_c_gb_city_london_s_RRINPY7TQ0781XED:apple1984@residential.pingproxies.com:8000"
+    "socks5h://stevejobs_c_gb_city_london_s_XIINPY7TQ0781XEA:apple1984@residential.pingproxies.com:8000"
   ],
   "message": "Residential list successfully created."
 }
 ```
 
-Notice that the geographic attributes (country_id and city_alias) are encoded in the proxy strings.
-
-### Filtering by ASN for Residential Proxies
-
-While not shown in the basic example above, you can also filter residential proxies by ASN:
-
-```bash
-# Generate 3 residential proxies on Comcast's network (ASN 7922) in the US
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/residential/list?country_id=us&asn_id=7922&list_count=3' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-## Practical Use Cases for Object Relationships
-
-### City-Based Targeting for Market Research
-
-If you're conducting market research for a new retail location, you might want to check product availability and pricing from the perspective of consumers in specific cities:
-
-```bash
-# Generate proxies in multiple target cities
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/residential/list?city_alias=new_york&list_count=2' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/residential/list?city_alias=chicago&list_count=2' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-### ASN-Based Targeting for Ad Verification
-
-For ad verification work, you might need to verify that ads are correctly displayed to users on specific ISPs:
-
-```bash
-# Find all available ISP proxies on AT&T's network
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy/search?proxy_type=isp&asn_id=7018' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-This ensures that the proxies allocated to your service match your specific geographic and network requirements.
+You can also filter residential proxies by ASN to target specific network providers.
 
 ## Exploring Available Options
 

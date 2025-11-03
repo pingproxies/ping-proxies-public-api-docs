@@ -5,17 +5,7 @@ description: 'Understanding the service adjustment audit trail in the Ping Proxi
 
 # Service Adjustments
 
-Service Adjustments provide a comprehensive audit trail of all modifications made to services within the Ping Proxies system. They capture detailed information about what changed, who made the change, when it occurred, and the specific values before and after the adjustment.
-
-## What Are Service Adjustments?
-
-A Service Adjustment is a record created every time a service is modified in any way. These adjustments serve several important purposes:
-
-- **Audit Trail**: Maintain a complete history of all service changes
-- **Accountability**: Track who made each change (system, administrator, or customer)
-- **Transparency**: Document exact values before and after modifications
-- **Troubleshooting**: Help diagnose issues by reviewing the chronology of changes
-- **Billing Records**: Provide references for invoices generated due to adjustments
+Service Adjustments provide an audit trail of all service modifications, tracking what changed, who made the change, when it occurred, and the values before and after the adjustment.
 
 ## Key Components of a Service Adjustment
 
@@ -141,34 +131,9 @@ Service adjustments can be accessed through the API using:
 
 When retrieving a service adjustment with a proxy replacement, the response will include details of all replaced proxies to provide a complete picture of what changed.
 
-## Practical Uses of Service Adjustments
-
-Service adjustments offer valuable data for various stakeholders:
-
-- **For Customers**: Understand when and why services changed
-- **For Resellers**: Track changes to client services
-- **For Developers**: Debug integration issues by reviewing the chronology of changes
-- **For Support Teams**: Quickly identify what changed when troubleshooting
-
-## Reading an Adjustment: Example Scenario
-
-Let's walk through a practical example of reading a service adjustment:
-
-A customer sees that their service was recently modified. They can examine the adjustment to find:
-
-1. **What changed**: By looking at the `service_adjustment_eval` field
-2. **When it changed**: From the `service_adjustment_creation_datetime`
-3. **Who made the change**: By checking the source flags (administrator, automatic, or customer)
-4. **Why it changed**: By understanding the `service_adjustment_type`
-5. **Complete before/after state**: By examining the `service_adjustment_pre` and `service_adjustment_post` fields
-
-This comprehensive information helps eliminate guesswork and provides a clear picture of the service's history.
-
 ## How Adjustments Connect to Other Objects
 
-Service adjustments are connected to several other objects in the Ping Proxies system:
-
 - **Services**: Each adjustment belongs to a specific service
-- **Invoices**: Adjustments that involve billing changes will reference the corresponding invoice
-- **Proxy Replacements**: When proxies are replaced, the adjustment contains details of each replacement
-- **Residential Ledger**: For residential services, bandwidth adjustments may be linked to ledger entries
+- **Invoices**: Adjustments that involve billing changes reference the corresponding invoice
+- **Proxy Replacements**: When proxies are replaced, the adjustment contains replacement details
+- **Residential Ledger**: For residential services, bandwidth adjustments may link to ledger entries

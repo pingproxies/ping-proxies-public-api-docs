@@ -141,19 +141,7 @@ curl --request POST \
   }'
 ```
 
-**Step 3:** Add more services as needed
-
-```bash
-curl --request POST \
-  --url 'https://api.pingproxies.com/1.0/public/user/proxy_user_acl/create' \
-  --header 'Content-Type: application/json' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key' \
-  --data '{
-    "proxy_user_id": "seo_team",
-    "service_id": "API-SEO-POOL-002"
-  }'
-```
+Repeat Step 2 to grant access to additional services.
 
 ### Setting Up Proxy-Restricted Access
 
@@ -230,34 +218,6 @@ curl --request PATCH \
 When changing `access_type` to `"all"`, you must set `clear_proxy_user_acl: true` to remove existing ACL entries. When changing between `"service_restricted"` and `"proxy_restricted"`, you can optionally clear ACLs or leave them (though they won't be used unless the access type matches).
 </Note>
 
-## Common Use Cases
-
-### Team Segregation
-
-**Scenario:** Your company has SEO, Marketing, and Research teams. Each needs access to different proxy pools.
-
-**Solution:** Create service-restricted proxy users for each team:
-
-- `seo_team` → Access to `API-SEO-POOL-001`
-- `marketing_team` → Access to `API-MARKETING-001`
-- `research_team` → Access to `API-RESEARCH-001`
-
-### Proxy Reselling
-
-**Scenario:** You resell individual proxies to customers and need to ensure each customer can only access their purchased proxies.
-
-**Solution:** Create proxy-restricted proxy users:
-
-- `customer_001` → Access to proxies: `proxy_a`, `proxy_b`, `proxy_c`
-- `customer_002` → Access to proxies: `proxy_d`, `proxy_e`
-
-### Multi-Environment Setup
-
-**Scenario:** Development team needs access to all proxies, but production systems should only use specific high-quality services.
-
-**Solution:**
-- Development: `dev_user` with `access_type: "all"`
-- Production: `prod_user` with `access_type: "service_restricted"` → `API-PREMIUM-001`
 
 ## Important Notes
 

@@ -12,13 +12,6 @@ The Ping Proxies API enables complete programmatic control over the purchasing a
 <img className="block dark:hidden" src="/images/api//purchase-flow-light.svg" alt="API Purchase Flow" />
 <img className="hidden dark:block" src="/images/api//purchase-flow-dark.svg" alt="API Purchase Flow" />
 
-The typical purchasing flow involves these steps:
-
-1. **Browse available products** using the catalog endpoint
-2. **Generate a quote** to check pricing and availability
-3. **Create a checkout** to complete the purchase
-4. **Manage the service** after purchase
-
 ## Browsing Available Products
 
 Start by retrieving the available products through the catalog endpoint:
@@ -213,31 +206,7 @@ Response:
 
 ### Payment Processing
 
-The checkout response will provide one of two outcomes:
-
-1. **Fully paid by credit**: If your account has sufficient credit balance to cover the entire purchase, the service will be provisioned immediately:
-   ```json
-   {
-     "data": {
-       "invoice_is_paid": true,
-       "invoice_url": null,
-       "service_id": "API-1234-5678"
-     },
-     "message": "Successfully created checkout and paid with credit. Your service will be provisioned shortly."
-   }
-   ```
-
-2. **Requires additional payment**: If your credit balance doesn't cover the entire purchase, you'll receive an `invoice_url` where the payment can be completed:
-   ```json
-   {
-     "data": {
-       "invoice_is_paid": false,
-       "invoice_url": "https://invoice.stripe.com/i/acct_1H7dAB2BUlqim5l/test_YWNjdF8xSGIzUEFCMkJabsEyzPS3Aag",
-       "service_id": "API-1234-5678"
-     },
-     "message": "Successfully created checkout. Please complete payment at the invoice URL."
-   }
-   ```
+If your account has sufficient credit, `invoice_is_paid` will be `true` and the service provisions immediately. Otherwise, use the `invoice_url` to complete payment.
 
 ## Service Fulfillment Filters
 
@@ -319,77 +288,6 @@ Response:
 }
 ```
 
-## Managing Services
-
-After purchasing proxies, you can manage your services through various API endpoints.
-
-### Retrieving Service Details
-
-```bash
-curl --request GET \
-  --url 'https://api.pingproxies.com/1.0/public/user/service/retrieve/API-1234-5678' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key'
-```
-
-Response:
-
-```json
-{
-  "data": {
-    "service_id": "API-1234-5678",
-    "service_name": "AT&T ISP Proxies [US]",
-    "service_status": "active",
-    "service_quantity": 5,
-    "service_expiry_datetime": "2025-04-25 14:25:36",
-    // Other service fields...
-    "proxies": [
-      {
-        "proxy_id": "7a018d34-76c2-4c23-b14d-f7b9a7054e25",
-        "proxy_ip_address": "107.225.73.142",
-        "proxy_http_port": 8080,
-        "proxy_socks5_port": 1080,
-        // Other proxy fields...
-      },
-      // More proxies...
-    ]
-  },
-  "message": "Service successfully retrieved."
-}
-```
-
-### Editing a Service
-
-You can modify certain aspects of an existing service:
-
-```bash
-curl --request PATCH \
-  --url 'https://api.pingproxies.com/1.0/public/user/service/edit/API-1234-5678' \
-  --header 'Content-Type: application/json' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key' \
-  --data '{
-    "service_is_automatic_collection": false,
-    "service_metadata": {
-      "project": "Client XYZ",
-      "department": "Marketing"
-    }
-  }'
-```
-
-### Canceling a Service
-
-```bash
-curl --request DELETE \
-  --url 'https://api.pingproxies.com/1.0/public/user/service/cancel/API-1234-5678' \
-  --header 'Content-Type: application/json' \
-  --header 'X-API-Public-Key: your_public_key' \
-  --header 'X-API-Private-Key: your_private_key' \
-  --data '{
-    "cancel_feedback": "too_expensive",
-    "cancel_comment": "Moving to a different solution"
-  }'
-```
 
 ## Residential Bandwidth Management
 
@@ -419,43 +317,13 @@ Response:
 }
 ```
 
-## Automating Purchases
-
-For large-scale or recurring purchases, consider implementing these automation strategies:
-
-<CardGroup cols={2}>
-  <Card title="Scheduled Purchasing" icon="calendar">
-    Set up systems to automatically purchase or renew proxies on a schedule
-  </Card>
-  <Card title="Conditional Purchasing" icon="code-branch">
-    Trigger purchases based on usage thresholds or other business conditions
-  </Card>
-  <Card title="Resource Scaling" icon="arrows-up-down">
-    Automatically scale proxy resources based on your application needs
-  </Card>
-  <Card title="Inventory Management" icon="warehouse">
-    Maintain optimal proxy inventory levels based on usage patterns
-  </Card>
-</CardGroup>
-
 ## Best Practices
 
-1. **Test purchases with small quantities** before implementing large automated systems
-2. **Monitor credit balance** to ensure it's sufficient for automated purchases
-3. **Implement robust error handling** for checkout responses
-4. **Track service IDs** returned from successful purchases
-5. **Set up webhooks** (if available) to receive notifications about service status changes
-6. **Maintain an internal inventory database** to track purchased proxies and their attributes
-
-## API Limitations
-
-Be aware of these limitations when automating purchases:
-
-- Standard rate limits apply to all checkout endpoints
-- A maximum of 100 proxies can be purchased in a single checkout
-- Some purchase options may require manual verification for new accounts
-- Certain geographic locations or network types may have limited availability
+- Test purchases with small quantities before automating
+- Monitor credit balance to ensure sufficient funds for automated purchases
+- Implement robust error handling for checkout responses
+- Track service IDs returned from successful purchases
 
 <Note>
-  For high-volume purchasing needs or custom fulfillment requirements, please contact our sales team at sales@pingproxies.com.
+  For high-volume purchasing needs or custom fulfillment requirements, contact sales@pingproxies.com.
 </Note>
