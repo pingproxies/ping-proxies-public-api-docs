@@ -189,6 +189,7 @@
             "pages": [
               "api-objects/customer",
               "api-objects/proxy-user",
+              "api-objects/proxy-user-acl",
               "api-objects/service",
               "api-objects/service-adjustment",
               "api-objects/proxy",
@@ -213,6 +214,7 @@
               "api-explainers/billing",
               "api-explainers/common-object-relationships",
               "api-explainers/proxy-users-and-access-control",
+              "api-explainers/proxy-user-access-control",
               "api-explainers/service-adjustments",
               "api-explainers/proxy-tester"
             ]
