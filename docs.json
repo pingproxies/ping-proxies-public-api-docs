@@ -262,10 +262,10 @@
           {
             "group": "Proxy User ACL",
             "pages": [
-              "api-reference/proxy-user/create-proxy-user-acl",
-              "api-reference/proxy-user/retrieve-proxy-user-acl",
-              "api-reference/proxy-user/search-proxy-user-acls",
-              "api-reference/proxy-user/delete-proxy-user-acl"
+              "api-reference/proxy-user-acl/create-proxy-user-acl",
+              "api-reference/proxy-user-acl/retrieve-proxy-user-acl",
+              "api-reference/proxy-user-acl/search-proxy-user-acls",
+              "api-reference/proxy-user-acl/delete-proxy-user-acl"
             ]
           },
           {
