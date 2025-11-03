@@ -52,7 +52,7 @@
             "api_request_client_ip_address": "122.33.24.33",
             "api_request_client_user_agent": "Chrome/2023.5.8",
             "api_request_creation_datetime": "2023-11-21 13:55:05.549007",
-            "api_request_duration": 251.49846076965332,
+            "api_request_duration": 251.498460769653,
             "api_request_id": "450337744011109b4275783f1b01e4fe",
             "api_request_method": "GET",
             "api_request_path": "/1.0/private/user/api_request/search",
@@ -77,7 +77,7 @@
                 "type": "string"
               },
               "api_request_duration": {
-                "example": 251.49846076965332,
+                "example": 251.498460769653,
                 "type": "number"
               },
               "api_request_id": {
@@ -116,7 +116,7 @@
               "api_request_client_ip_address": "122.33.24.33",
               "api_request_client_user_agent": "Chrome/2023.5.8",
               "api_request_creation_datetime": "2023-11-21 13:03:03.489068",
-              "api_request_duration": 511.2912654876709,
+              "api_request_duration": 511.291265487671,
               "api_request_id": "f80a7ddca2129da755204beb4b8d2d91",
               "api_request_method": "GET",
               "api_request_path": "/1.0/private/user/api_request/search",
@@ -126,7 +126,7 @@
               "api_request_client_ip_address": "122.33.24.33",
               "api_request_client_user_agent": "Chrome/2023.5.8",
               "api_request_creation_datetime": "2023-11-21 13:03:51.635727",
-              "api_request_duration": 364.6986484527588,
+              "api_request_duration": 364.698648452759,
               "api_request_id": "76950bf1aa4f1962ec758e905546d673",
               "api_request_method": "GET",
               "api_request_path": "/1.0/private/user/api_request/search",
@@ -158,7 +158,7 @@
                   "type": "string"
                 },
                 "api_request_duration": {
-                  "example": 511.2912654876709,
+                  "example": 511.291265487671,
                   "type": "number"
                 },
                 "api_request_id": {
@@ -1525,6 +1525,10 @@
             "example": "123e4567-e89b-12d3-a456-426614174000",
             "type": "string"
           },
+          "log_is_tls_enabled": {
+            "example": true,
+            "type": "boolean"
+          },
           "log_local_ip_address": {
             "example": "10.0.0.1",
             "type": "string"
@@ -1552,6 +1556,10 @@
               "socks"
             ],
             "example": "http",
+            "type": "string"
+          },
+          "log_protocol_version": {
+            "example": "1.1",
             "type": "string"
           },
           "log_request_datetime": {
@@ -1625,11 +1633,13 @@
             "log_handshake_elapsed_ms": 150,
             "log_hostname": "apple.com",
             "log_id": "123e4567-e89b-12d3-a456-426614174000",
+            "log_is_tls_enabled": true,
             "log_local_ip_address": "10.0.0.1",
             "log_local_port": 8080,
             "log_method": "get",
             "log_network": "residential",
             "log_protocol": "http",
+            "log_protocol_version": "1.1",
             "log_request_datetime": "2023-04-01 13:00:00",
             "log_session_id": "S8W7G3JGZ44K4Z",
             "log_smartpath_enabled": false,
@@ -1693,6 +1703,10 @@
                 "example": "123e4567-e89b-12d3-a456-426614174000",
                 "type": "string"
               },
+              "log_is_tls_enabled": {
+                "example": true,
+                "type": "boolean"
+              },
               "log_local_ip_address": {
                 "example": "10.0.0.1",
                 "type": "string"
@@ -1720,6 +1734,10 @@
                   "socks"
                 ],
                 "example": "http",
+                "type": "string"
+              },
+              "log_protocol_version": {
+                "example": "1.1",
                 "type": "string"
               },
               "log_request_datetime": {
@@ -1801,11 +1819,13 @@
               "log_handshake_elapsed_ms": 150,
               "log_hostname": "apple.com",
               "log_id": "123e4567-e89b-12d3-a456-426614174000",
+              "log_is_tls_enabled": true,
               "log_local_ip_address": "10.0.0.1",
               "log_local_port": 8080,
               "log_method": "get",
               "log_network": "residential",
               "log_protocol": "http",
+              "log_protocol_version": "1.1",
               "log_request_datetime": "2023-04-01 13:00:00",
               "log_session_id": "S8W7G3JGZ44K4Z",
               "log_smartpath_enabled": false,
@@ -1875,6 +1895,10 @@
                   "example": "123e4567-e89b-12d3-a456-426614174000",
                   "type": "string"
                 },
+                "log_is_tls_enabled": {
+                  "example": true,
+                  "type": "boolean"
+                },
                 "log_local_ip_address": {
                   "example": "10.0.0.1",
                   "type": "string"
@@ -1902,6 +1926,10 @@
                     "socks"
                   ],
                   "example": "http",
+                  "type": "string"
+                },
+                "log_protocol_version": {
+                  "example": "1.1",
                   "type": "string"
                 },
                 "log_request_datetime": {
@@ -2813,6 +2841,15 @@
             },
             "type": "array"
           },
+          "proxy_user_access_type": {
+            "enum": [
+              "all",
+              "service_restricted",
+              "proxy_restricted"
+            ],
+            "example": "all",
+            "type": "string"
+          },
           "proxy_user_creation_datetime": {
             "format": "date-time",
             "type": "string"
@@ -2833,10 +2870,6 @@
             "example": false,
             "type": "boolean"
           },
-          "proxy_user_is_service_restricted": {
-            "example": false,
-            "type": "boolean"
-          },
           "proxy_user_is_strict_security": {
             "example": false,
             "type": "boolean"
@@ -2849,7 +2882,9 @@
             "example": {
               "resell_order_id": "APPL-9876-5432"
             },
-            "properties": {},
+            "properties": {
+
+            },
             "type": "object"
           },
           "proxy_user_password": {
@@ -2864,12 +2899,184 @@
             "example": 31223,
             "type": "integer"
           },
+          "restricted_proxy_ids": {
+            "items": {
+              "example": "d5f6b186-3850-43e5-ac07-55d2ff5eb06e",
+              "type": "string"
+            },
+            "type": "array"
+          },
           "restricted_service_ids": {
             "items": {
               "example": "111-230-892",
               "type": "string"
             },
             "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ProxyUserAcl": {
+        "properties": {
+          "proxy_id": {
+            "example": "550e8400-e29b-41d4-a716-446655440001",
+            "type": "string"
+          },
+          "proxy_user_acl_creation_datetime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "proxy_user_acl_id": {
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "type": "string"
+          },
+          "proxy_user_id": {
+            "example": "stevejobs",
+            "type": "string"
+          },
+          "service_id": {
+            "example": "API-1234-5678",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ProxyUserAclSuccessfulDeleteResponse": {
+        "description": "Proxy User Acl deletion was successful.",
+        "example": {
+          "deleted": [
+            "550e8400-e29b-41d4-a716-446655440000"
+          ],
+          "message": "Proxy User Acl deletion successful."
+        },
+        "properties": {
+          "deleted": {
+            "description": "Array of deleted Proxy User Acl IDs.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "message": {
+            "description": "Status message for the deletion.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ProxyUserAclSuccessfulRetrieveResponse": {
+        "description": "Proxy User Acl retrieve was successful.",
+        "example": {
+          "data": {
+            "proxy_id": "550e8400-e29b-41d4-a716-446655440001",
+            "proxy_user_acl_creation_datetime": "2023-09-28 12:34:56",
+            "proxy_user_acl_id": "550e8400-e29b-41d4-a716-446655440000",
+            "proxy_user_id": "stevejobs",
+            "service_id": "API-1234-5678"
+          },
+          "message": "Proxy User Acl successfully retrieved."
+        },
+        "properties": {
+          "data": {
+            "description": "Retrieved Proxy User Acl item details.",
+            "properties": {
+              "proxy_id": {
+                "example": "550e8400-e29b-41d4-a716-446655440001",
+                "type": "string"
+              },
+              "proxy_user_acl_creation_datetime": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "proxy_user_acl_id": {
+                "example": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "string"
+              },
+              "proxy_user_id": {
+                "example": "stevejobs",
+                "type": "string"
+              },
+              "service_id": {
+                "example": "API-1234-5678",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "message": {
+            "description": "Status message for the retrieval.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ProxyUserAclSuccessfulSearchResponse": {
+        "description": "Proxy User Acl search was successful.",
+        "example": {
+          "data": [
+            {
+              "proxy_id": "550e8400-e29b-41d4-a716-446655440001",
+              "proxy_user_acl_creation_datetime": "2023-09-28 12:34:56",
+              "proxy_user_acl_id": "550e8400-e29b-41d4-a716-446655440000",
+              "proxy_user_id": "stevejobs",
+              "service_id": "API-1234-5678"
+            }
+          ],
+          "item_count": 1,
+          "message": "Proxy User Acl search successful.",
+          "page": 1,
+          "per_page": 10,
+          "total_count": 1
+        },
+        "properties": {
+          "data": {
+            "description": "Array of Proxy User Acl items matching the search criteria up to the limit of per_page paramater.",
+            "items": {
+              "properties": {
+                "proxy_id": {
+                  "example": "550e8400-e29b-41d4-a716-446655440001",
+                  "type": "string"
+                },
+                "proxy_user_acl_creation_datetime": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "proxy_user_acl_id": {
+                  "example": "550e8400-e29b-41d4-a716-446655440000",
+                  "type": "string"
+                },
+                "proxy_user_id": {
+                  "example": "stevejobs",
+                  "type": "string"
+                },
+                "service_id": {
+                  "example": "API-1234-5678",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "item_count": {
+            "description": "Total number of Proxy User Acl items returned in the data field.",
+            "type": "integer"
+          },
+          "message": {
+            "description": "Status message for the search.",
+            "type": "string"
+          },
+          "page": {
+            "description": "Current page number of the search results returned.",
+            "type": "integer"
+          },
+          "per_page": {
+            "description": "Number of Proxy User Acl items returned per page.",
+            "type": "integer"
+          },
+          "total_count": {
+            "description": "Total of Proxy User Acl items that match the search filter.",
+            "type": "integer"
           }
         },
         "type": "object"
@@ -2905,12 +3112,12 @@
             "ip_address_authentications": [
               "17.172.224.47"
             ],
+            "proxy_user_access_type": "all",
             "proxy_user_creation_datetime": "2023-09-28 12:34:56",
             "proxy_user_id": "stevejobs",
             "proxy_user_ip_address_authentication_limit": 3,
             "proxy_user_is_default": false,
             "proxy_user_is_deleted": false,
-            "proxy_user_is_service_restricted": false,
             "proxy_user_is_strict_security": false,
             "proxy_user_last_update_datetime": "2023-09-28 12:34:56",
             "proxy_user_metadata": {
@@ -2919,6 +3126,9 @@
             "proxy_user_password": "apple1984",
             "proxy_user_residential_bytes_limit": 134142432,
             "proxy_user_residential_bytes_used": 31223,
+            "restricted_proxy_ids": [
+              "d5f6b186-3850-43e5-ac07-55d2ff5eb06e"
+            ],
             "restricted_service_ids": [
               "111-230-892"
             ]
@@ -2940,6 +3150,15 @@
                 },
                 "type": "array"
               },
+              "proxy_user_access_type": {
+                "enum": [
+                  "all",
+                  "service_restricted",
+                  "proxy_restricted"
+                ],
+                "example": "all",
+                "type": "string"
+              },
               "proxy_user_creation_datetime": {
                 "format": "date-time",
                 "type": "string"
@@ -2960,10 +3179,6 @@
                 "example": false,
                 "type": "boolean"
               },
-              "proxy_user_is_service_restricted": {
-                "example": false,
-                "type": "boolean"
-              },
               "proxy_user_is_strict_security": {
                 "example": false,
                 "type": "boolean"
@@ -2976,7 +3191,9 @@
                 "example": {
                   "resell_order_id": "APPL-9876-5432"
                 },
-                "properties": {},
+                "properties": {
+
+                },
                 "type": "object"
               },
               "proxy_user_password": {
@@ -2990,6 +3207,13 @@
               "proxy_user_residential_bytes_used": {
                 "example": 31223,
                 "type": "integer"
+              },
+              "restricted_proxy_ids": {
+                "items": {
+                  "example": "d5f6b186-3850-43e5-ac07-55d2ff5eb06e",
+                  "type": "string"
+                },
+                "type": "array"
               },
               "restricted_service_ids": {
                 "items": {
@@ -3017,12 +3241,12 @@
               "ip_address_authentications": [
                 "17.172.224.47"
               ],
+              "proxy_user_access_type": "all",
               "proxy_user_creation_datetime": "2023-09-28 12:34:56",
               "proxy_user_id": "stevejobs",
               "proxy_user_ip_address_authentication_limit": 3,
               "proxy_user_is_default": false,
               "proxy_user_is_deleted": false,
-              "proxy_user_is_service_restricted": false,
               "proxy_user_is_strict_security": false,
               "proxy_user_last_update_datetime": "2023-09-28 12:34:56",
               "proxy_user_metadata": {
@@ -3031,6 +3255,9 @@
               "proxy_user_password": "apple1984",
               "proxy_user_residential_bytes_limit": 134142432,
               "proxy_user_residential_bytes_used": 31223,
+              "restricted_proxy_ids": [
+                "d5f6b186-3850-43e5-ac07-55d2ff5eb06e"
+              ],
               "restricted_service_ids": [
                 "111-230-892"
               ]
@@ -3058,6 +3285,15 @@
                   },
                   "type": "array"
                 },
+                "proxy_user_access_type": {
+                  "enum": [
+                    "all",
+                    "service_restricted",
+                    "proxy_restricted"
+                  ],
+                  "example": "all",
+                  "type": "string"
+                },
                 "proxy_user_creation_datetime": {
                   "format": "date-time",
                   "type": "string"
@@ -3078,10 +3314,6 @@
                   "example": false,
                   "type": "boolean"
                 },
-                "proxy_user_is_service_restricted": {
-                  "example": false,
-                  "type": "boolean"
-                },
                 "proxy_user_is_strict_security": {
                   "example": false,
                   "type": "boolean"
@@ -3094,7 +3326,9 @@
                   "example": {
                     "resell_order_id": "APPL-9876-5432"
                   },
-                  "properties": {},
+                  "properties": {
+
+                  },
                   "type": "object"
                 },
                 "proxy_user_password": {
@@ -3108,6 +3342,13 @@
                 "proxy_user_residential_bytes_used": {
                   "example": 31223,
                   "type": "integer"
+                },
+                "restricted_proxy_ids": {
+                  "items": {
+                    "example": "d5f6b186-3850-43e5-ac07-55d2ff5eb06e",
+                    "type": "string"
+                  },
+                  "type": "array"
                 },
                 "restricted_service_ids": {
                   "items": {
@@ -3410,7 +3651,9 @@
             "example": {
               "resell_customer_id": "APPL-9876-5432"
             },
-            "properties": {},
+            "properties": {
+
+            },
             "type": "object"
           },
           "service_name": {
@@ -3490,7 +3733,9 @@
                 "2024-09-14 18:30:00"
               ]
             },
-            "properties": {},
+            "properties": {
+
+            },
             "type": "object"
           },
           "service_adjustment_id": {
@@ -3517,14 +3762,18 @@
             "example": {
               "service_expiry_datetime": "2024-09-14 18:30:00"
             },
-            "properties": {},
+            "properties": {
+
+            },
             "type": "object"
           },
           "service_adjustment_pre": {
             "example": {
               "service_expiry_datetime": "2023-09-14 18:30:00"
             },
-            "properties": {},
+            "properties": {
+
+            },
             "type": "object"
           },
           "service_adjustment_status": {
@@ -3607,7 +3856,9 @@
                     "2024-09-14 18:30:00"
                   ]
                 },
-                "properties": {},
+                "properties": {
+
+                },
                 "type": "object"
               },
               "service_adjustment_id": {
@@ -3634,14 +3885,18 @@
                 "example": {
                   "service_expiry_datetime": "2024-09-14 18:30:00"
                 },
-                "properties": {},
+                "properties": {
+
+                },
                 "type": "object"
               },
               "service_adjustment_pre": {
                 "example": {
                   "service_expiry_datetime": "2023-09-14 18:30:00"
                 },
-                "properties": {},
+                "properties": {
+
+                },
                 "type": "object"
               },
               "service_adjustment_status": {
@@ -3738,7 +3993,9 @@
                       "2024-09-14 18:30:00"
                     ]
                   },
-                  "properties": {},
+                  "properties": {
+
+                  },
                   "type": "object"
                 },
                 "service_adjustment_id": {
@@ -3765,14 +4022,18 @@
                   "example": {
                     "service_expiry_datetime": "2024-09-14 18:30:00"
                   },
-                  "properties": {},
+                  "properties": {
+
+                  },
                   "type": "object"
                 },
                 "service_adjustment_pre": {
                   "example": {
                     "service_expiry_datetime": "2023-09-14 18:30:00"
                   },
-                  "properties": {},
+                  "properties": {
+
+                  },
                   "type": "object"
                 },
                 "service_adjustment_status": {
@@ -3919,7 +4180,9 @@
                 "example": {
                   "resell_customer_id": "APPL-9876-5432"
                 },
-                "properties": {},
+                "properties": {
+
+                },
                 "type": "object"
               },
               "service_name": {
@@ -4083,7 +4346,9 @@
                   "example": {
                     "resell_customer_id": "APPL-9876-5432"
                   },
-                  "properties": {},
+                  "properties": {
+
+                  },
                   "type": "object"
                 },
                 "service_name": {
@@ -4186,7 +4451,7 @@
             "type": "string"
           },
           "subdivision_name": {
-            "example": "\u00cele-de-France",
+            "example": "Île-de-France",
             "type": "string"
           },
           "subdivision_node_count": {
@@ -4203,7 +4468,7 @@
             "country_id": "fr",
             "subdivision_alias": "fr_idf",
             "subdivision_id": "fr-idf",
-            "subdivision_name": "\u00cele-de-France",
+            "subdivision_name": "Île-de-France",
             "subdivision_node_count": 1345
           },
           "message": "Subdivision successfully retrieved."
@@ -4225,7 +4490,7 @@
                 "type": "string"
               },
               "subdivision_name": {
-                "example": "\u00cele-de-France",
+                "example": "Île-de-France",
                 "type": "string"
               },
               "subdivision_node_count": {
@@ -4250,7 +4515,7 @@
               "country_id": "fr",
               "subdivision_alias": "fr_idf",
               "subdivision_id": "fr-idf",
-              "subdivision_name": "\u00cele-de-France",
+              "subdivision_name": "Île-de-France",
               "subdivision_node_count": 1345
             }
           ],
@@ -4278,7 +4543,7 @@
                   "type": "string"
                 },
                 "subdivision_name": {
-                  "example": "\u00cele-de-France",
+                  "example": "Île-de-France",
                   "type": "string"
                 },
                 "subdivision_node_count": {
@@ -5626,7 +5891,9 @@
                   },
                   "service_fulfillment_filter": {
                     "description": "An optional filter object for advanced product/service configurations.",
-                    "properties": {},
+                    "properties": {
+
+                    },
                     "type": "object"
                   }
                 },
@@ -5871,7 +6138,9 @@
                               "example": {
                                 "asn_id": 7018
                               },
-                              "properties": {},
+                              "properties": {
+
+                              },
                               "type": "object"
                             },
                             "service_id": {
@@ -5907,8 +6176,12 @@
                               "type": "string"
                             },
                             "service_metadata": {
-                              "example": {},
-                              "properties": {},
+                              "example": {
+
+                              },
+                              "properties": {
+
+                              },
                               "type": "object"
                             },
                             "service_name": {
@@ -6074,7 +6347,9 @@
                     "example": {
                       "asn_id": 7018
                     },
-                    "properties": {},
+                    "properties": {
+
+                    },
                     "type": "object"
                   }
                 },
@@ -6184,8 +6459,12 @@
                               },
                               "service_fulfillment_filter": {
                                 "description": "Additional filters for fulfillment (if any).",
-                                "example": {},
-                                "properties": {},
+                                "example": {
+
+                                },
+                                "properties": {
+
+                                },
                                 "type": "object"
                               }
                             },
@@ -6886,26 +7165,36 @@
                           "description": "Internal geolocation data derived from internal databases.",
                           "properties": {
                             "asn": {
-                              "properties": {},
+                              "properties": {
+
+                              },
                               "type": "object"
                             },
                             "city": {
-                              "properties": {},
+                              "properties": {
+
+                              },
                               "type": "object"
                             },
                             "continent": {
-                              "properties": {},
+                              "properties": {
+
+                              },
                               "type": "object"
                             },
                             "country": {
-                              "properties": {},
+                              "properties": {
+
+                              },
                               "type": "object"
                             },
                             "ip_address": {
                               "type": "string"
                             },
                             "subdivision": {
-                              "properties": {},
+                              "properties": {
+
+                              },
                               "type": "object"
                             }
                           },
@@ -8531,7 +8820,9 @@
             "description": "City ID of the Proxy Test Server",
             "in": "query",
             "name": "city_id",
-            "schema": {}
+            "schema": {
+
+            }
           },
           {
             "description": "Country ID of the Proxy Test Server",
@@ -8577,7 +8868,7 @@
     },
     "/public/user/proxy_user/create": {
       "post": {
-        "description": "Deprecation Warning: In October 2025, we plan on deprecating our current Public API endpoints for Proxy User authentication management. These endpoints will be updated to support a new and improved authentication framework. Please contact developer@pingproxies.com if you think you may be impacted. We are proactively reaching out to API users to discuss the change.\n\nThis endpoint allows you to create a new proxy user.\n\nThe `proxy_user_id` and `proxy_user_password` can be provided or, if omitted, will be randomly generated.\n\nAdditional considerations when creating a Proxy User:\n- `proxy_user_is_strict_security`: If true, the Proxy User requires an IP address authentication list.\n- `restricted_service_ids`: A list of service IDs that the user is restricted to, if service restriction is enabled.\n- `ip_address_authentications` must be a list of valid IP addresses. Each IP address can only be used by one Proxy User.\n- `proxy_user_residential_bytes_limit`: An integer limiting residential traffic (must not be negative).\n",
+        "description": "This endpoint allows you to create a new proxy user.\n\nThe `proxy_user_id` and `proxy_user_password` can be provided or, if omitted, will be randomly generated.\n\nAdditional considerations when creating a Proxy User:\n- `proxy_user_access_type`: Controls access restrictions (\"all\", \"service_restricted\", \"proxy_restricted\")\n- `proxy_user_is_strict_security`: If true, the Proxy User requires an IP address authentication list.\n- `ip_address_authentications` must be a list of valid IP addresses. Each IP address can only be used by one Proxy User.\n- `proxy_user_residential_bytes_limit`: An integer limiting residential traffic (must not be negative).\n\nFor access control, use the ProxyUserAcl endpoints to grant specific service or proxy access when using \"service_restricted\" or \"proxy_restricted\" access types.\n",
         "parameters": [
           {
             "description": "Content type for the request body as application/json.",
@@ -8606,6 +8897,16 @@
                     },
                     "type": "array"
                   },
+                  "proxy_user_access_type": {
+                    "default": "all",
+                    "description": "Access control type for the proxy user:\n- \"all\": Unrestricted access (default)\n- \"service_restricted\": Access restricted by ProxyUserAcl service entries\n- \"proxy_restricted\": Access restricted by ProxyUserAcl proxy entries\n",
+                    "enum": [
+                      "all",
+                      "service_restricted",
+                      "proxy_restricted"
+                    ],
+                    "type": "string"
+                  },
                   "proxy_user_id": {
                     "default": "Randomly generated",
                     "description": "The ID of the proxy user. If not provided, it will be randomly generated.",
@@ -8614,12 +8915,6 @@
                     "minLength": 10,
                     "type": "string"
                   },
-                  "proxy_user_is_service_restricted": {
-                    "default": false,
-                    "description": "Enable service restriction.",
-                    "example": true,
-                    "type": "boolean"
-                  },
                   "proxy_user_is_strict_security": {
                     "default": false,
                     "description": "Enable strict security. If true, IP authentication is required.",
@@ -8627,8 +8922,10 @@
                     "type": "boolean"
                   },
                   "proxy_user_metadata": {
-                    "description": "Arbitrary metadata object for the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Non-nested JSON object\n- Max 30 keys\n- Each value \u2264 300 chars\n- Total size \u2264 32KB\nDefaults to `{}` if not provided.\n",
-                    "properties": {},
+                    "description": "Arbitrary metadata object for the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Non-nested JSON object\n- Max 30 keys\n- Each value ≤ 300 chars\n- Total size ≤ 32KB\nDefaults to `{}` if not provided.\n",
+                    "properties": {
+
+                    },
                     "type": "object"
                   },
                   "proxy_user_password": {
@@ -8643,17 +8940,6 @@
                     "description": "Residential bytes limit for the Proxy User (must not be negative).",
                     "example": 1000000,
                     "type": "integer"
-                  },
-                  "restricted_service_ids": {
-                    "description": "A list of service IDs to which the user is restricted.",
-                    "example": [
-                      "124-1321-123",
-                      "224-1321-123"
-                    ],
-                    "items": {
-                      "type": "string"
-                    },
-                    "type": "array"
                   }
                 },
                 "type": "object"
@@ -8748,7 +9034,36 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProxyUserSuccessfulDeleteResponse"
+                  "properties": {
+                    "deleted": {
+                      "description": "List of Proxy User IDs that were successfully deleted.",
+                      "example": [
+                        "stevejobs"
+                      ],
+                      "items": {
+                        "description": "The Proxy User ID.",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "message": {
+                      "description": "Success message indicating the Proxy User was deleted.",
+                      "example": "Proxy User deletion successful.",
+                      "type": "string"
+                    },
+                    "proxy_user_acl_deleted": {
+                      "description": "List of ProxyUserAcl IDs that were deleted during the proxy user deletion.",
+                      "example": [
+                        "123e4567-e89b-12d3-a456-426614174000"
+                      ],
+                      "items": {
+                        "description": "The ProxyUserAcl ID.",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
                 }
               }
             },
@@ -8769,7 +9084,7 @@
     },
     "/public/user/proxy_user/edit/{proxy_user_id}": {
       "patch": {
-        "description": "Deprecation Warning: In October 2025, we plan on deprecating our current Public API endpoints for Proxy User authentication management. These endpoints will be updated to support a new and improved authentication framework. Please contact developer@pingproxies.com if you think you may be impacted. We are proactively reaching out to API users to discuss the change.\n\nThis endpoint allows a user to edit an existing Proxy User entry by providing the necessary `proxy_user_id`.\n",
+        "description": "This endpoint allows a user to edit an existing Proxy User entry by providing the necessary `proxy_user_id`.\n\nFor access control, use the ProxyUserAcl endpoints to manage specific service or proxy access when using \"service_restricted\" or \"proxy_restricted\" access types.\n",
         "parameters": [
           {
             "description": "ID of the proxy user record to edit.",
@@ -8796,6 +9111,10 @@
             "application/json": {
               "schema": {
                 "properties": {
+                  "clear_proxy_user_acl": {
+                    "description": "When changing access_type, set to True to clear all existing ProxyUserAcl entries.\nRequired when changing to \"all\" if ACLs exist. Optional for other access_type changes.\n",
+                    "type": "boolean"
+                  },
                   "ip_address_authentications": {
                     "description": "A list of valid IP addresses authenticated for this Proxy User.",
                     "example": [
@@ -8807,10 +9126,14 @@
                     },
                     "type": "array"
                   },
-                  "proxy_user_is_service_restricted": {
-                    "description": "Whether the Proxy User is restricted to a set of services.",
-                    "example": true,
-                    "type": "boolean"
+                  "proxy_user_access_type": {
+                    "description": "Access control type for the proxy user:\n- \"all\": Unrestricted access\n- \"service_restricted\": Access restricted by ProxyUserAcl service entries\n- \"proxy_restricted\": Access restricted by ProxyUserAcl proxy entries\n",
+                    "enum": [
+                      "all",
+                      "service_restricted",
+                      "proxy_restricted"
+                    ],
+                    "type": "string"
                   },
                   "proxy_user_is_strict_security": {
                     "description": "Enable or disable strict security for the Proxy User.",
@@ -8818,11 +9141,13 @@
                     "type": "boolean"
                   },
                   "proxy_user_metadata": {
-                    "description": "Arbitrary metadata object associated with the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Must be a non-nested JSON object.\n- Maximum 30 keys.\n- Each value's string representation \u2264 300 characters.\n- Total size \u2264 32KB.\n",
+                    "description": "Arbitrary metadata object associated with the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Must be a non-nested JSON object.\n- Maximum 30 keys.\n- Each value's string representation ≤ 300 characters.\n- Total size ≤ 32KB.\n",
                     "example": {
                       "internal_customer_id": "94266dc6-b29f-4499-a7a8-35232d186706"
                     },
-                    "properties": {},
+                    "properties": {
+
+                    },
                     "type": "object"
                   },
                   "proxy_user_password": {
@@ -8831,20 +9156,9 @@
                     "type": "string"
                   },
                   "proxy_user_residential_bytes_limit": {
-                    "description": "The residential bytes limit for the Proxy User (must be \u2265 current usage).",
+                    "description": "The residential bytes limit for the Proxy User (must be ≥ current usage).",
                     "example": 1000000,
                     "type": "integer"
-                  },
-                  "restricted_service_ids": {
-                    "description": "A list of Service IDs to which the user is restricted (only if `proxy_user_is_service_restricted` is true).",
-                    "example": [
-                      "123-4324-123",
-                      "123-4324-125"
-                    ],
-                    "items": {
-                      "type": "string"
-                    },
-                    "type": "array"
                   }
                 },
                 "type": "object"
@@ -8875,6 +9189,17 @@
                       "description": "Success message indicating the Proxy User was edited.",
                       "example": "Proxy User successfully edited.",
                       "type": "string"
+                    },
+                    "proxy_user_acl_deleted": {
+                      "description": "List of ProxyUserAcl IDs that were deleted during the edit operation (when access_type is set to \"all\").",
+                      "example": [
+                        "123e4567-e89b-12d3-a456-426614174000"
+                      ],
+                      "items": {
+                        "description": "The ProxyUserAcl ID.",
+                        "type": "string"
+                      },
+                      "type": "array"
                     }
                   },
                   "type": "object"
@@ -8973,11 +9298,11 @@
             }
           },
           {
-            "description": "Whether the Proxy User is service restricted (true/false)",
+            "description": "Access control type for the proxy user (all/service_restricted/proxy_restricted)",
             "in": "query",
-            "name": "proxy_user_is_service_restricted",
+            "name": "proxy_user_access_type",
             "schema": {
-              "type": "boolean"
+              "type": "string"
             }
           },
           {
@@ -9048,6 +9373,308 @@
         ]
       }
     },
+    "/public/user/proxy_user_acl/create": {
+      "post": {
+        "description": "This endpoint allows you to create a new Proxy User ACL entry to grant access to specific services or proxies.\n\nRequirements:\n- The target Proxy User must not be deleted and must have access_type != \"all\"\n- For service access: proxy_user_access_type must be \"service_restricted\"\n- For proxy access: proxy_user_access_type must be \"proxy_restricted\"\n- Either service_id OR proxy_id must be provided, but not both\n- The service/proxy must belong to the same customer as the proxy user\n",
+        "parameters": [
+          {
+            "description": "Content type for the request body as application/json.",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "schema": {
+              "default": "application/json",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "proxy_id": {
+                    "description": "The proxy ID to grant access to (required if service_id is not provided).",
+                    "example": "550e8400-e29b-41d4-a716-446655440001",
+                    "type": "string"
+                  },
+                  "proxy_user_id": {
+                    "description": "The ID of the proxy user to grant access to.",
+                    "example": "stevejobs",
+                    "type": "string"
+                  },
+                  "service_id": {
+                    "description": "The service ID to grant access to (required if proxy_id is not provided).",
+                    "example": "API-1234-5678",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "proxy_user_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "description": "Details of the Proxy User ACL to be created.",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "created": [
+                    "550e8400-e29b-41d4-a716-446655440000"
+                  ],
+                  "message": "Proxy User ACL successfully created."
+                },
+                "schema": {
+                  "properties": {
+                    "created": {
+                      "items": {
+                        "description": "A list containing the ID of the created Proxy User ACL.",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "message": {
+                      "description": "A message indicating the success of the operation.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Proxy User ACL Successfully Created"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Create Proxy User ACL",
+        "tags": [
+          "Proxy User ACL"
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/public/user/proxy_user_acl/delete/{proxy_user_acl_id}": {
+      "delete": {
+        "description": "Allows a user to delete an existing Proxy User ACL associated with their account.\nThis permanently removes the ACL record from the database.\n",
+        "parameters": [
+          {
+            "description": "ID of the Proxy User ACL record to delete.",
+            "in": "path",
+            "name": "proxy_user_acl_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "deleted": {
+                      "description": "List of Proxy User ACL IDs that were successfully deleted.",
+                      "example": [
+                        "550e8400-e29b-41d4-a716-446655440000"
+                      ],
+                      "items": {
+                        "description": "The Proxy User ACL ID.",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "message": {
+                      "description": "Success message indicating the ACL was deleted.",
+                      "example": "Proxy User ACL deletion successful.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Proxy User ACL Successfully Deleted"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Delete Proxy User ACL Record",
+        "tags": [
+          "Proxy User ACL"
+        ]
+      }
+    },
+    "/public/user/proxy_user_acl/retrieve/{proxy_user_acl_id}": {
+      "get": {
+        "description": "Retrieves a specific Proxy User ACL based on the provided ID for the current user's account.\n",
+        "parameters": [
+          {
+            "description": "ID of the Proxy User ACL to retrieve",
+            "in": "path",
+            "name": "proxy_user_acl_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ProxyUserAcl"
+                    },
+                    "message": {
+                      "description": "Success message",
+                      "example": "Proxy User ACL retrieve successful.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Proxy User ACL Retrieve"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Retrieve Proxy User ACL",
+        "tags": [
+          "Proxy User ACL"
+        ]
+      }
+    },
+    "/public/user/proxy_user_acl/search": {
+      "get": {
+        "description": "Search Proxy User ACL entries on the customer account using various filters.\nOnly returns ACL entries for proxy users that belong to the current customer.\n",
+        "parameters": [
+          {
+            "description": "ID of the Proxy User ACL",
+            "in": "query",
+            "name": "proxy_user_acl_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the Proxy User",
+            "in": "query",
+            "name": "proxy_user_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the Service",
+            "in": "query",
+            "name": "service_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the Proxy",
+            "in": "query",
+            "name": "proxy_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Creation datetime of the Proxy User ACL (supports min_/max_)",
+            "in": "query",
+            "name": "proxy_user_acl_creation_datetime",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/sort_by"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/ProxyUserAcl"
+                      },
+                      "type": "array"
+                    },
+                    "item_count": {
+                      "description": "Number of items returned in this response",
+                      "example": 10,
+                      "type": "integer"
+                    },
+                    "message": {
+                      "description": "Success message",
+                      "example": "Proxy User ACL search successful.",
+                      "type": "string"
+                    },
+                    "page": {
+                      "description": "Current page number",
+                      "example": 1,
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "description": "Number of items per page",
+                      "example": 10,
+                      "type": "integer"
+                    },
+                    "total_count": {
+                      "description": "Total number of items matching the search criteria",
+                      "example": 25,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Proxy User ACL search"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Search Proxy User ACLs",
+        "tags": [
+          "Proxy User ACL"
+        ]
+      }
+    },
     "/public/user/residential/list": {
       "get": {
         "description": "This endpoint creates a list of residential proxies based on filter parameters.\nThe search parameters allow the user to filter the proxies by location, session type, and format (e.g., http, socks5, socks5h).\n",
@@ -9064,7 +9691,7 @@
             }
           },
           {
-            "description": "Desired format for the proxies (e.g., \"http\", \"socks5\", \"socks5h\", or \"standard\").",
+            "description": "Desired format for the proxies (e.g., \"http\", \"https\", \"socks5\", \"socks5h\", or \"standard\").",
             "in": "query",
             "name": "list_format",
             "schema": {
@@ -9072,6 +9699,7 @@
               "enum": [
                 "standard",
                 "http",
+                "https",
                 "socks5",
                 "socks5h"
               ],
@@ -9827,8 +10455,10 @@
                     "type": "boolean"
                   },
                   "service_metadata": {
-                    "description": "Arbitrary metadata object associated with the service.\nConstraints\n  - Must be a valid, non-nested JSON object.\n  - Maximum 30 keys.\n  - Each value's string representation \u2264 300 characters.\n  - Total size \u2264 32KB.\n",
-                    "properties": {},
+                    "description": "Arbitrary metadata object associated with the service.\nConstraints\n  - Must be a valid, non-nested JSON object.\n  - Maximum 30 keys.\n  - Each value's string representation ≤ 300 characters.\n  - Total size ≤ 32KB.\n",
+                    "properties": {
+
+                    },
                     "type": "object"
                   }
                 },
@@ -10741,7 +11371,8 @@
     {
       "name": "Proxy Authentication",
       "tags": [
-        "Proxy User"
+        "Proxy User",
+        "Proxy User ACL"
       ]
     },
     {
