@@ -1,16 +1,19 @@
 ---
 title: "Get all proxies for a specific proxy user"
-description: "Learn how to retrieve all proxies associated with a specific proxy user, handling service restrictions"
+description: "Learn how to retrieve all proxies a proxy user can access based on their access control settings"
 icon: "user-tag"
 ---
 
-This example demonstrates how to fetch all proxies associated with a specific proxy user ID. The process involves:
+This example demonstrates how to fetch all proxies associated with a specific proxy user ID. The process handles the three different access types: unrestricted access, service-restricted access, and proxy-restricted access.
 
-1. Retrieving the proxy user details to check for service restrictions
-2. If the user is not service-restricted, fetching all proxies across all services
-3. If the user is service-restricted, fetching proxies only from the services they have access to
+## Overview
 
-The code handles pagination to ensure you get the complete list of proxies even when there are many results.
+The workflow varies based on the proxy user's `proxy_user_access_type`:
+
+1. **Retrieve the proxy user** to check their access type
+2. **If `access_type: "all"`**: Fetch all proxies in your account
+3. **If `access_type: "service_restricted"`**: Search ACLs for service IDs, then fetch proxies from those services
+4. **If `access_type: "proxy_restricted"`**: Search ACLs for proxy IDs, then fetch those specific proxies
 
 <CodeGroup>
 ```python Python
@@ -28,122 +31,164 @@ headers = {
     "X-API-Private-Key": API_PRIVATE_KEY
 }
 
-# Set the proxy user ID you want to get proxies for
-proxy_user_id = "your_proxy_user_id"
+def get_all_proxies_for_proxy_user(proxy_user_id):
+    """
+    Get all proxies accessible by a specific proxy user.
 
-# Initialize the list to store all proxies
-all_proxies = []
+    Args:
+        proxy_user_id: The proxy user ID to get proxies for
 
-# Step 1: Retrieve the proxy user details to check for service restrictions
-proxy_user_url = f"{BASE_URL}/user/proxy_user/retrieve/{proxy_user_id}"
-proxy_user_response = requests.get(proxy_user_url, headers=headers)
+    Returns:
+        List of proxy objects
+    """
+    all_proxies = []
 
-if proxy_user_response.status_code != 200:
-    print(f"Error retrieving proxy user: {proxy_user_response.status_code}")
-    exit(1)
+    # Step 1: Retrieve the proxy user to check access type
+    proxy_user_url = f"{BASE_URL}/user/proxy_user/retrieve/{proxy_user_id}"
+    proxy_user_response = requests.get(proxy_user_url, headers=headers)
 
-proxy_user_data = proxy_user_response.json()["data"]
-is_service_restricted = proxy_user_data.get("proxy_user_is_service_restricted", False)
+    if proxy_user_response.status_code != 200:
+        print(f"Error retrieving proxy user: {proxy_user_response.status_code}")
+        return []
 
-# Step 2: Handle based on whether the user is service-restricted or not
-if not is_service_restricted:
-    # User is not service-restricted, get all proxies across all services
-    print(f"Proxy user {proxy_user_id} is not service-restricted. Fetching all proxies...")
-    
-    # Set up pagination variables
-    page = 1
-    per_page = 100  # You can adjust this value as needed
-    has_more_pages = True
-    
-    # Use the search endpoint with pagination
-    while has_more_pages:
-        search_url = f"{BASE_URL}/user/proxy/search"
-        params = {
-            "page": page,
-            "per_page": per_page
-        }
-        
-        # Make the request
-        search_response = requests.get(search_url, params=params, headers=headers)
-        
-        if search_response.status_code != 200:
-            print(f"Error searching proxies on page {page}: {search_response.status_code}")
-            break
-        
-        # Parse the response
-        search_data = search_response.json()
-        proxies = search_data.get("data", [])
-        
-        # Add the proxies to our list
-        all_proxies.extend(proxies)
-        
-        # Check if there are more pages
-        total_count = search_data.get("total_count", 0)
-        total_pages = math.ceil(total_count / per_page)
-        
-        if page >= total_pages:
-            has_more_pages = False
-        else:
-            page += 1
-else:
-    # User is service-restricted, fetch proxies only from the restricted services
-    print(f"Proxy user {proxy_user_id} is service-restricted. Fetching proxies from restricted services...")
-    
-    # Get the list of restricted services
-    restricted_service_ids = []
-    if "restricted_service_ids" in proxy_user_data:
-        for service_item in proxy_user_data["restricted_service_ids"]:
-            if isinstance(service_item, dict) and "value" in service_item:
-                restricted_service_ids.append(service_item["value"])
-            elif isinstance(service_item, str):
-                restricted_service_ids.append(service_item)
-    
-    # Fetch proxies for each restricted service
-    for service_id in restricted_service_ids:
-        print(f"Fetching proxies for service: {service_id}")
-        
-        # Set up pagination variables for this service
-        page = 1
-        per_page = 100  # You can adjust this value as needed
-        has_more_pages = True
-        
-        # Use the search endpoint with pagination and service_id filter
-        while has_more_pages:
-            search_url = f"{BASE_URL}/user/proxy/search"
-            params = {
-                "service_id": service_id,
-                "page": page,
-                "per_page": per_page
-            }
-            
-            # Make the request
-            search_response = requests.get(search_url, params=params, headers=headers)
-            
-            if search_response.status_code != 200:
-                print(f"Error searching proxies for service {service_id} on page {page}: {search_response.status_code}")
-                break
-            
-            # Parse the response
-            search_data = search_response.json()
-            proxies = search_data.get("data", [])
-            
-            # Add the proxies to our list
+    proxy_user_data = proxy_user_response.json()["data"]
+    access_type = proxy_user_data.get("proxy_user_access_type", "all")
+
+    print(f"Proxy user {proxy_user_id} has access_type: {access_type}")
+
+    # Step 2: Handle based on access type
+    if access_type == "all":
+        # Unrestricted access - get all proxies
+        print("Fetching all proxies (unrestricted access)...")
+        all_proxies = fetch_all_proxies()
+
+    elif access_type == "service_restricted":
+        # Service-restricted - get ACLs, then fetch proxies by service
+        print("Fetching proxies from restricted services...")
+
+        # Get ACL entries for this proxy user
+        acl_url = f"{BASE_URL}/user/proxy_user_acl/search"
+        acl_params = {"proxy_user_id": proxy_user_id}
+        acl_response = requests.get(acl_url, params=acl_params, headers=headers)
+
+        if acl_response.status_code != 200:
+            print(f"Error retrieving ACLs: {acl_response.status_code}")
+            return []
+
+        acls = acl_response.json().get("data", [])
+        service_ids = [acl["service_id"] for acl in acls if "service_id" in acl]
+
+        print(f"Found {len(service_ids)} service(s): {service_ids}")
+
+        # Fetch proxies for each service
+        for service_id in service_ids:
+            proxies = fetch_proxies_by_service(service_id)
             all_proxies.extend(proxies)
-            
-            # Check if there are more pages
-            total_count = search_data.get("total_count", 0)
-            total_pages = math.ceil(total_count / per_page)
-            
-            if page >= total_pages:
-                has_more_pages = False
-            else:
-                page += 1
 
-# At this point, all_proxies contains all the proxies associated with the proxy user
-print(f"Total proxies found: {len(all_proxies)}")
+    elif access_type == "proxy_restricted":
+        # Proxy-restricted - get ACLs, then fetch specific proxies
+        print("Fetching specific restricted proxies...")
 
-# You can now work with the proxies as needed
-# Example: first_proxy = all_proxies[0] if all_proxies else None
+        # Get ACL entries for this proxy user
+        acl_url = f"{BASE_URL}/user/proxy_user_acl/search"
+        acl_params = {"proxy_user_id": proxy_user_id}
+        acl_response = requests.get(acl_url, params=acl_params, headers=headers)
+
+        if acl_response.status_code != 200:
+            print(f"Error retrieving ACLs: {acl_response.status_code}")
+            return []
+
+        acls = acl_response.json().get("data", [])
+        proxy_ids = [acl["proxy_id"] for acl in acls if "proxy_id" in acl]
+
+        print(f"Found {len(proxy_ids)} proxy/proxies")
+
+        # Fetch each specific proxy
+        for proxy_id in proxy_ids:
+            proxy = fetch_proxy_by_id(proxy_id)
+            if proxy:
+                all_proxies.append(proxy)
+
+    print(f"\nTotal proxies accessible: {len(all_proxies)}")
+    return all_proxies
+
+def fetch_all_proxies():
+    """Fetch all proxies with pagination."""
+    all_proxies = []
+    page = 1
+    per_page = 100
+
+    while True:
+        search_url = f"{BASE_URL}/user/proxy/search"
+        params = {"page": page, "per_page": per_page}
+
+        response = requests.get(search_url, params=params, headers=headers)
+        if response.status_code != 200:
+            print(f"Error on page {page}: {response.status_code}")
+            break
+
+        data = response.json()
+        proxies = data.get("data", [])
+        all_proxies.extend(proxies)
+
+        total_count = data.get("total_count", 0)
+        total_pages = math.ceil(total_count / per_page)
+
+        if page >= total_pages:
+            break
+        page += 1
+
+    return all_proxies
+
+def fetch_proxies_by_service(service_id):
+    """Fetch all proxies for a specific service."""
+    all_proxies = []
+    page = 1
+    per_page = 100
+
+    while True:
+        search_url = f"{BASE_URL}/user/proxy/search"
+        params = {"service_id": service_id, "page": page, "per_page": per_page}
+
+        response = requests.get(search_url, params=params, headers=headers)
+        if response.status_code != 200:
+            print(f"Error fetching service {service_id} page {page}: {response.status_code}")
+            break
+
+        data = response.json()
+        proxies = data.get("data", [])
+        all_proxies.extend(proxies)
+
+        total_count = data.get("total_count", 0)
+        total_pages = math.ceil(total_count / per_page)
+
+        if page >= total_pages:
+            break
+        page += 1
+
+    return all_proxies
+
+def fetch_proxy_by_id(proxy_id):
+    """Fetch a specific proxy by ID."""
+    proxy_url = f"{BASE_URL}/user/proxy/retrieve/{proxy_id}"
+    response = requests.get(proxy_url, headers=headers)
+
+    if response.status_code != 200:
+        print(f"Error fetching proxy {proxy_id}: {response.status_code}")
+        return None
+
+    return response.json().get("data")
+
+# Example usage
+if __name__ == "__main__":
+    proxy_user_id = "your_proxy_user_id"
+    proxies = get_all_proxies_for_proxy_user(proxy_user_id)
+
+    if proxies:
+        print(f"\nFirst proxy example:")
+        print(f"  ID: {proxies[0].get('proxy_id')}")
+        print(f"  IP: {proxies[0].get('proxy_ip_address')}")
+        print(f"  Type: {proxies[0].get('proxy_type')}")
 ```
 
 ```javascript JavaScript
@@ -154,155 +199,159 @@ const API_PUBLIC_KEY = "your_public_key";
 const API_PRIVATE_KEY = "your_private_key";
 const BASE_URL = "https://api.pingproxies.com/1.0/public";
 
-// Headers for authentication
 const headers = {
   "X-API-Public-Key": API_PUBLIC_KEY,
   "X-API-Private-Key": API_PRIVATE_KEY
 };
 
-// Set the proxy user ID you want to get proxies for
-const proxy_user_id = "your_proxy_user_id";
-
-// Function to get all proxies for a specific proxy user
-async function getAllProxiesForProxyUser(proxy_user_id) {
-  // Initialize the list to store all proxies
-  let all_proxies = [];
+async function getAllProxiesForProxyUser(proxyUserId) {
+  let allProxies = [];
 
   try {
-    // Step 1: Retrieve the proxy user details to check for service restrictions
-    const proxy_user_url = `${BASE_URL}/user/proxy_user/retrieve/${proxy_user_id}`;
-    const proxy_user_response = await axios.get(proxy_user_url, { headers });
+    // Step 1: Retrieve the proxy user to check access type
+    const proxyUserUrl = `${BASE_URL}/user/proxy_user/retrieve/${proxyUserId}`;
+    const proxyUserResponse = await axios.get(proxyUserUrl, { headers });
 
-    if (proxy_user_response.status !== 200) {
-      console.error(`Error retrieving proxy user: ${proxy_user_response.status}`);
-      return [];
-    }
+    const proxyUserData = proxyUserResponse.data.data;
+    const accessType = proxyUserData.proxy_user_access_type || "all";
 
-    const proxy_user_data = proxy_user_response.data.data;
-    const is_service_restricted = proxy_user_data.proxy_user_is_service_restricted || false;
+    console.log(`Proxy user ${proxyUserId} has access_type: ${accessType}`);
 
-    // Step 2: Handle based on whether the user is service-restricted or not
-    if (!is_service_restricted) {
-      // User is not service-restricted, get all proxies across all services
-      console.log(`Proxy user ${proxy_user_id} is not service-restricted. Fetching all proxies...`);
-      
-      // Set up pagination variables
-      let page = 1;
-      const per_page = 100;  // You can adjust this value as needed
-      let has_more_pages = true;
-      
-      // Use the search endpoint with pagination
-      while (has_more_pages) {
-        const search_url = `${BASE_URL}/user/proxy/search`;
-        const params = {
-          page,
-          per_page
-        };
-        
-        // Make the request
-        const search_response = await axios.get(search_url, { params, headers });
-        
-        if (search_response.status !== 200) {
-          console.error(`Error searching proxies on page ${page}: ${search_response.status}`);
-          break;
-        }
-        
-        // Parse the response
-        const search_data = search_response.data;
-        const proxies = search_data.data || [];
-        
-        // Add the proxies to our list
-        all_proxies = [...all_proxies, ...proxies];
-        
-        // Check if there are more pages
-        const total_count = search_data.total_count || 0;
-        const total_pages = Math.ceil(total_count / per_page);
-        
-        if (page >= total_pages) {
-          has_more_pages = false;
-        } else {
-          page += 1;
-        }
+    // Step 2: Handle based on access type
+    if (accessType === "all") {
+      // Unrestricted access - get all proxies
+      console.log("Fetching all proxies (unrestricted access)...");
+      allProxies = await fetchAllProxies();
+
+    } else if (accessType === "service_restricted") {
+      // Service-restricted - get ACLs, then fetch proxies by service
+      console.log("Fetching proxies from restricted services...");
+
+      const aclUrl = `${BASE_URL}/user/proxy_user_acl/search`;
+      const aclResponse = await axios.get(aclUrl, {
+        params: { proxy_user_id: proxyUserId },
+        headers
+      });
+
+      const acls = aclResponse.data.data || [];
+      const serviceIds = acls
+        .filter(acl => acl.service_id)
+        .map(acl => acl.service_id);
+
+      console.log(`Found ${serviceIds.length} service(s): ${serviceIds}`);
+
+      for (const serviceId of serviceIds) {
+        const proxies = await fetchProxiesByService(serviceId);
+        allProxies = [...allProxies, ...proxies];
       }
-    } else {
-      // User is service-restricted, fetch proxies only from the restricted services
-      console.log(`Proxy user ${proxy_user_id} is service-restricted. Fetching proxies from restricted services...`);
-      
-      // Get the list of restricted services
-      let restricted_service_ids = [];
-      if (proxy_user_data.restricted_service_ids) {
-        restricted_service_ids = proxy_user_data.restricted_service_ids.map(item => {
-          if (typeof item === 'object' && item.value) {
-            return item.value;
-          } else if (typeof item === 'string') {
-            return item;
-          }
-          return null;
-        }).filter(Boolean); // Remove null values
-      }
-      
-      // Fetch proxies for each restricted service
-      for (const service_id of restricted_service_ids) {
-        console.log(`Fetching proxies for service: ${service_id}`);
-        
-        // Set up pagination variables for this service
-        let page = 1;
-        const per_page = 100;  // You can adjust this value as needed
-        let has_more_pages = true;
-        
-        // Use the search endpoint with pagination and service_id filter
-        while (has_more_pages) {
-          const search_url = `${BASE_URL}/user/proxy/search`;
-          const params = {
-            service_id,
-            page,
-            per_page
-          };
-          
-          // Make the request
-          const search_response = await axios.get(search_url, { params, headers });
-          
-          if (search_response.status !== 200) {
-            console.error(`Error searching proxies for service ${service_id} on page ${page}: ${search_response.status}`);
-            break;
-          }
-          
-          // Parse the response
-          const search_data = search_response.data;
-          const proxies = search_data.data || [];
-          
-          // Add the proxies to our list
-          all_proxies = [...all_proxies, ...proxies];
-          
-          // Check if there are more pages
-          const total_count = search_data.total_count || 0;
-          const total_pages = Math.ceil(total_count / per_page);
-          
-          if (page >= total_pages) {
-            has_more_pages = false;
-          } else {
-            page += 1;
-          }
+
+    } else if (accessType === "proxy_restricted") {
+      // Proxy-restricted - get ACLs, then fetch specific proxies
+      console.log("Fetching specific restricted proxies...");
+
+      const aclUrl = `${BASE_URL}/user/proxy_user_acl/search`;
+      const aclResponse = await axios.get(aclUrl, {
+        params: { proxy_user_id: proxyUserId },
+        headers
+      });
+
+      const acls = aclResponse.data.data || [];
+      const proxyIds = acls
+        .filter(acl => acl.proxy_id)
+        .map(acl => acl.proxy_id);
+
+      console.log(`Found ${proxyIds.length} proxy/proxies`);
+
+      for (const proxyId of proxyIds) {
+        const proxy = await fetchProxyById(proxyId);
+        if (proxy) {
+          allProxies.push(proxy);
         }
       }
     }
 
-    // At this point, all_proxies contains all the proxies associated with the proxy user
-    console.log(`Total proxies found: ${all_proxies.length}`);
-    
-    return all_proxies;
+    console.log(`\nTotal proxies accessible: ${allProxies.length}`);
+    return allProxies;
+
   } catch (error) {
     console.error(`Error: ${error.message}`);
     return [];
   }
 }
 
-// Execute the function
-getAllProxiesForProxyUser(proxy_user_id)
-  .then(proxies => {
-    // You can now work with the proxies as needed
-    // Example: const first_proxy = proxies.length > 0 ? proxies[0] : null;
-  });
+async function fetchAllProxies() {
+  let allProxies = [];
+  let page = 1;
+  const perPage = 100;
+
+  while (true) {
+    const searchUrl = `${BASE_URL}/user/proxy/search`;
+    const response = await axios.get(searchUrl, {
+      params: { page, per_page: perPage },
+      headers
+    });
+
+    const proxies = response.data.data || [];
+    allProxies = [...allProxies, ...proxies];
+
+    const totalCount = response.data.total_count || 0;
+    const totalPages = Math.ceil(totalCount / perPage);
+
+    if (page >= totalPages) break;
+    page++;
+  }
+
+  return allProxies;
+}
+
+async function fetchProxiesByService(serviceId) {
+  let allProxies = [];
+  let page = 1;
+  const perPage = 100;
+
+  while (true) {
+    const searchUrl = `${BASE_URL}/user/proxy/search`;
+    const response = await axios.get(searchUrl, {
+      params: { service_id: serviceId, page, per_page: perPage },
+      headers
+    });
+
+    const proxies = response.data.data || [];
+    allProxies = [...allProxies, ...proxies];
+
+    const totalCount = response.data.total_count || 0;
+    const totalPages = Math.ceil(totalCount / perPage);
+
+    if (page >= totalPages) break;
+    page++;
+  }
+
+  return allProxies;
+}
+
+async function fetchProxyById(proxyId) {
+  try {
+    const proxyUrl = `${BASE_URL}/user/proxy/retrieve/${proxyId}`;
+    const response = await axios.get(proxyUrl, { headers });
+    return response.data.data;
+  } catch (error) {
+    console.error(`Error fetching proxy ${proxyId}: ${error.message}`);
+    return null;
+  }
+}
+
+// Example usage
+(async () => {
+  const proxyUserId = "your_proxy_user_id";
+  const proxies = await getAllProxiesForProxyUser(proxyUserId);
+
+  if (proxies.length > 0) {
+    console.log(`\nFirst proxy example:`);
+    console.log(`  ID: ${proxies[0].proxy_id}`);
+    console.log(`  IP: ${proxies[0].proxy_ip_address}`);
+    console.log(`  Type: ${proxies[0].proxy_type}`);
+  }
+})();
 ```
 
 ```php PHP
@@ -312,402 +361,232 @@ $API_PUBLIC_KEY = "your_public_key";
 $API_PRIVATE_KEY = "your_private_key";
 $BASE_URL = "https://api.pingproxies.com/1.0/public";
 
-// Headers for authentication
 $headers = [
     "X-API-Public-Key: $API_PUBLIC_KEY",
     "X-API-Private-Key: $API_PRIVATE_KEY"
 ];
 
-// Set the proxy user ID you want to get proxies for
-$proxy_user_id = "your_proxy_user_id";
-
-// Initialize the list to store all proxies
-$all_proxies = [];
-
-// Function to make API requests
 function makeRequest($url, $headers, $params = []) {
     $ch = curl_init();
-    
-    // Add query parameters if provided
+
     if (!empty($params)) {
         $url .= '?' . http_build_query($params);
     }
-    
+
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
+
     $response = curl_exec($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+
     return [
-        'status_code' => $http_code,
+        'status_code' => $httpCode,
         'body' => json_decode($response, true)
     ];
 }
 
-// Step 1: Retrieve the proxy user details to check for service restrictions
-$proxy_user_url = "$BASE_URL/user/proxy_user/retrieve/$proxy_user_id";
-$proxy_user_response = makeRequest($proxy_user_url, $headers);
+function getAllProxiesForProxyUser($baseUrl, $headers, $proxyUserId) {
+    $allProxies = [];
 
-if ($proxy_user_response['status_code'] != 200) {
-    echo "Error retrieving proxy user: " . $proxy_user_response['status_code'] . "\n";
-    exit(1);
+    // Step 1: Retrieve the proxy user to check access type
+    $proxyUserUrl = "$baseUrl/user/proxy_user/retrieve/$proxyUserId";
+    $proxyUserResponse = makeRequest($proxyUserUrl, $headers);
+
+    if ($proxyUserResponse['status_code'] != 200) {
+        echo "Error retrieving proxy user\n";
+        return [];
+    }
+
+    $proxyUserData = $proxyUserResponse['body']['data'];
+    $accessType = $proxyUserData['proxy_user_access_type'] ?? 'all';
+
+    echo "Proxy user $proxyUserId has access_type: $accessType\n";
+
+    // Step 2: Handle based on access type
+    if ($accessType === 'all') {
+        echo "Fetching all proxies (unrestricted access)...\n";
+        $allProxies = fetchAllProxies($baseUrl, $headers);
+
+    } elseif ($accessType === 'service_restricted') {
+        echo "Fetching proxies from restricted services...\n";
+
+        $aclUrl = "$baseUrl/user/proxy_user_acl/search";
+        $aclResponse = makeRequest($aclUrl, $headers, ['proxy_user_id' => $proxyUserId]);
+
+        $acls = $aclResponse['body']['data'] ?? [];
+        $serviceIds = array_filter(array_map(function($acl) {
+            return $acl['service_id'] ?? null;
+        }, $acls));
+
+        echo "Found " . count($serviceIds) . " service(s)\n";
+
+        foreach ($serviceIds as $serviceId) {
+            $proxies = fetchProxiesByService($baseUrl, $headers, $serviceId);
+            $allProxies = array_merge($allProxies, $proxies);
+        }
+
+    } elseif ($accessType === 'proxy_restricted') {
+        echo "Fetching specific restricted proxies...\n";
+
+        $aclUrl = "$baseUrl/user/proxy_user_acl/search";
+        $aclResponse = makeRequest($aclUrl, $headers, ['proxy_user_id' => $proxyUserId]);
+
+        $acls = $aclResponse['body']['data'] ?? [];
+        $proxyIds = array_filter(array_map(function($acl) {
+            return $acl['proxy_id'] ?? null;
+        }, $acls));
+
+        echo "Found " . count($proxyIds) . " proxy/proxies\n";
+
+        foreach ($proxyIds as $proxyId) {
+            $proxy = fetchProxyById($baseUrl, $headers, $proxyId);
+            if ($proxy) {
+                $allProxies[] = $proxy;
+            }
+        }
+    }
+
+    echo "\nTotal proxies accessible: " . count($allProxies) . "\n";
+    return $allProxies;
 }
 
-$proxy_user_data = $proxy_user_response['body']['data'];
-$is_service_restricted = isset($proxy_user_data['proxy_user_is_service_restricted']) ? 
-    $proxy_user_data['proxy_user_is_service_restricted'] : false;
-
-// Step 2: Handle based on whether the user is service-restricted or not
-if (!$is_service_restricted) {
-    // User is not service-restricted, get all proxies across all services
-    echo "Proxy user $proxy_user_id is not service-restricted. Fetching all proxies...\n";
-    
-    // Set up pagination variables
+function fetchAllProxies($baseUrl, $headers) {
+    $allProxies = [];
     $page = 1;
-    $per_page = 100;  // You can adjust this value as needed
-    $has_more_pages = true;
-    
-    // Use the search endpoint with pagination
-    while ($has_more_pages) {
-        $search_url = "$BASE_URL/user/proxy/search";
-        $params = [
-            "page" => $page,
-            "per_page" => $per_page
-        ];
-        
-        // Make the request
-        $search_response = makeRequest($search_url, $headers, $params);
-        
-        if ($search_response['status_code'] != 200) {
-            echo "Error searching proxies on page $page: " . $search_response['status_code'] . "\n";
-            break;
-        }
-        
-        // Parse the response
-        $search_data = $search_response['body'];
-        $proxies = isset($search_data['data']) ? $search_data['data'] : [];
-        
-        // Add the proxies to our list
-        $all_proxies = array_merge($all_proxies, $proxies);
-        
-        // Check if there are more pages
-        $total_count = isset($search_data['total_count']) ? $search_data['total_count'] : 0;
-        $total_pages = ceil($total_count / $per_page);
-        
-        if ($page >= $total_pages) {
-            $has_more_pages = false;
-        } else {
-            $page++;
-        }
+    $perPage = 100;
+
+    while (true) {
+        $searchUrl = "$baseUrl/user/proxy/search";
+        $response = makeRequest($searchUrl, $headers, ['page' => $page, 'per_page' => $perPage]);
+
+        $proxies = $response['body']['data'] ?? [];
+        $allProxies = array_merge($allProxies, $proxies);
+
+        $totalCount = $response['body']['total_count'] ?? 0;
+        $totalPages = ceil($totalCount / $perPage);
+
+        if ($page >= $totalPages) break;
+        $page++;
     }
-} else {
-    // User is service-restricted, fetch proxies only from the restricted services
-    echo "Proxy user $proxy_user_id is service-restricted. Fetching proxies from restricted services...\n";
-    
-    // Get the list of restricted services
-    $restricted_service_ids = [];
-    if (isset($proxy_user_data['restricted_service_ids'])) {
-        foreach ($proxy_user_data['restricted_service_ids'] as $service_item) {
-            if (is_array($service_item) && isset($service_item['value'])) {
-                $restricted_service_ids[] = $service_item['value'];
-            } elseif (is_string($service_item)) {
-                $restricted_service_ids[] = $service_item;
-            }
-        }
-    }
-    
-    // Fetch proxies for each restricted service
-    foreach ($restricted_service_ids as $service_id) {
-        echo "Fetching proxies for service: $service_id\n";
-        
-        // Set up pagination variables for this service
-        $page = 1;
-        $per_page = 100;  // You can adjust this value as needed
-        $has_more_pages = true;
-        
-        // Use the search endpoint with pagination and service_id filter
-        while ($has_more_pages) {
-            $search_url = "$BASE_URL/user/proxy/search";
-            $params = [
-                "service_id" => $service_id,
-                "page" => $page,
-                "per_page" => $per_page
-            ];
-            
-            // Make the request
-            $search_response = makeRequest($search_url, $headers, $params);
-            
-            if ($search_response['status_code'] != 200) {
-                echo "Error searching proxies for service $service_id on page $page: " . $search_response['status_code'] . "\n";
-                break;
-            }
-            
-            // Parse the response
-            $search_data = $search_response['body'];
-            $proxies = isset($search_data['data']) ? $search_data['data'] : [];
-            
-            // Add the proxies to our list
-            $all_proxies = array_merge($all_proxies, $proxies);
-            
-            // Check if there are more pages
-            $total_count = isset($search_data['total_count']) ? $search_data['total_count'] : 0;
-            $total_pages = ceil($total_count / $per_page);
-            
-            if ($page >= $total_pages) {
-                $has_more_pages = false;
-            } else {
-                $page++;
-            }
-        }
-    }
+
+    return $allProxies;
 }
 
-// At this point, $all_proxies contains all the proxies associated with the proxy user
-echo "Total proxies found: " . count($all_proxies) . "\n";
+function fetchProxiesByService($baseUrl, $headers, $serviceId) {
+    $allProxies = [];
+    $page = 1;
+    $perPage = 100;
 
-// You can now work with the proxies as needed
-// Example: $first_proxy = count($all_proxies) > 0 ? $all_proxies[0] : null;
+    while (true) {
+        $searchUrl = "$baseUrl/user/proxy/search";
+        $response = makeRequest($searchUrl, $headers, [
+            'service_id' => $serviceId,
+            'page' => $page,
+            'per_page' => $perPage
+        ]);
+
+        $proxies = $response['body']['data'] ?? [];
+        $allProxies = array_merge($allProxies, $proxies);
+
+        $totalCount = $response['body']['total_count'] ?? 0;
+        $totalPages = ceil($totalCount / $perPage);
+
+        if ($page >= $totalPages) break;
+        $page++;
+    }
+
+    return $allProxies;
+}
+
+function fetchProxyById($baseUrl, $headers, $proxyId) {
+    $proxyUrl = "$baseUrl/user/proxy/retrieve/$proxyId";
+    $response = makeRequest($proxyUrl, $headers);
+
+    if ($response['status_code'] != 200) {
+        return null;
+    }
+
+    return $response['body']['data'];
+}
+
+// Example usage
+$proxyUserId = "your_proxy_user_id";
+$proxies = getAllProxiesForProxyUser($BASE_URL, $headers, $proxyUserId);
+
+if (count($proxies) > 0) {
+    echo "\nFirst proxy example:\n";
+    echo "  ID: " . $proxies[0]['proxy_id'] . "\n";
+    echo "  IP: " . $proxies[0]['proxy_ip_address'] . "\n";
+    echo "  Type: " . $proxies[0]['proxy_type'] . "\n";
+}
 ?>
-```
-
-```go Go
-package main
-
-import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"math"
-	"net/http"
-	"os"
-	"strconv"
-)
-
-// API credentials
-const (
-	API_PUBLIC_KEY  = "your_public_key"
-	API_PRIVATE_KEY = "your_private_key"
-	BASE_URL        = "https://api.pingproxies.com/1.0/public"
-)
-
-// ProxyUserResponse represents the response structure for a proxy user
-type ProxyUserResponse struct {
-	Data struct {
-		ProxyUserIsServiceRestricted bool          `json:"proxy_user_is_service_restricted"`
-		RestrictedServiceIDs         []interface{} `json:"restricted_service_ids"`
-	} `json:"data"`
-}
-
-// SearchResponse represents the response structure for a proxy search
-type SearchResponse struct {
-	Data       []map[string]interface{} `json:"data"`
-	TotalCount int                      `json:"total_count"`
-}
-
-func main() {
-	// Set the proxy user ID you want to get proxies for
-	proxyUserID := "your_proxy_user_id"
-
-	// Initialize the list to store all proxies
-	var allProxies []map[string]interface{}
-
-	// Step 1: Retrieve the proxy user details to check for service restrictions
-	proxyUserURL := fmt.Sprintf("%s/user/proxy_user/retrieve/%s", BASE_URL, proxyUserID)
-	proxyUserResponse, err := makeRequest(proxyUserURL, nil)
-	if err != nil {
-		fmt.Printf("Error retrieving proxy user: %v\n", err)
-		os.Exit(1)
-	}
-
-	var proxyUserData ProxyUserResponse
-	if err := json.Unmarshal(proxyUserResponse, &proxyUserData); err != nil {
-		fmt.Printf("Error parsing proxy user response: %v\n", err)
-		os.Exit(1)
-	}
-
-	isServiceRestricted := proxyUserData.Data.ProxyUserIsServiceRestricted
-
-	// Step 2: Handle based on whether the user is service-restricted or not
-	if !isServiceRestricted {
-		// User is not service-restricted, get all proxies across all services
-		fmt.Printf("Proxy user %s is not service-restricted. Fetching all proxies...\n", proxyUserID)
-
-		// Set up pagination variables
-		page := 1
-		perPage := 100 // You can adjust this value as needed
-		hasMorePages := true
-
-		// Use the search endpoint with pagination
-		for hasMorePages {
-			searchURL := fmt.Sprintf("%s/user/proxy/search", BASE_URL)
-			params := map[string]string{
-				"page":     strconv.Itoa(page),
-				"per_page": strconv.Itoa(perPage),
-			}
-
-			// Make the request
-			searchResponseBytes, err := makeRequest(searchURL, params)
-			if err != nil {
-				fmt.Printf("Error searching proxies on page %d: %v\n", page, err)
-				break
-			}
-
-			var searchData SearchResponse
-			if err := json.Unmarshal(searchResponseBytes, &searchData); err != nil {
-				fmt.Printf("Error parsing search response: %v\n", err)
-				break
-			}
-
-			// Add the proxies to our list
-			allProxies = append(allProxies, searchData.Data...)
-
-			// Check if there are more pages
-			totalCount := searchData.TotalCount
-			totalPages := int(math.Ceil(float64(totalCount) / float64(perPage)))
-
-			if page >= totalPages {
-				hasMorePages = false
-			} else {
-				page++
-			}
-		}
-	} else {
-		// User is service-restricted, fetch proxies only from the restricted services
-		fmt.Printf("Proxy user %s is service-restricted. Fetching proxies from restricted services...\n", proxyUserID)
-
-		// Get the list of restricted services
-		var restrictedServiceIDs []string
-		for _, serviceItem := range proxyUserData.Data.RestrictedServiceIDs {
-			// Check if the item is a map with a "value" key
-			if serviceMap, ok := serviceItem.(map[string]interface{}); ok {
-				if value, ok := serviceMap["value"].(string); ok {
-					restrictedServiceIDs = append(restrictedServiceIDs, value)
-				}
-			} else if value, ok := serviceItem.(string); ok {
-				restrictedServiceIDs = append(restrictedServiceIDs, value)
-			}
-		}
-
-		// Fetch proxies for each restricted service
-		for _, serviceID := range restrictedServiceIDs {
-			fmt.Printf("Fetching proxies for service: %s\n", serviceID)
-
-			// Set up pagination variables for this service
-			page := 1
-			perPage := 100 // You can adjust this value as needed
-			hasMorePages := true
-
-			// Use the search endpoint with pagination and service_id filter
-			for hasMorePages {
-				searchURL := fmt.Sprintf("%s/user/proxy/search", BASE_URL)
-				params := map[string]string{
-					"service_id": serviceID,
-					"page":       strconv.Itoa(page),
-					"per_page":   strconv.Itoa(perPage),
-				}
-
-				// Make the request
-				searchResponseBytes, err := makeRequest(searchURL, params)
-				if err != nil {
-					fmt.Printf("Error searching proxies for service %s on page %d: %v\n", serviceID, page, err)
-					break
-				}
-
-				var searchData SearchResponse
-				if err := json.Unmarshal(searchResponseBytes, &searchData); err != nil {
-					fmt.Printf("Error parsing search response: %v\n", err)
-					break
-				}
-
-				// Add the proxies to our list
-				allProxies = append(allProxies, searchData.Data...)
-
-				// Check if there are more pages
-				totalCount := searchData.TotalCount
-				totalPages := int(math.Ceil(float64(totalCount) / float64(perPage)))
-
-				if page >= totalPages {
-					hasMorePages = false
-				} else {
-					page++
-				}
-			}
-		}
-	}
-
-	// At this point, allProxies contains all the proxies associated with the proxy user
-	fmt.Printf("Total proxies found: %d\n", len(allProxies))
-
-	// You can now work with the proxies as needed
-	// Example: var firstProxy map[string]interface{}
-	// if len(allProxies) > 0 {
-	//     firstProxy = allProxies[0]
-	// }
-}
-
-// makeRequest makes an HTTP request and returns the response body
-func makeRequest(url string, params map[string]string) ([]byte, error) {
-	// Create a new request
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	// Add headers for authentication
-	req.Header.Add("X-API-Public-Key", API_PUBLIC_KEY)
-	req.Header.Add("X-API-Private-Key", API_PRIVATE_KEY)
-
-	// Add query parameters if provided
-	if params != nil {
-		q := req.URL.Query()
-		for key, value := range params {
-			q.Add(key, value)
-		}
-		req.URL.RawQuery = q.Encode()
-	}
-
-	// Make the request
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	// Read the response body
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	// Check for non-200 status code
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("HTTP error: %d", resp.StatusCode)
-	}
-
-	return body, nil
-}
 ```
 </CodeGroup>
 
-## Key Concepts
+## How It Works
 
-1. **User Service Restriction**: Some proxy users are restricted to specific services, which affects what proxies they can access.
+### 1. Check Access Type
 
-2. **Pagination Handling**: The example demonstrates proper pagination to retrieve all proxies, even when there are many results.
+First, retrieve the proxy user to determine their `proxy_user_access_type`:
 
-3. **Service-Specific Filtering**: For service-restricted users, the code filters proxies by each allowed service ID.
+```json
+{
+  "proxy_user_id": "seo_team",
+  "proxy_user_access_type": "service_restricted"
+}
+```
 
-## Response Format
+### 2. Three Different Workflows
 
-The resulting `all_proxies` list will contain proxy objects with properties such as:
+**For `access_type: "all"`:**
+- Fetch all proxies from your account using the proxy search endpoint
+- No ACL lookup needed
 
-- `proxy_id`: The unique identifier of the proxy
-- `proxy_ip_address`: The IP address of the proxy
-- `proxy_type`: The type of proxy (datacenter, ISP, etc.)
-- `country_id`: The country code of the proxy
-- `service_id`: The service ID that the proxy is associated with
+**For `access_type: "service_restricted"`:**
+- Search Proxy User ACLs for this proxy user
+- Extract all `service_id` values from the ACL entries
+- Fetch proxies for each service using the proxy search endpoint with `service_id` filter
+
+**For `access_type: "proxy_restricted"`:**
+- Search Proxy User ACLs for this proxy user
+- Extract all `proxy_id` values from the ACL entries
+- Fetch each individual proxy using the proxy retrieve endpoint
+
+### 3. Pagination Handling
+
+For unrestricted and service-restricted access, the code handles pagination to ensure all proxies are retrieved, even when there are many results.
+
+## Use Cases
+
+### Generating Proxy Lists for Customers
+
+**Scenario:** You resell proxies and need to generate a list of proxies each customer can access.
+
+**Solution:** Use this script to retrieve all accessible proxies for each customer's proxy user, then export to a file or send via email.
+
+### Access Verification
+
+**Scenario:** Verify which proxies a specific team or department can access.
+
+**Solution:** Run the script to see the complete list of accessible proxies and confirm it matches your intended access control policy.
+
+### Usage Monitoring
+
+**Scenario:** Track which proxies are being used by specific proxy users for billing or capacity planning.
+
+**Solution:** Combine this script with log retrieval to see usage patterns across accessible proxies.
+
+## Important Notes
+
+- The script handles all three access types automatically
+- For proxy-restricted users with many proxies, the individual retrieval may take longer
+- Pagination ensures you get all results, even for large proxy pools
+- The proxy user must exist and not be deleted
+
+## Related Documentation
+
+- [Proxy User ACL Object](/api-objects/proxy-user-acl)
+- [Proxy User Access Control](/api-explainers/proxy-user-access-control)
+- [Manage Proxy User ACLs](/api-examples/manage-proxy-user-acls)

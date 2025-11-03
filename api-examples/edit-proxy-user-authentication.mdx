@@ -100,10 +100,10 @@ if __name__ == "__main__":
         print("Failed to update proxy user authentication")
 
 # Note: You can modify this function to update other proxy user settings:
-# - proxy_user_is_service_restricted: Restrict the user to specific services
-# - restricted_service_ids: List of service IDs when service restriction is enabled
+# - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 # - proxy_user_metadata: Customer metadata for organization and tracking
 # - proxy_user_residential_bytes_limit: Set bandwidth limits for residential proxies
+# For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ```
 
 ```javascript JavaScript
@@ -207,10 +207,10 @@ async function main() {
 main();
 
 // Note: You can extend this function to update other proxy user settings:
-// - proxy_user_is_service_restricted: Restrict the user to specific services
-// - restricted_service_ids: List of service IDs when service restriction is enabled
+// - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 // - proxy_user_metadata: Customer metadata for organization and tracking
 // - proxy_user_residential_bytes_limit: Set bandwidth limits for residential proxies
+// For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ```
 
 ```php PHP
@@ -318,10 +318,10 @@ if ($result) {
 }
 
 // Note: You can modify this function to update other proxy user settings:
-// - proxy_user_is_service_restricted: Restrict the user to specific services
-// - restricted_service_ids: List of service IDs when service restriction is enabled
+// - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 // - proxy_user_metadata: Customer metadata for organization and tracking
 // - proxy_user_residential_bytes_limit: Set bandwidth limits for residential proxies
+// For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ?>
 ```
 
@@ -440,10 +440,10 @@ func main() {
 	fmt.Printf("Edited proxy user: %s\n", result.Edited[0])
 	
 	// Note: You can modify this function to update other proxy user settings:
-	// - proxy_user_is_service_restricted: Restrict the user to specific services
-	// - restricted_service_ids: List of service IDs when service restriction is enabled
+	// - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 	// - proxy_user_metadata: Customer metadata for organization and tracking
 	// - proxy_user_residential_bytes_limit: Set bandwidth limits for residential proxies
+	// For access control, use the Proxy User ACL endpoints to manage service/proxy access
 }
 ```
 
@@ -583,10 +583,10 @@ public class EditProxyUserAuthentication {
         }
         
         // Note: You can modify this function to update other proxy user settings:
-        // - proxy_user_is_service_restricted: Restrict the user to specific services
-        // - restricted_service_ids: List of service IDs when service restriction is enabled
+        // - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
         // - proxy_user_metadata: Customer metadata for organization and tracking
         // - proxy_user_residential_bytes_limit: Set bandwidth limits for residential proxies
+        // For access control, use the Proxy User ACL endpoints to manage service/proxy access
     }
 }
 ```

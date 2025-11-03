@@ -17,7 +17,7 @@ You can edit your Proxy Users via our dashboard and Proxy User management sectio
 | Proxy User Password | 8-16 Alphanumeric |
 | Proxy User Residential Bandwidth | Integer greater than current GB usage |
 | IP Authentications | Maximum of 3 per Proxy User |
-| Static Proxies Access | Limit by Service ID |
+| Access Control | Managed via Proxy User ACL objects |
 
 ## Editing Process
 
@@ -41,6 +41,12 @@ When adjusting residential bandwidth, you can only increase the allocation - you
 
 IP authentication allows proxy access based on client IP address without sending credentials in each request. You can add up to 3 IP addresses per proxy user for authentication purposes.
 
-## Service Restrictions
+## Access Control
 
-You can limit a proxy user's access to specific proxy services by selecting the relevant Service IDs. This is useful for controlling which proxies a particular user can access.
+You can control which proxies a proxy user can access using the `proxy_user_access_type` field and Proxy User ACL entries:
+
+- **Unrestricted Access (`"all"`)**: The proxy user can access all proxies in your account
+- **Service-Restricted (`"service_restricted"`)**: The proxy user can only access proxies within specific services. Create Proxy User ACL entries to grant access to services.
+- **Proxy-Restricted (`"proxy_restricted"`)**: The proxy user can only access specific individual proxies. Create Proxy User ACL entries to grant access to proxies.
+
+Use the Proxy User ACL endpoints to manage which services or proxies a restricted proxy user can access. See the [Proxy User Access Control guide](/api-explainers/proxy-user-access-control) for more details.

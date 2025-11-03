@@ -1,10 +1,16 @@
 ---
-title: "Create a proxy user with metadata, bandwidth limits and service restriction"
-description: "Learn how to create a proxy user for your SEO with custom metadata, bandwidth limits and restricted to a specific service"
+title: "Create a proxy user with metadata and bandwidth limits"
+description: "Learn how to create a proxy user with custom metadata and bandwidth allocation"
 icon: "user-plus"
 ---
 
-This example demonstrates how to create a proxy user specifically for your SEO department with a 10GB bandwidth limit and restricted to a single service ID. This is useful for managing and controlling access to your proxy resources within different teams or departments.
+This example demonstrates how to create a proxy user with custom metadata and a bandwidth limit. This is useful for organizing proxy users by department, tracking usage, and managing bandwidth allocation.
+
+<Note>
+This example creates a proxy user with **unrestricted access** to all your proxies. For restricted access to specific services or proxies, see:
+- [Create Proxy User with Service-Restricted Access](/api-examples/create-proxy-user-with-service-access)
+- [Create Proxy User with Proxy-Restricted Access](/api-examples/create-proxy-user-with-proxy-access)
+</Note>
 
 <CodeGroup>
 ```python Python
@@ -22,78 +28,75 @@ headers = {
     "Content-Type": "application/json"
 }
 
-def create_department_proxy_user(user_id, password, department, bandwidth_limit_bytes, service_id):
+def create_proxy_user(user_id, password, bandwidth_limit_gb, metadata):
     """
-    Create a proxy user for a specific department with bandwidth limits and service restriction.
-    
+    Create a proxy user with metadata and bandwidth limits.
+
     Args:
-        user_id: ID to be used for the proxy user
+        user_id: ID for the proxy user
         password: Password for the proxy user
-        department: Department name (for metadata)
-        bandwidth_limit_bytes: Residential bandwidth limit in bytes
-        service_id: Service ID to restrict this proxy user to
-        
+        bandwidth_limit_gb: Residential bandwidth limit in GB
+        metadata: Dictionary of metadata key-value pairs
+
     Returns:
         Created proxy user details or None if creation failed
     """
-    # Convert GB to bytes (10GB = 10 * 1024 * 1024 * 1024 bytes)
-    
+    # Convert GB to bytes
+    bandwidth_limit_bytes = bandwidth_limit_gb * 1024 * 1024 * 1024
+
     # Create the request payload
     payload = {
         "proxy_user_id": user_id,
         "proxy_user_password": password,
-        "proxy_user_is_service_restricted": True,
-        "restricted_service_ids": [service_id],
         "proxy_user_residential_bytes_limit": bandwidth_limit_bytes,
-        "proxy_user_metadata": {
-            "department": department,
-            "created_by": "api",
-            "purpose": "seo_monitoring"
-        }
+        "proxy_user_metadata": metadata
     }
-    
+
     # Make request to create the proxy user
     response = requests.post(
         f"{BASE_URL}/user/proxy_user/create",
         json=payload,
         headers=headers
     )
-    
-    if response.status_code != 201:  # This endpoint returns 201 Created on success
+
+    if response.status_code != 201:
         print(f"Error: {response.status_code}")
         print(response.text)
         return None
-    
+
     data = response.json()
-    print(f"Successfully created proxy user for {department} department")
+    print(f"Successfully created proxy user: {user_id}")
     return data
 
 # Example usage
 if __name__ == "__main__":
     # Define parameters
-    DEPARTMENT = "SEO"
-    USER_ID = "seodepartment"
+    USER_ID = "seo_department"
     PASSWORD = "strongpassword123"
-    SERVICE_ID = "API-1234-5678"  # Replace with your actual service ID
-    
-    # Convert 10GB to bytes
     BANDWIDTH_LIMIT_GB = 10
-    BANDWIDTH_LIMIT_BYTES = BANDWIDTH_LIMIT_GB * 1024 * 1024 * 1024
-    
+
+    # Custom metadata for organization
+    METADATA = {
+        "department": "SEO",
+        "team_lead": "Jane Smith",
+        "created_by": "api",
+        "purpose": "keyword_research",
+        "cost_center": "MKTG-001"
+    }
+
     # Create the proxy user
-    result = create_department_proxy_user(
+    result = create_proxy_user(
         user_id=USER_ID,
         password=PASSWORD,
-        department=DEPARTMENT,
-        bandwidth_limit_bytes=BANDWIDTH_LIMIT_BYTES,
-        service_id=SERVICE_ID
+        bandwidth_limit_gb=BANDWIDTH_LIMIT_GB,
+        metadata=METADATA
     )
-    
+
     if result:
-        print("Proxy User Details:")
+        print("\nProxy User Details:")
         print(f"  ID: {result['data']['proxy_user_id']}")
         print(f"  Password: {result['data']['proxy_user_password']}")
-        print(f"  Service Restricted: Yes, to service {SERVICE_ID}")
+        print(f"  Access Type: all (unrestricted)")
         print(f"  Bandwidth Limit: {BANDWIDTH_LIMIT_GB}GB")
 ```
 
@@ -104,33 +107,29 @@ const API_PRIVATE_KEY = 'your_private_key';
 const BASE_URL = 'https://api.pingproxies.com/1.0/public';
 
 /**
- * Create a proxy user for a specific department with bandwidth limits and service restriction
+ * Create a proxy user with metadata and bandwidth limits
  * @param {Object} options - Proxy user options
  * @returns {Promise<Object>} Created proxy user details
  */
-async function createDepartmentProxyUser(options) {
+async function createProxyUser(options) {
   const {
     userId,
     password,
-    department,
-    bandwidthLimitBytes,
-    serviceId
+    bandwidthLimitGb,
+    metadata
   } = options;
-  
+
+  // Convert GB to bytes
+  const bandwidthLimitBytes = bandwidthLimitGb * 1024 * 1024 * 1024;
+
   // Create the request payload
   const payload = {
     proxy_user_id: userId,
     proxy_user_password: password,
-    proxy_user_is_service_restricted: true,
-    restricted_service_ids: [serviceId],
     proxy_user_residential_bytes_limit: bandwidthLimitBytes,
-    proxy_user_metadata: {
-      department: department,
-      created_by: 'api',
-      purpose: 'seo_monitoring'
-    }
+    proxy_user_metadata: metadata
   };
-  
+
   try {
     const response = await fetch(`${BASE_URL}/user/proxy_user/create`, {
       method: 'POST',
@@ -141,16 +140,16 @@ async function createDepartmentProxyUser(options) {
       },
       body: JSON.stringify(payload)
     });
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`HTTP error! Status: ${response.status}, Details: ${errorText}`);
     }
-    
+
     const data = await response.json();
-    console.log(`Successfully created proxy user for ${department} department`);
+    console.log(`Successfully created proxy user: ${userId}`);
     return data;
-    
+
   } catch (error) {
     console.error('Error creating proxy user:', error);
     return null;
@@ -160,29 +159,32 @@ async function createDepartmentProxyUser(options) {
 // Example usage
 async function main() {
   // Define parameters
-  const DEPARTMENT = 'SEO';
-  const USER_ID = 'seodepartment';
+  const USER_ID = 'seo_department';
   const PASSWORD = 'strongpassword123';
-  const SERVICE_ID = 'API-1234-5678';  // Replace with your actual service ID
-  
-  // Convert 10GB to bytes
   const BANDWIDTH_LIMIT_GB = 10;
-  const BANDWIDTH_LIMIT_BYTES = BANDWIDTH_LIMIT_GB * 1024 * 1024 * 1024;
-  
+
+  // Custom metadata for organization
+  const METADATA = {
+    department: 'SEO',
+    team_lead: 'Jane Smith',
+    created_by: 'api',
+    purpose: 'keyword_research',
+    cost_center: 'MKTG-001'
+  };
+
   // Create the proxy user
-  const result = await createDepartmentProxyUser({
+  const result = await createProxyUser({
     userId: USER_ID,
     password: PASSWORD,
-    department: DEPARTMENT,
-    bandwidthLimitBytes: BANDWIDTH_LIMIT_BYTES,
-    serviceId: SERVICE_ID
+    bandwidthLimitGb: BANDWIDTH_LIMIT_GB,
+    metadata: METADATA
   });
-  
+
   if (result) {
-    console.log('Proxy User Details:');
+    console.log('\nProxy User Details:');
     console.log(`  ID: ${result.data.proxy_user_id}`);
     console.log(`  Password: ${result.data.proxy_user_password}`);
-    console.log(`  Service Restricted: Yes, to service ${SERVICE_ID}`);
+    console.log(`  Access Type: all (unrestricted)`);
     console.log(`  Bandwidth Limit: ${BANDWIDTH_LIMIT_GB}GB`);
   }
 }
@@ -198,88 +200,91 @@ $apiPrivateKey = 'your_private_key';
 $baseUrl = 'https://api.pingproxies.com/1.0/public';
 
 /**
- * Create a proxy user for a specific department with bandwidth limits and service restriction
- * 
- * @param string $userId ID to be used for the proxy user
- * @param string $password Password for the proxy user
- * @param string $department Department name (for metadata)
- * @param int $bandwidthLimitBytes Residential bandwidth limit in bytes
- * @param string $serviceId Service ID to restrict this proxy user to
+ * Create a proxy user with metadata and bandwidth limits
+ *
+ * @param string $apiPublicKey API public key
+ * @param string $apiPrivateKey API private key
+ * @param string $baseUrl Base API URL
+ * @param string $userId Proxy user ID
+ * @param string $password Proxy user password
+ * @param int $bandwidthLimitGb Bandwidth limit in GB
+ * @param array $metadata Metadata array
  * @return array|null Created proxy user details or null if creation failed
  */
-function createDepartmentProxyUser($apiPublicKey, $apiPrivateKey, $baseUrl, $userId, $password, $department, $bandwidthLimitBytes, $serviceId) {
+function createProxyUser($apiPublicKey, $apiPrivateKey, $baseUrl, $userId, $password, $bandwidthLimitGb, $metadata) {
+    // Convert GB to bytes
+    $bandwidthLimitBytes = $bandwidthLimitGb * 1024 * 1024 * 1024;
+
     // Headers for authentication
     $headers = [
         'X-API-Public-Key: ' . $apiPublicKey,
         'X-API-Private-Key: ' . $apiPrivateKey,
         'Content-Type: application/json'
     ];
-    
+
     // Create the request payload
     $payload = [
         'proxy_user_id' => $userId,
         'proxy_user_password' => $password,
-        'proxy_user_is_service_restricted' => true,
-        'restricted_service_ids' => [$serviceId],
         'proxy_user_residential_bytes_limit' => $bandwidthLimitBytes,
-        'proxy_user_metadata' => [
-            'department' => $department,
-            'created_by' => 'api',
-            'purpose' => 'seo_monitoring'
-        ]
+        'proxy_user_metadata' => $metadata
     ];
-    
+
     // Make request to create the proxy user
     $ch = curl_init($baseUrl . '/user/proxy_user/create');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    
+
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
-    if ($httpCode !== 201) {  // This endpoint returns 201 Created on success
+
+    if ($httpCode !== 201) {
         echo "Error: " . $httpCode . "\n";
         echo $response . "\n";
         return null;
     }
-    
+
     $data = json_decode($response, true);
-    echo "Successfully created proxy user for {$department} department\n";
+    echo "Successfully created proxy user: {$userId}\n";
     return $data;
 }
 
 // Example usage
-// Define parameters
-$department = 'SEO';
-$userId = 'seodepartment';
-$password = 'strongpassword123';
-$serviceId = 'API-1234-5678';  // Replace with your actual service ID
 
-// Convert 10GB to bytes
-$bandwidthLimitGb = 10;
-$bandwidthLimitBytes = $bandwidthLimitGb * 1024 * 1024 * 1024;
+// Define parameters
+$USER_ID = 'seo_department';
+$PASSWORD = 'strongpassword123';
+$BANDWIDTH_LIMIT_GB = 10;
+
+// Custom metadata for organization
+$METADATA = [
+    'department' => 'SEO',
+    'team_lead' => 'Jane Smith',
+    'created_by' => 'api',
+    'purpose' => 'keyword_research',
+    'cost_center' => 'MKTG-001'
+];
 
 // Create the proxy user
-$result = createDepartmentProxyUser(
+$result = createProxyUser(
     $apiPublicKey,
     $apiPrivateKey,
     $baseUrl,
-    $userId,
-    $password,
-    $department,
-    $bandwidthLimitBytes,
-    $serviceId
+    $USER_ID,
+    $PASSWORD,
+    $BANDWIDTH_LIMIT_GB,
+    $METADATA
 );
 
 if ($result) {
-    echo "Proxy User Details:\n";
+    echo "\nProxy User Details:\n";
     echo "  ID: " . $result['data']['proxy_user_id'] . "\n";
     echo "  Password: " . $result['data']['proxy_user_password'] . "\n";
-    echo "  Service Restricted: Yes, to service {$serviceId}\n";
-    echo "  Bandwidth Limit: {$bandwidthLimitGb}GB\n";
+    echo "  Access Type: all (unrestricted)\n";
+    echo "  Bandwidth Limit: {$BANDWIDTH_LIMIT_GB}GB\n";
 }
 ?>
 ```
@@ -318,53 +323,50 @@ type ProxyUser struct {
 // ProxyUserMetadata represents the metadata for the proxy user
 type ProxyUserMetadata struct {
 	Department string `json:"department"`
+	TeamLead   string `json:"team_lead"`
 	CreatedBy  string `json:"created_by"`
 	Purpose    string `json:"purpose"`
+	CostCenter string `json:"cost_center"`
 }
 
 // CreateProxyUserRequest represents the request payload
 type CreateProxyUserRequest struct {
-	ProxyUserID                 string            `json:"proxy_user_id"`
-	ProxyUserPassword           string            `json:"proxy_user_password"`
-	ProxyUserIsServiceRestricted bool              `json:"proxy_user_is_service_restricted"`
-	RestrictedServiceIDs        []string          `json:"restricted_service_ids"`
+	ProxyUserID                   string            `json:"proxy_user_id"`
+	ProxyUserPassword             string            `json:"proxy_user_password"`
 	ProxyUserResidentialBytesLimit int64             `json:"proxy_user_residential_bytes_limit"`
-	ProxyUserMetadata           ProxyUserMetadata `json:"proxy_user_metadata"`
+	ProxyUserMetadata             ProxyUserMetadata `json:"proxy_user_metadata"`
 }
 
-// CreateDepartmentProxyUser creates a proxy user for a specific department with bandwidth limits and service restriction
-func CreateDepartmentProxyUser(userID, password, department string, bandwidthLimitBytes int64, serviceID string) (*CreateProxyUserResponse, error) {
+// CreateProxyUser creates a proxy user with metadata and bandwidth limits
+func CreateProxyUser(userID, password string, bandwidthLimitGB int64, metadata ProxyUserMetadata) (*CreateProxyUserResponse, error) {
+	// Convert GB to bytes
+	bandwidthLimitBytes := bandwidthLimitGB * 1024 * 1024 * 1024
+
 	// Create the request payload
 	payload := CreateProxyUserRequest{
-		ProxyUserID:                 userID,
-		ProxyUserPassword:           password,
-		ProxyUserIsServiceRestricted: true,
-		RestrictedServiceIDs:        []string{serviceID},
+		ProxyUserID:                   userID,
+		ProxyUserPassword:             password,
 		ProxyUserResidentialBytesLimit: bandwidthLimitBytes,
-		ProxyUserMetadata: ProxyUserMetadata{
-			Department: department,
-			CreatedBy:  "api",
-			Purpose:    "seo_monitoring",
-		},
+		ProxyUserMetadata:             metadata,
 	}
-	
+
 	// Convert payload to JSON
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Create a new request
 	req, err := http.NewRequest("POST", baseURL+"/user/proxy_user/create", bytes.NewBuffer(payloadBytes))
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Add headers
 	req.Header.Add("X-API-Public-Key", apiPublicKey)
 	req.Header.Add("X-API-Private-Key", apiPrivateKey)
 	req.Header.Add("Content-Type", "application/json")
-	
+
 	// Execute the request
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -372,52 +374,56 @@ func CreateDepartmentProxyUser(userID, password, department string, bandwidthLim
 		return nil, err
 	}
 	defer resp.Body.Close()
-	
+
 	// Check response code
-	if resp.StatusCode != 201 {  // This endpoint returns 201 Created on success
+	if resp.StatusCode != 201 {
 		bodyBytes, _ := ioutil.ReadAll(resp.Body)
 		return nil, fmt.Errorf("API error: %d, details: %s", resp.StatusCode, string(bodyBytes))
 	}
-	
+
 	// Parse the response
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var createResponse CreateProxyUserResponse
 	err = json.Unmarshal(body, &createResponse)
 	if err != nil {
 		return nil, err
 	}
-	
-	fmt.Printf("Successfully created proxy user for %s department\n", department)
+
+	fmt.Printf("Successfully created proxy user: %s\n", userID)
 	return &createResponse, nil
 }
 
 func main() {
 	// Define parameters
-	department := "SEO"
-	userID := "seodepartment"
+	userID := "seo_department"
 	password := "strongpassword123"
-	serviceID := "API-1234-5678"  // Replace with your actual service ID
-	
-	// Convert 10GB to bytes
 	bandwidthLimitGB := int64(10)
-	bandwidthLimitBytes := bandwidthLimitGB * 1024 * 1024 * 1024
-	
+
+	// Custom metadata for organization
+	metadata := ProxyUserMetadata{
+		Department: "SEO",
+		TeamLead:   "Jane Smith",
+		CreatedBy:  "api",
+		Purpose:    "keyword_research",
+		CostCenter: "MKTG-001",
+	}
+
 	// Create the proxy user
-	result, err := CreateDepartmentProxyUser(userID, password, department, bandwidthLimitBytes, serviceID)
+	result, err := CreateProxyUser(userID, password, bandwidthLimitGB, metadata)
 	if err != nil {
 		fmt.Printf("Error creating proxy user: %v\n", err)
 		return
 	}
-	
+
 	if result != nil {
-		fmt.Println("Proxy User Details:")
+		fmt.Println("\nProxy User Details:")
 		fmt.Printf("  ID: %s\n", result.Data.ProxyUserID)
 		fmt.Printf("  Password: %s\n", result.Data.ProxyUserPassword)
-		fmt.Printf("  Service Restricted: Yes, to service %s\n", serviceID)
+		fmt.Printf("  Access Type: all (unrestricted)\n")
 		fmt.Printf("  Bandwidth Limit: %dGB\n", bandwidthLimitGB)
 	}
 }
@@ -436,61 +442,56 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class CreateDepartmentProxyUser {
-    
+public class CreateProxyUser {
+
     // API credentials
     private static final String API_PUBLIC_KEY = "your_public_key";
     private static final String API_PRIVATE_KEY = "your_private_key";
     private static final String BASE_URL = "https://api.pingproxies.com/1.0/public";
-    
+
     private static final HttpClient client = HttpClient.newHttpClient();
     private static final ObjectMapper mapper = new ObjectMapper();
-    
+
     // Response classes
     static class CreateProxyUserResponse {
         public List<String> created;
         public ProxyUserData data;
         public String message;
     }
-    
+
     static class ProxyUserData {
         @JsonProperty("proxy_user_id")
         public String proxyUserId;
-        
+
         @JsonProperty("proxy_user_password")
         public String proxyUserPassword;
     }
-    
+
     /**
-     * Create a proxy user for a specific department with bandwidth limits and service restriction
-     * @param userId ID to be used for the proxy user
+     * Create a proxy user with metadata and bandwidth limits
+     * @param userId ID for the proxy user
      * @param password Password for the proxy user
-     * @param department Department name (for metadata)
-     * @param bandwidthLimitBytes Residential bandwidth limit in bytes
-     * @param serviceId Service ID to restrict this proxy user to
+     * @param bandwidthLimitGb Bandwidth limit in GB
+     * @param metadata Metadata map
      * @return Created proxy user details
      */
-    public static CreateProxyUserResponse createDepartmentProxyUser(
-            String userId, String password, String department, 
-            long bandwidthLimitBytes, String serviceId) throws IOException, InterruptedException {
-        
+    public static CreateProxyUserResponse createProxyUser(
+            String userId, String password, long bandwidthLimitGb,
+            Map<String, String> metadata) throws IOException, InterruptedException {
+
+        // Convert GB to bytes
+        long bandwidthLimitBytes = bandwidthLimitGb * 1024 * 1024 * 1024;
+
         // Create the request payload
         Map<String, Object> payload = new HashMap<>();
         payload.put("proxy_user_id", userId);
         payload.put("proxy_user_password", password);
-        payload.put("proxy_user_is_service_restricted", true);
-        payload.put("restricted_service_ids", List.of(serviceId));
         payload.put("proxy_user_residential_bytes_limit", bandwidthLimitBytes);
-        
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("department", department);
-        metadata.put("created_by", "api");
-        metadata.put("purpose", "seo_monitoring");
         payload.put("proxy_user_metadata", metadata);
-        
+
         // Convert payload to JSON
         String jsonPayload = mapper.writeValueAsString(payload);
-        
+
         // Create the request
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/user/proxy_user/create"))
@@ -499,43 +500,45 @@ public class CreateDepartmentProxyUser {
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
                 .build();
-        
+
         // Execute the request
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        
-        if (response.statusCode() != 201) {  // This endpoint returns 201 Created on success
-            throw new IOException("API request failed with status code: " + response.statusCode() + 
+
+        if (response.statusCode() != 201) {
+            throw new IOException("API request failed with status code: " + response.statusCode() +
                                  ", details: " + response.body());
         }
-        
+
         // Parse the response
         CreateProxyUserResponse createResponse = mapper.readValue(response.body(), CreateProxyUserResponse.class);
-        
-        System.out.printf("Successfully created proxy user for %s department%n", department);
+
+        System.out.printf("Successfully created proxy user: %s%n", userId);
         return createResponse;
     }
-    
+
     public static void main(String[] args) {
         try {
             // Define parameters
-            String department = "SEO";
-            String userId = "seodepartment";
+            String userId = "seo_department";
             String password = "strongpassword123";
-            String serviceId = "API-1234-5678";  // Replace with your actual service ID
-            
-            // Convert 10GB to bytes
             long bandwidthLimitGB = 10;
-            long bandwidthLimitBytes = bandwidthLimitGB * 1024 * 1024 * 1024;
-            
+
+            // Custom metadata for organization
+            Map<String, String> metadata = new HashMap<>();
+            metadata.put("department", "SEO");
+            metadata.put("team_lead", "Jane Smith");
+            metadata.put("created_by", "api");
+            metadata.put("purpose", "keyword_research");
+            metadata.put("cost_center", "MKTG-001");
+
             // Create the proxy user
-            CreateProxyUserResponse result = createDepartmentProxyUser(
-                userId, password, department, bandwidthLimitBytes, serviceId);
-            
+            CreateProxyUserResponse result = createProxyUser(userId, password, bandwidthLimitGB, metadata);
+
             if (result != null) {
-                System.out.println("Proxy User Details:");
+                System.out.println("\nProxy User Details:");
                 System.out.printf("  ID: %s%n", result.data.proxyUserId);
                 System.out.printf("  Password: %s%n", result.data.proxyUserPassword);
-                System.out.printf("  Service Restricted: Yes, to service %s%n", serviceId);
+                System.out.printf("  Access Type: all (unrestricted)%n");
                 System.out.printf("  Bandwidth Limit: %dGB%n", bandwidthLimitGB);
             }
         } catch (Exception e) {
@@ -549,33 +552,83 @@ public class CreateDepartmentProxyUser {
 
 ## Key Features Explained
 
-### 1. Department-Specific Metadata
+### 1. Custom Metadata
 
-Adding department information to the proxy user's metadata helps with organization and makes it easier to track usage and manage resources by department:
+Metadata allows you to store custom information with each proxy user for organization and tracking:
 
 ```json
 "proxy_user_metadata": {
   "department": "SEO",
+  "team_lead": "Jane Smith",
   "created_by": "api",
-  "purpose": "seo_monitoring"
+  "purpose": "keyword_research",
+  "cost_center": "MKTG-001"
 }
 ```
 
-### 2. 10GB Bandwidth Limit
+**Metadata constraints:**
+- Flat JSON object (no nested objects)
+- Maximum 30 keys
+- Each value ≤ 300 characters
+- Total size ≤ 32KB
+- Supports string, boolean, float, and integer values
 
-The example sets a 10GB bandwidth limit for residential proxy usage:
+### 2. Bandwidth Limits
+
+Set residential bandwidth limits in bytes. The example uses 10GB:
 
 ```
-10GB = 10 * 1024 * 1024 * 1024 bytes = 10,737,418,240 bytes
+10GB = 10 × 1024 × 1024 × 1024 bytes = 10,737,418,240 bytes
 ```
 
-This limit is applied through the `proxy_user_residential_bytes_limit` parameter.
+This limit applies only to residential proxy usage through this proxy user.
 
-### 3. Service Restriction
+### 3. Unrestricted Access
 
-By setting `proxy_user_is_service_restricted` to `true` and providing the specific service ID in `restricted_service_ids`, you ensure that this proxy user can only access proxies from the designated service:
+By default (when `proxy_user_access_type` is not specified or set to `"all"`), the proxy user has unrestricted access to all proxies in your account.
+
+## Access Control Options
+
+If you need to restrict which proxies this user can access, see these guides:
+
+| Access Type | Description | Guide |
+|-------------|-------------|-------|
+| **Service-Restricted** | Limit access to specific services | [Create with Service Access](/api-examples/create-proxy-user-with-service-access) |
+| **Proxy-Restricted** | Limit access to specific individual proxies | [Create with Proxy Access](/api-examples/create-proxy-user-with-proxy-access) |
+
+## Common Use Cases
+
+### Department Organization
+
+Create proxy users for different teams with custom metadata:
+
+- **SEO Team**: Track keyword research usage
+- **Marketing Team**: Monitor ad verification activities
+- **Research Team**: Measure data collection bandwidth
+
+### Customer Bandwidth Management
+
+Assign bandwidth limits based on customer plans:
+
+- **Basic Plan**: 5GB limit
+- **Pro Plan**: 25GB limit
+- **Enterprise Plan**: 100GB+ limit
+
+### Cost Center Tracking
+
+Use metadata to track usage by cost center or project for billing:
 
 ```json
-"proxy_user_is_service_restricted": true,
-"restricted_service_ids": ["API-1234-5678"]
+{
+  "cost_center": "MKTG-001",
+  "project": "Q1-Campaign",
+  "budget_code": "FY2024-DIGITAL"
+}
 ```
+
+## Related Documentation
+
+- [Proxy User Object](/api-objects/proxy-user)
+- [Proxy User Access Control](/api-explainers/proxy-user-access-control)
+- [Create Proxy User with Service Access](/api-examples/create-proxy-user-with-service-access)
+- [Edit Proxy User Metadata](/api-examples/edit-proxy-user-metadata)

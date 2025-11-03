@@ -88,11 +88,11 @@ if __name__ == "__main__":
 
 # Note: You can also update other fields at the same time as metadata:
 # - proxy_user_password: Update the password
-# - proxy_user_is_service_restricted: Restrict to specific services
-# - restricted_service_ids: List of allowed service IDs
+# - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 # - proxy_user_is_strict_security: Enable strict security
 # - ip_address_authentications: List of allowed IP addresses
 # - proxy_user_residential_bytes_limit: Set bandwidth limits
+# For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ```
 
 ```javascript JavaScript
@@ -180,11 +180,11 @@ main();
 
 // Note: You can also update other fields at the same time as metadata:
 // - proxy_user_password: Update the password
-// - proxy_user_is_service_restricted: Restrict to specific services
-// - restricted_service_ids: List of allowed service IDs
+// - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 // - proxy_user_is_strict_security: Enable strict security
 // - ip_address_authentications: List of allowed IP addresses
 // - proxy_user_residential_bytes_limit: Set bandwidth limits
+// For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ```
 
 ```php PHP
@@ -276,11 +276,11 @@ if ($result) {
 
 // Note: You can also update other fields at the same time as metadata:
 // - proxy_user_password: Update the password
-// - proxy_user_is_service_restricted: Restrict to specific services
-// - restricted_service_ids: List of allowed service IDs
+// - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 // - proxy_user_is_strict_security: Enable strict security
 // - ip_address_authentications: List of allowed IP addresses
 // - proxy_user_residential_bytes_limit: Set bandwidth limits
+// For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ?>
 ```
 
@@ -391,11 +391,11 @@ func main() {
 	
 	// Note: You can also update other fields at the same time as metadata:
 	// - proxy_user_password: Update the password
-	// - proxy_user_is_service_restricted: Restrict to specific services
-	// - restricted_service_ids: List of allowed service IDs
+	// - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 	// - proxy_user_is_strict_security: Enable strict security
 	// - ip_address_authentications: List of allowed IP addresses
 	// - proxy_user_residential_bytes_limit: Set bandwidth limits
+	// For access control, use the Proxy User ACL endpoints to manage service/proxy access
 }
 ```
 
@@ -506,11 +506,11 @@ public class UpdateProxyUserMetadata {
         
         // Note: You can also update other fields at the same time as metadata:
         // - proxy_user_password: Update the password
-        // - proxy_user_is_service_restricted: Restrict to specific services
-        // - restricted_service_ids: List of allowed service IDs
+        // - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
         // - proxy_user_is_strict_security: Enable strict security
         // - ip_address_authentications: List of allowed IP addresses
         // - proxy_user_residential_bytes_limit: Set bandwidth limits
+        // For access control, use the Proxy User ACL endpoints to manage service/proxy access
     }
 }
 ```
