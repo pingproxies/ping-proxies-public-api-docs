@@ -213,10 +213,10 @@
               "api-explainers/analytics",
               "api-explainers/billing",
               "api-explainers/common-object-relationships",
-              "api-explainers/proxy-users-and-access-control",
               "api-explainers/proxy-user-access-control",
               "api-explainers/service-adjustments",
-              "api-explainers/proxy-tester"
+              "api-explainers/proxy-tester",
+              "api-explainers/api-purchasing"
             ]
           }
         ]
