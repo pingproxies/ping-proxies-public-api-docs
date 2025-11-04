@@ -399,34 +399,6 @@ Unlike service-restricted access (where one ACL grants access to all proxies in 
 - ACL 2: `customer_001` → Proxy `550e8400-e29b-41d4-a716-446655440002`
 - ACL 3: `customer_001` → Proxy `550e8400-e29b-41d4-a716-446655440003`
 
-## Use Cases
-
-### Proxy Reselling
-
-**Scenario:** You resell individual proxies to customers. Each customer should only access the specific proxies they purchased.
-
-**Implementation:**
-- Customer A → Proxies: `proxy_001`, `proxy_002`, `proxy_003` (3 proxies purchased)
-- Customer B → Proxies: `proxy_004`, `proxy_005` (2 proxies purchased)
-- Customer C → Proxy: `proxy_006` (1 proxy purchased)
-
-### Dedicated Proxy Assignments
-
-**Scenario:** Assign specific proxies to specific users or applications for performance tracking or security.
-
-**Implementation:**
-- Application A → Dedicated proxies: `proxy_A1`, `proxy_A2`
-- Application B → Dedicated proxies: `proxy_B1`, `proxy_B2`, `proxy_B3`
-
-### High-Security Environments
-
-**Scenario:** Maximum security with granular control where each system component only accesses specific, pre-approved proxies.
-
-**Implementation:**
-- Production System → Pre-audited proxies only
-- Testing System → Separate set of test proxies
-- Development System → Another isolated set
-
 ## Comparison with Service-Restricted
 
 | Feature | Service-Restricted | Proxy-Restricted |

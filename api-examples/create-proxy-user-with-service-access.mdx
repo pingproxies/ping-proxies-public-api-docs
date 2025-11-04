@@ -387,33 +387,6 @@ You can grant access to multiple services by creating multiple ACL entries:
 - ACL 2: `seo_team` → `API-SEO-002`
 - ACL 3: `seo_team` → `API-SEO-003`
 
-## Use Cases
-
-### Team-Based Access Control
-
-**Scenario:** Your company has different teams that need access to different proxy pools.
-
-**Implementation:**
-- SEO Team → Service: `API-SEO-PROXIES`
-- Marketing Team → Service: `API-MARKETING-PROXIES`
-- Research Team → Service: `API-RESEARCH-PROXIES`
-
-### Customer Segregation
-
-**Scenario:** You provide proxy services to multiple customers, each should only access their allocated services.
-
-**Implementation:**
-- Customer A → Services: `API-CUSTOMER-A-001`, `API-CUSTOMER-A-002`
-- Customer B → Service: `API-CUSTOMER-B-001`
-
-### Environment Separation
-
-**Scenario:** Separate production and development proxy access.
-
-**Implementation:**
-- Production User → Service: `API-PROD-PREMIUM`
-- Development User → Service: `API-DEV-TESTING`
-
 ## Verifying Access
 
 After setup, you can verify the ACL entries were created:

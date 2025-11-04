@@ -558,33 +558,6 @@ First, retrieve the proxy user to determine their `proxy_user_access_type`:
 
 For unrestricted and service-restricted access, the code handles pagination to ensure all proxies are retrieved, even when there are many results.
 
-## Use Cases
-
-### Generating Proxy Lists for Customers
-
-**Scenario:** You resell proxies and need to generate a list of proxies each customer can access.
-
-**Solution:** Use this script to retrieve all accessible proxies for each customer's proxy user, then export to a file or send via email.
-
-### Access Verification
-
-**Scenario:** Verify which proxies a specific team or department can access.
-
-**Solution:** Run the script to see the complete list of accessible proxies and confirm it matches your intended access control policy.
-
-### Usage Monitoring
-
-**Scenario:** Track which proxies are being used by specific proxy users for billing or capacity planning.
-
-**Solution:** Combine this script with log retrieval to see usage patterns across accessible proxies.
-
-## Important Notes
-
-- The script handles all three access types automatically
-- For proxy-restricted users with many proxies, the individual retrieval may take longer
-- Pagination ensures you get all results, even for large proxy pools
-- The proxy user must exist and not be deleted
-
 ## Related Documentation
 
 - [Proxy User ACL Object](/api-objects/proxy-user-acl)

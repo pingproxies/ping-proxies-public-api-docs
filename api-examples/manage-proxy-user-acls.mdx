@@ -617,37 +617,6 @@ curl --request PATCH \
 Setting `clear_proxy_user_acl: true` is **required** when changing to `"all"` if ACLs exist. This ensures all ACL entries are removed.
 </Warning>
 
-## Use Cases
-
-### Audit Access Permissions
-
-**Scenario:** You need to audit which services or proxies each proxy user can access.
-
-**Solution:** Loop through all proxy users and search their ACLs to generate an access report.
-
-### Bulk Access Updates
-
-**Scenario:** A new service is available and you need to grant access to multiple proxy users.
-
-**Solution:** For each proxy user that needs access, create an ACL entry with the new service ID.
-
-### Temporary Access
-
-**Scenario:** Grant temporary access to a proxy user for testing, then revoke it.
-
-**Solution:**
-1. Create ACL entry for the service/proxy
-2. Proxy user performs testing
-3. Delete the ACL entry to revoke access
-
-### Access Migration
-
-**Scenario:** Move a proxy user from one service to another.
-
-**Solution:**
-1. Create new ACL for the target service
-2. Delete old ACL for the previous service
-
 ## Search Parameters
 
 The ACL search endpoint supports filtering by:
