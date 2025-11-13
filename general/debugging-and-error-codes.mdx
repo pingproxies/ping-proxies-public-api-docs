@@ -57,10 +57,16 @@ We also expose a single HTTP-style error code `301`, returned only when you try 
 
 Below is a comprehensive list of all error codes and their descriptions:
 
+### Successful Codes
+| Error Code  | Description |
+|------------ |-------------|
+|  **200**    | **Successful / No Error** |
+|    301      | Request redirected to HTTPS |
+|    4000     | Tunnel closed improperly, likely still a successful proxy attempt |
+| 9100 - 9104 | Connection closed early, possibly still a successful proxy attempt |
+
 | Error Code | Description |
 |------------|-------------|
-| **200**        | **Successful / No Error** |
-|    301          | Request redirected to HTTPS |
 |    1000 - 1100  | Failed to authenticate |
 |    1102         | Bandwidth limit exceeded for your plan |
 |    1103         | Too many concurrent connections |
@@ -74,14 +80,15 @@ Below is a comprehensive list of all error codes and their descriptions:
 |    3004         | Protocol method not supported |
 |    3006         | Invalid proxy username parameter specified |
 |    3400 - 3500 | Could not find residential node with given routing parameters |
-|    4000 - 4102  | Internal server error occurred |
-|    4103         | Connection was unused for too long |
-|    9100 - 9104  | Unexpected EOF during operation. Not necessarily a bad thing. |
+|    4000         | Tunnel closed improperly, likely still a successful proxy attempt |
+|    4001 - 4102  | Internal server error occurred |
+|    4103         | Connection was unused for too long (5 mintues+) |
+| 9100 - 9104     | Connection closed early, possibly still a successful proxy attempt |
 |    9108         | General DNS failure |
 |    9109         | Domain name could not be resolved |
 |    9201         | Protocol used was badly formed. Check client and libraries. |
 |    9300         | We forcibly closed your connection. Your proxies might have expired. |
-|    9301         | Connection was used for too long |
+|    9301         | Connection was used for too long (24 hours+)|
 
 
 ### Suggested Fixes
