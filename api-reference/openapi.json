@@ -979,6 +979,10 @@
       },
       "Customer": {
         "properties": {
+          "active_residential_service_id": {
+            "example": "1955-8012-871",
+            "type": "string"
+          },
           "country_id": {
             "example": "us",
             "type": "string"
@@ -986,6 +990,10 @@
           "country_id_billing": {
             "example": "us",
             "type": "string"
+          },
+          "credit_balance": {
+            "example": 1245,
+            "type": "integer"
           },
           "customer_billing_line_one": {
             "example": "1",
@@ -1086,6 +1094,22 @@
           "customer_requires_password_change": {
             "example": false,
             "type": "boolean"
+          },
+          "free_trial_is_pending": {
+            "example": false,
+            "type": "boolean"
+          },
+          "kyc_is_pending": {
+            "example": false,
+            "type": "boolean"
+          },
+          "proxy_count": {
+            "example": 100,
+            "type": "integer"
+          },
+          "residential_bytes_left": {
+            "example": 10737418240,
+            "type": "integer"
           }
         },
         "type": "object"
@@ -1094,8 +1118,10 @@
         "description": "Customer retrieve was successful.",
         "example": {
           "data": {
+            "active_residential_service_id": "1955-8012-871",
             "country_id": "us",
             "country_id_billing": "us",
+            "credit_balance": 1245,
             "customer_billing_line_one": "1",
             "customer_billing_line_two": "Infinite Loop",
             "customer_billing_name": "Steve Jobs",
@@ -1120,7 +1146,11 @@
             "customer_profile_image_url": "https://apple.com/steveprofilepic.jpg",
             "customer_proxy_user_limit": 5,
             "customer_requires_information_confirm": false,
-            "customer_requires_password_change": false
+            "customer_requires_password_change": false,
+            "free_trial_is_pending": false,
+            "kyc_is_pending": false,
+            "proxy_count": 100,
+            "residential_bytes_left": 10737418240
           },
           "message": "Customer successfully retrieved."
         },
@@ -1128,6 +1158,10 @@
           "data": {
             "description": "Retrieved Customer item details.",
             "properties": {
+              "active_residential_service_id": {
+                "example": "1955-8012-871",
+                "type": "string"
+              },
               "country_id": {
                 "example": "us",
                 "type": "string"
@@ -1135,6 +1169,10 @@
               "country_id_billing": {
                 "example": "us",
                 "type": "string"
+              },
+              "credit_balance": {
+                "example": 1245,
+                "type": "integer"
               },
               "customer_billing_line_one": {
                 "example": "1",
@@ -1235,6 +1273,22 @@
               "customer_requires_password_change": {
                 "example": false,
                 "type": "boolean"
+              },
+              "free_trial_is_pending": {
+                "example": false,
+                "type": "boolean"
+              },
+              "kyc_is_pending": {
+                "example": false,
+                "type": "boolean"
+              },
+              "proxy_count": {
+                "example": 100,
+                "type": "integer"
+              },
+              "residential_bytes_left": {
+                "example": 10737418240,
+                "type": "integer"
               }
             },
             "type": "object"
@@ -1251,8 +1305,10 @@
         "example": {
           "data": [
             {
+              "active_residential_service_id": "1955-8012-871",
               "country_id": "us",
               "country_id_billing": "us",
+              "credit_balance": 1245,
               "customer_billing_line_one": "1",
               "customer_billing_line_two": "Infinite Loop",
               "customer_billing_name": "Steve Jobs",
@@ -1277,7 +1333,11 @@
               "customer_profile_image_url": "https://apple.com/steveprofilepic.jpg",
               "customer_proxy_user_limit": 5,
               "customer_requires_information_confirm": false,
-              "customer_requires_password_change": false
+              "customer_requires_password_change": false,
+              "free_trial_is_pending": false,
+              "kyc_is_pending": false,
+              "proxy_count": 100,
+              "residential_bytes_left": 10737418240
             }
           ],
           "item_count": 1,
@@ -1291,6 +1351,10 @@
             "description": "Array of Customer items matching the search criteria up to the limit of per_page paramater.",
             "items": {
               "properties": {
+                "active_residential_service_id": {
+                  "example": "1955-8012-871",
+                  "type": "string"
+                },
                 "country_id": {
                   "example": "us",
                   "type": "string"
@@ -1298,6 +1362,10 @@
                 "country_id_billing": {
                   "example": "us",
                   "type": "string"
+                },
+                "credit_balance": {
+                  "example": 1245,
+                  "type": "integer"
                 },
                 "customer_billing_line_one": {
                   "example": "1",
@@ -1398,6 +1466,22 @@
                 "customer_requires_password_change": {
                   "example": false,
                   "type": "boolean"
+                },
+                "free_trial_is_pending": {
+                  "example": false,
+                  "type": "boolean"
+                },
+                "kyc_is_pending": {
+                  "example": false,
+                  "type": "boolean"
+                },
+                "proxy_count": {
+                  "example": 100,
+                  "type": "integer"
+                },
+                "residential_bytes_left": {
+                  "example": 10737418240,
+                  "type": "integer"
                 }
               },
               "type": "object"
@@ -2378,6 +2462,58 @@
       },
       "Proxy": {
         "properties": {
+          "asn_id": {
+            "example": 7018,
+            "type": "integer"
+          },
+          "asn_name": {
+            "example": "AT&T Enterprises, LLC",
+            "type": "string"
+          },
+          "city_example_postcode": {
+            "example": "75202",
+            "type": "string"
+          },
+          "city_id": {
+            "example": 75202,
+            "type": "integer"
+          },
+          "city_latitude": {
+            "example": 32.7767,
+            "type": "number"
+          },
+          "city_longitude": {
+            "example": -96.797,
+            "type": "number"
+          },
+          "city_name": {
+            "example": "Dallas",
+            "type": "string"
+          },
+          "city_timezone": {
+            "example": "America/Chicago",
+            "type": "string"
+          },
+          "country_id": {
+            "example": "us",
+            "type": "string"
+          },
+          "country_name": {
+            "example": "United States",
+            "type": "string"
+          },
+          "customer_id": {
+            "example": 1955,
+            "type": "integer"
+          },
+          "default_proxy_user_password": {
+            "example": "apple1984",
+            "type": "string"
+          },
+          "default_proxy_user_username": {
+            "example": "stevejobs",
+            "type": "string"
+          },
           "ip_address_id_v4": {
             "example": "107.225.73.142",
             "type": "string"
@@ -2392,6 +2528,14 @@
           },
           "proxy_id": {
             "example": "7a018d34-76c2-4c23-b14d-f7b9a7054e25",
+            "type": "string"
+          },
+          "proxy_ip_address": {
+            "example": "107.225.73.142",
+            "type": "string"
+          },
+          "proxy_ip_address_v6": {
+            "example": "2600:1000:b12a:6351:8523:997e:93c4:f124",
             "type": "string"
           },
           "proxy_last_update_datetime": {
@@ -2448,6 +2592,22 @@
           },
           "service_id": {
             "example": "API-1234-5678",
+            "type": "string"
+          },
+          "subdivision_id": {
+            "example": "us-tx",
+            "type": "string"
+          },
+          "subdivision_name": {
+            "example": "Texas",
+            "type": "string"
+          },
+          "subnet_id": {
+            "example": "107.225.72.0/22",
+            "type": "string"
+          },
+          "subnet_id_v6": {
+            "example": "2600:1000::/28",
             "type": "string"
           }
         },
@@ -2513,10 +2673,25 @@
         "description": "Proxy retrieve was successful.",
         "example": {
           "data": {
+            "asn_id": 7018,
+            "asn_name": "AT&T Enterprises, LLC",
+            "city_example_postcode": "75202",
+            "city_id": 75202,
+            "city_latitude": 32.7767,
+            "city_longitude": -96.797,
+            "city_name": "Dallas",
+            "city_timezone": "America/Chicago",
+            "country_id": "us",
+            "country_name": "United States",
+            "customer_id": 1955,
+            "default_proxy_user_password": "apple1984",
+            "default_proxy_user_username": "stevejobs",
             "ip_address_id_v4": "107.225.73.142",
             "ip_address_id_v6": "2600:1000:b12a:6351:8523:997e:93c4:f124",
             "proxy_http_port": 8080,
             "proxy_id": "7a018d34-76c2-4c23-b14d-f7b9a7054e25",
+            "proxy_ip_address": "107.225.73.142",
+            "proxy_ip_address_v6": "2600:1000:b12a:6351:8523:997e:93c4:f124",
             "proxy_last_update_datetime": "2024-03-12 09:30:00",
             "proxy_password": "DHf3PSQXQ7rw1v9",
             "proxy_protocol": "ipv4",
@@ -2527,7 +2702,11 @@
               "stevejobs"
             ],
             "proxy_username": "att7018user",
-            "service_id": "API-1234-5678"
+            "service_id": "API-1234-5678",
+            "subdivision_id": "us-tx",
+            "subdivision_name": "Texas",
+            "subnet_id": "107.225.72.0/22",
+            "subnet_id_v6": "2600:1000::/28"
           },
           "message": "Proxy successfully retrieved."
         },
@@ -2535,6 +2714,58 @@
           "data": {
             "description": "Retrieved Proxy item details.",
             "properties": {
+              "asn_id": {
+                "example": 7018,
+                "type": "integer"
+              },
+              "asn_name": {
+                "example": "AT&T Enterprises, LLC",
+                "type": "string"
+              },
+              "city_example_postcode": {
+                "example": "75202",
+                "type": "string"
+              },
+              "city_id": {
+                "example": 75202,
+                "type": "integer"
+              },
+              "city_latitude": {
+                "example": 32.7767,
+                "type": "number"
+              },
+              "city_longitude": {
+                "example": -96.797,
+                "type": "number"
+              },
+              "city_name": {
+                "example": "Dallas",
+                "type": "string"
+              },
+              "city_timezone": {
+                "example": "America/Chicago",
+                "type": "string"
+              },
+              "country_id": {
+                "example": "us",
+                "type": "string"
+              },
+              "country_name": {
+                "example": "United States",
+                "type": "string"
+              },
+              "customer_id": {
+                "example": 1955,
+                "type": "integer"
+              },
+              "default_proxy_user_password": {
+                "example": "apple1984",
+                "type": "string"
+              },
+              "default_proxy_user_username": {
+                "example": "stevejobs",
+                "type": "string"
+              },
               "ip_address_id_v4": {
                 "example": "107.225.73.142",
                 "type": "string"
@@ -2549,6 +2780,14 @@
               },
               "proxy_id": {
                 "example": "7a018d34-76c2-4c23-b14d-f7b9a7054e25",
+                "type": "string"
+              },
+              "proxy_ip_address": {
+                "example": "107.225.73.142",
+                "type": "string"
+              },
+              "proxy_ip_address_v6": {
+                "example": "2600:1000:b12a:6351:8523:997e:93c4:f124",
                 "type": "string"
               },
               "proxy_last_update_datetime": {
@@ -2606,6 +2845,22 @@
               "service_id": {
                 "example": "API-1234-5678",
                 "type": "string"
+              },
+              "subdivision_id": {
+                "example": "us-tx",
+                "type": "string"
+              },
+              "subdivision_name": {
+                "example": "Texas",
+                "type": "string"
+              },
+              "subnet_id": {
+                "example": "107.225.72.0/22",
+                "type": "string"
+              },
+              "subnet_id_v6": {
+                "example": "2600:1000::/28",
+                "type": "string"
               }
             },
             "type": "object"
@@ -2622,10 +2877,25 @@
         "example": {
           "data": [
             {
+              "asn_id": 7018,
+              "asn_name": "AT&T Enterprises, LLC",
+              "city_example_postcode": "75202",
+              "city_id": 75202,
+              "city_latitude": 32.7767,
+              "city_longitude": -96.797,
+              "city_name": "Dallas",
+              "city_timezone": "America/Chicago",
+              "country_id": "us",
+              "country_name": "United States",
+              "customer_id": 1955,
+              "default_proxy_user_password": "apple1984",
+              "default_proxy_user_username": "stevejobs",
               "ip_address_id_v4": "107.225.73.142",
               "ip_address_id_v6": "2600:1000:b12a:6351:8523:997e:93c4:f124",
               "proxy_http_port": 8080,
               "proxy_id": "7a018d34-76c2-4c23-b14d-f7b9a7054e25",
+              "proxy_ip_address": "107.225.73.142",
+              "proxy_ip_address_v6": "2600:1000:b12a:6351:8523:997e:93c4:f124",
               "proxy_last_update_datetime": "2024-03-12 09:30:00",
               "proxy_password": "DHf3PSQXQ7rw1v9",
               "proxy_protocol": "ipv4",
@@ -2636,7 +2906,11 @@
                 "stevejobs"
               ],
               "proxy_username": "att7018user",
-              "service_id": "API-1234-5678"
+              "service_id": "API-1234-5678",
+              "subdivision_id": "us-tx",
+              "subdivision_name": "Texas",
+              "subnet_id": "107.225.72.0/22",
+              "subnet_id_v6": "2600:1000::/28"
             }
           ],
           "item_count": 1,
@@ -2650,6 +2924,58 @@
             "description": "Array of Proxy items matching the search criteria up to the limit of per_page paramater.",
             "items": {
               "properties": {
+                "asn_id": {
+                  "example": 7018,
+                  "type": "integer"
+                },
+                "asn_name": {
+                  "example": "AT&T Enterprises, LLC",
+                  "type": "string"
+                },
+                "city_example_postcode": {
+                  "example": "75202",
+                  "type": "string"
+                },
+                "city_id": {
+                  "example": 75202,
+                  "type": "integer"
+                },
+                "city_latitude": {
+                  "example": 32.7767,
+                  "type": "number"
+                },
+                "city_longitude": {
+                  "example": -96.797,
+                  "type": "number"
+                },
+                "city_name": {
+                  "example": "Dallas",
+                  "type": "string"
+                },
+                "city_timezone": {
+                  "example": "America/Chicago",
+                  "type": "string"
+                },
+                "country_id": {
+                  "example": "us",
+                  "type": "string"
+                },
+                "country_name": {
+                  "example": "United States",
+                  "type": "string"
+                },
+                "customer_id": {
+                  "example": 1955,
+                  "type": "integer"
+                },
+                "default_proxy_user_password": {
+                  "example": "apple1984",
+                  "type": "string"
+                },
+                "default_proxy_user_username": {
+                  "example": "stevejobs",
+                  "type": "string"
+                },
                 "ip_address_id_v4": {
                   "example": "107.225.73.142",
                   "type": "string"
@@ -2664,6 +2990,14 @@
                 },
                 "proxy_id": {
                   "example": "7a018d34-76c2-4c23-b14d-f7b9a7054e25",
+                  "type": "string"
+                },
+                "proxy_ip_address": {
+                  "example": "107.225.73.142",
+                  "type": "string"
+                },
+                "proxy_ip_address_v6": {
+                  "example": "2600:1000:b12a:6351:8523:997e:93c4:f124",
                   "type": "string"
                 },
                 "proxy_last_update_datetime": {
@@ -2720,6 +3054,22 @@
                 },
                 "service_id": {
                   "example": "API-1234-5678",
+                  "type": "string"
+                },
+                "subdivision_id": {
+                  "example": "us-tx",
+                  "type": "string"
+                },
+                "subdivision_name": {
+                  "example": "Texas",
+                  "type": "string"
+                },
+                "subnet_id": {
+                  "example": "107.225.72.0/22",
+                  "type": "string"
+                },
+                "subnet_id_v6": {
+                  "example": "2600:1000::/28",
                   "type": "string"
                 }
               },
@@ -2897,6 +3247,10 @@
           },
           "proxy_user_residential_bytes_used": {
             "example": 31223,
+            "type": "integer"
+          },
+          "residential_bytes_left": {
+            "example": 1,
             "type": "integer"
           },
           "restricted_proxy_ids": {
@@ -3126,6 +3480,7 @@
             "proxy_user_password": "apple1984",
             "proxy_user_residential_bytes_limit": 134142432,
             "proxy_user_residential_bytes_used": 31223,
+            "residential_bytes_left": 1,
             "restricted_proxy_ids": [
               "d5f6b186-3850-43e5-ac07-55d2ff5eb06e"
             ],
@@ -3208,6 +3563,10 @@
                 "example": 31223,
                 "type": "integer"
               },
+              "residential_bytes_left": {
+                "example": 1,
+                "type": "integer"
+              },
               "restricted_proxy_ids": {
                 "items": {
                   "example": "d5f6b186-3850-43e5-ac07-55d2ff5eb06e",
@@ -3255,6 +3614,7 @@
               "proxy_user_password": "apple1984",
               "proxy_user_residential_bytes_limit": 134142432,
               "proxy_user_residential_bytes_used": 31223,
+              "residential_bytes_left": 1,
               "restricted_proxy_ids": [
                 "d5f6b186-3850-43e5-ac07-55d2ff5eb06e"
               ],
@@ -3341,6 +3701,10 @@
                 },
                 "proxy_user_residential_bytes_used": {
                   "example": 31223,
+                  "type": "integer"
+                },
+                "residential_bytes_left": {
+                  "example": 1,
                   "type": "integer"
                 },
                 "restricted_proxy_ids": {
@@ -3603,6 +3967,10 @@
             "example": "us",
             "type": "string"
           },
+          "open_invoice_id": {
+            "example": "inv_1OCNVFFKo7UQ3XWITWlqGWYQ",
+            "type": "string"
+          },
           "payment_method_id": {
             "example": "pm_1NjyqfB2BUlqim5l2LgRUo0a",
             "type": "string"
@@ -3711,6 +4079,10 @@
               "off_catalog"
             ],
             "example": "isp",
+            "type": "string"
+          },
+          "subscription_schedule_id": {
+            "example": "sub_sched_1OCNVFFKo7UQ3XWITWlqGWYQ",
             "type": "string"
           }
         },
@@ -4098,6 +4470,7 @@
         "example": {
           "data": {
             "country_id": "us",
+            "open_invoice_id": "inv_1OCNVFFKo7UQ3XWITWlqGWYQ",
             "payment_method_id": "pm_1NjyqfB2BUlqim5l2LgRUo0a",
             "service_creation_datetime": "2023-09-12 10:00:00",
             "service_cycle": "1:month",
@@ -4120,7 +4493,8 @@
             "service_subscription_id": "sub_1NpPVfB2BUlqim5lA374YoIh",
             "service_subscription_is_paused": false,
             "service_total": 100,
-            "service_type": "isp"
+            "service_type": "isp",
+            "subscription_schedule_id": "sub_sched_1OCNVFFKo7UQ3XWITWlqGWYQ"
           },
           "message": "Service successfully retrieved."
         },
@@ -4130,6 +4504,10 @@
             "properties": {
               "country_id": {
                 "example": "us",
+                "type": "string"
+              },
+              "open_invoice_id": {
+                "example": "inv_1OCNVFFKo7UQ3XWITWlqGWYQ",
                 "type": "string"
               },
               "payment_method_id": {
@@ -4241,6 +4619,10 @@
                 ],
                 "example": "isp",
                 "type": "string"
+              },
+              "subscription_schedule_id": {
+                "example": "sub_sched_1OCNVFFKo7UQ3XWITWlqGWYQ",
+                "type": "string"
               }
             },
             "type": "object"
@@ -4258,6 +4640,7 @@
           "data": [
             {
               "country_id": "us",
+              "open_invoice_id": "inv_1OCNVFFKo7UQ3XWITWlqGWYQ",
               "payment_method_id": "pm_1NjyqfB2BUlqim5l2LgRUo0a",
               "service_creation_datetime": "2023-09-12 10:00:00",
               "service_cycle": "1:month",
@@ -4280,7 +4663,8 @@
               "service_subscription_id": "sub_1NpPVfB2BUlqim5lA374YoIh",
               "service_subscription_is_paused": false,
               "service_total": 100,
-              "service_type": "isp"
+              "service_type": "isp",
+              "subscription_schedule_id": "sub_sched_1OCNVFFKo7UQ3XWITWlqGWYQ"
             }
           ],
           "item_count": 1,
@@ -4296,6 +4680,10 @@
               "properties": {
                 "country_id": {
                   "example": "us",
+                  "type": "string"
+                },
+                "open_invoice_id": {
+                  "example": "inv_1OCNVFFKo7UQ3XWITWlqGWYQ",
                   "type": "string"
                 },
                 "payment_method_id": {
@@ -4406,6 +4794,10 @@
                     "off_catalog"
                   ],
                   "example": "isp",
+                  "type": "string"
+                },
+                "subscription_schedule_id": {
+                  "example": "sub_sched_1OCNVFFKo7UQ3XWITWlqGWYQ",
                   "type": "string"
                 }
               },
@@ -4580,6 +4972,10 @@
       },
       "SubscriptionSchedule": {
         "properties": {
+          "customer_id": {
+            "example": 1245,
+            "type": "integer"
+          },
           "service_subscription_id": {
             "example": "sub_1NpPVfB2BUlqim5lA374YoIh",
             "type": "string"
@@ -4657,6 +5053,7 @@
         "description": "Subscription Schedule retrieve was successful.",
         "example": {
           "data": {
+            "customer_id": 1245,
             "service_subscription_id": "sub_1NpPVfB2BUlqim5lA374YoIh",
             "subscription_schedule_creation_datetime": "2023-09-12 10:00:00",
             "subscription_schedule_datetime": "2023-09-15 10:00:00",
@@ -4672,6 +5069,10 @@
           "data": {
             "description": "Retrieved Subscription Schedule item details.",
             "properties": {
+              "customer_id": {
+                "example": 1245,
+                "type": "integer"
+              },
               "service_subscription_id": {
                 "example": "sub_1NpPVfB2BUlqim5lA374YoIh",
                 "type": "string"
@@ -4734,6 +5135,7 @@
         "example": {
           "data": [
             {
+              "customer_id": 1245,
               "service_subscription_id": "sub_1NpPVfB2BUlqim5lA374YoIh",
               "subscription_schedule_creation_datetime": "2023-09-12 10:00:00",
               "subscription_schedule_datetime": "2023-09-15 10:00:00",
@@ -4755,6 +5157,10 @@
             "description": "Array of Subscription Schedule items matching the search criteria up to the limit of per_page paramater.",
             "items": {
               "properties": {
+                "customer_id": {
+                  "example": 1245,
+                  "type": "integer"
+                },
                 "service_subscription_id": {
                   "example": "sub_1NpPVfB2BUlqim5lA374YoIh",
                   "type": "string"
@@ -6023,10 +6429,6 @@
                                 "format": "date-time",
                                 "type": "string"
                               },
-                              "proxy_password": {
-                                "example": "DHf3PSQXQ7rw1v9",
-                                "type": "string"
-                              },
                               "proxy_protocol": {
                                 "example": "ipv4",
                                 "type": "string"
@@ -6041,10 +6443,6 @@
                               },
                               "proxy_type": {
                                 "example": "isp",
-                                "type": "string"
-                              },
-                              "proxy_username": {
-                                "example": "att7018user",
                                 "type": "string"
                               },
                               "service_id": {
@@ -7931,11 +8329,11 @@
               "schema": {
                 "properties": {
                   "proxy_password": {
-                    "description": "Proxy Specific Authentication password of the proxy.",
+                    "description": "Password for Proxy Specific Authentication. This field will be deprecated on January 20th, 2026 in favor of Proxy User authentication.",
                     "type": "string"
                   },
                   "proxy_username": {
-                    "description": "Proxy Specific Authentication username of the proxy.",
+                    "description": "Proxy Specific Authentication username of the proxy. This field is being deprecated on January 20th 2026 in favour of Proxy User authentication.",
                     "type": "string"
                   }
                 },
@@ -9375,7 +9773,7 @@
     },
     "/public/user/proxy_user_acl/create": {
       "post": {
-        "description": "This endpoint allows you to create a new Proxy User ACL entry to grant access to specific services or proxies.\n\nRequirements:\n- The target Proxy User must not be deleted and must have access_type != \"all\"\n- For service access: proxy_user_access_type must be \"service_restricted\"\n- For proxy access: proxy_user_access_type must be \"proxy_restricted\"\n- Either service_id OR proxy_id must be provided, but not both\n- The service/proxy must belong to the same customer as the proxy user\n",
+        "description": "This endpoint allows you to create a new Proxy User ACL entry to grant access to specific services or proxies.\n\n- The target Proxy User must not be deleted.\n- For service access: proxy_user_access_type must be `service_restricted`.\n- For proxy access: proxy_user_access_type must be `proxy_restricted`.\n",
         "parameters": [
           {
             "description": "Content type for the request body as application/json.",

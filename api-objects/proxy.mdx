@@ -16,8 +16,8 @@ The Proxy object represents an individual proxy instance in the Ping Proxies sys
 | `proxy_http_port` | integer | HTTP port number for the proxy |
 | `proxy_socks5_port` | integer | SOCKS5 port number for the proxy |
 | `proxy_status` | string | Current status of the proxy (available, in_use, reserved, etc.) |
-| `proxy_username` | string | Proxy-specific authentication username (if configured) |
-| `proxy_password` | string | Proxy-specific authentication password (if configured) |
+| `proxy_username` | string | Proxy-specific authentication username. This field is being deprecated in January 20th 2026 in favour of Proxy User authentication. |
+| `proxy_password` | string | Proxy-specific authentication password. This field is being deprecated in January 20th 2026 in favour of Proxy User authentication. |
 | `service_id` | string | ID of the service this proxy is associated with |
 | `country_id` | string | ISO country code where the proxy is located |
 | `asn_id` | integer | Autonomous System Number (network provider) |
