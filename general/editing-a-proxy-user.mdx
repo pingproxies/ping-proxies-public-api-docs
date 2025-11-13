@@ -23,30 +23,31 @@ You can edit your Proxy Users via our dashboard and Proxy User management sectio
 
 1. Navigate to the Proxy User management section in your dashboard
 2. Find the proxy user you want to edit
-3. Click the "Edit" button next to their name
+3. Click the "Edit Authentication" button next to their name to alter the password or IP authentication, or "Edit Limits" to adjust the residential pool allowance and other service access.
 4. Make your desired changes to any of the editable attributes
 5. Click "Save" to apply your changes
 
-## Password Requirements
-
-When editing a proxy user's password, remember that it must:
-- Be between 8 and 16 characters long
-- Contain only alphanumeric characters (letters and numbers)
-
-## Residential Bandwidth Allocation
-
-When adjusting residential bandwidth, you can only increase the allocation - you cannot reduce it below the current usage level. This prevents accidentally restricting access for proxy users who have already consumed bandwidth.
-
 ## IP Authentication
 
-IP authentication allows proxy access based on client IP address without sending credentials in each request. You can add up to 3 IP addresses per proxy user for authentication purposes.
+IP authentication allows proxy access based on client IP address without sending credentials in each request. You can add up to 3 IP addresses per proxy user for authentication purposes. Each IP address can only belong to a single proxy user at any given time.
 
-## Access Control
+## Limits
+
+<img
+  src="/images/general/edit-proxy-user-acl.png"
+  alt="Ping Proxies Proxy User Limits"
+/>
+
+### Residential Bandwidth Allocation
+
+You can edit the proxy user's residential pool allowance clicking Edit Limits next to the proxy user on the dashboard.
+
+### Other Services
 
 You can control which proxies a proxy user can access using the `proxy_user_access_type` field and Proxy User ACL entries:
 
 - **Unrestricted Access (`"all"`)**: The proxy user can access all proxies in your account
-- **Service-Restricted (`"service_restricted"`)**: The proxy user can only access proxies within specific services. Create Proxy User ACL entries to grant access to services.
-- **Proxy-Restricted (`"proxy_restricted"`)**: The proxy user can only access specific individual proxies. Create Proxy User ACL entries to grant access to proxies.
+- **Service Restricted (`"service_restricted"`)**: The proxy user can only access proxies within specific services. Create Proxy User ACL entries to grant access to services.
+- **Proxy Restricted (`"proxy_restricted"`)**: The proxy user can only access specific individual proxies. Create Proxy User ACL entries to grant access to proxies.
 
 Use the Proxy User ACL endpoints to manage which services or proxies a restricted proxy user can access. See the [Proxy User Access Control guide](/api-explainers/proxy-user-access-control) for more details.
