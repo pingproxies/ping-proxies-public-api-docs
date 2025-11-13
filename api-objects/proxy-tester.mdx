@@ -61,7 +61,9 @@ Individual test results for each proxy-URL-server combination.
 |-----------|------|-------------|
 | `proxy_test_result_id` | string (uuid) | Unique identifier for this specific test result |
 | `proxy_test_result_url` | string | The URL that was tested |
-| `proxy_test_result_status_code` | integer | HTTP status code returned |
+| `proxy_test_result_is_successful` | boolean | Whether the test was completed successfully |
+| `proxy_test_result_error_code` | integer | The error code that was returned in the event of a failure |
+| `proxy_test_result_error_source` | integer | Stage at which the error occurred (client/proxy/target) |
 | `proxy_test_result_protocol` | string | Protocol used |
 | `proxy_test_result_response_time` | integer | Response time in milliseconds |
 | `proxy_test_server_id` | string | ID of the test server used |
@@ -73,6 +75,17 @@ Individual test results for each proxy-URL-server combination.
 | `proxy_country_id` | string | Country where the proxy is located |
 | `proxy_city_name` | string | City where the proxy is located |
 | `proxy_asn_name` | string | ASN information for the proxy |
+
+### Proxy Errors
+If `proxy_test_result_is_successful` is not `true`, an error occurred during the testing process.
+
+**Code** - The error code will describe the error that occurred. For example: `dns_error`.
+
+**Source** - The source will describe the stage of the proxy testing process that the error occured. For example: `client`.
+
+- **Client** - The error occurred within the client, before a connection was made to the proxy server. For example, a **DNS lookup failure**.
+- **Proxy** - The error occurred whilst connecting to the proxy server. For example, **invalid authentication**.
+- **Target** - The error occurred whilst connecting to the target. For example, **not found**.
 
 ### Proxy Test Server
 
