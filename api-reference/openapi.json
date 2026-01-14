@@ -983,6 +983,13 @@
             "example": "1955-8012-871",
             "type": "string"
           },
+          "active_service_types": {
+            "items": {
+              "example": "",
+              "type": "string"
+            },
+            "type": "array"
+          },
           "country_id": {
             "example": "us",
             "type": "string"
@@ -1019,6 +1026,10 @@
             "format": "date-time",
             "type": "string"
           },
+          "customer_default_residential_free_trial_bytes": {
+            "example": 1073741824,
+            "type": "integer"
+          },
           "customer_discord_id": {
             "example": "dis_ckf3malOP1s",
             "type": "string"
@@ -1041,6 +1052,10 @@
           },
           "customer_first_name": {
             "example": "Steve",
+            "type": "string"
+          },
+          "customer_general_terms_agreement_datetime": {
+            "format": "date-time",
             "type": "string"
           },
           "customer_google_oauth_id": {
@@ -1119,6 +1134,12 @@
         "example": {
           "data": {
             "active_residential_service_id": "1955-8012-871",
+            "active_service_types": [
+              [
+                "isp",
+                "residential"
+              ]
+            ],
             "country_id": "us",
             "country_id_billing": "us",
             "credit_balance": 1245,
@@ -1128,12 +1149,14 @@
             "customer_billing_subdivision_name": "Cupertino",
             "customer_billing_zip_code": "95014",
             "customer_creation_datetime": "2023-09-01 10:00:00",
+            "customer_default_residential_free_trial_bytes": 1073741824,
             "customer_discord_id": "dis_ckf3malOP1s",
             "customer_discord_oauth_id": "0xfOavU6OUtXxhJ8",
             "customer_dob": "2023-09-01",
             "customer_email_address": "steve.jobs@apple.com",
             "customer_email_two_factor_authentication": true,
             "customer_first_name": "Steve",
+            "customer_general_terms_agreement_datetime": "2023-09-01 10:00:00",
             "customer_google_oauth_id": "7Z6CbaOsoDg9AYds",
             "customer_id": 1955,
             "customer_is_residential_trial_eligible": true,
@@ -1161,6 +1184,13 @@
               "active_residential_service_id": {
                 "example": "1955-8012-871",
                 "type": "string"
+              },
+              "active_service_types": {
+                "items": {
+                  "example": "",
+                  "type": "string"
+                },
+                "type": "array"
               },
               "country_id": {
                 "example": "us",
@@ -1198,6 +1228,10 @@
                 "format": "date-time",
                 "type": "string"
               },
+              "customer_default_residential_free_trial_bytes": {
+                "example": 1073741824,
+                "type": "integer"
+              },
               "customer_discord_id": {
                 "example": "dis_ckf3malOP1s",
                 "type": "string"
@@ -1220,6 +1254,10 @@
               },
               "customer_first_name": {
                 "example": "Steve",
+                "type": "string"
+              },
+              "customer_general_terms_agreement_datetime": {
+                "format": "date-time",
                 "type": "string"
               },
               "customer_google_oauth_id": {
@@ -1306,6 +1344,12 @@
           "data": [
             {
               "active_residential_service_id": "1955-8012-871",
+              "active_service_types": [
+                [
+                  "isp",
+                  "residential"
+                ]
+              ],
               "country_id": "us",
               "country_id_billing": "us",
               "credit_balance": 1245,
@@ -1315,12 +1359,14 @@
               "customer_billing_subdivision_name": "Cupertino",
               "customer_billing_zip_code": "95014",
               "customer_creation_datetime": "2023-09-01 10:00:00",
+              "customer_default_residential_free_trial_bytes": 1073741824,
               "customer_discord_id": "dis_ckf3malOP1s",
               "customer_discord_oauth_id": "0xfOavU6OUtXxhJ8",
               "customer_dob": "2023-09-01",
               "customer_email_address": "steve.jobs@apple.com",
               "customer_email_two_factor_authentication": true,
               "customer_first_name": "Steve",
+              "customer_general_terms_agreement_datetime": "2023-09-01 10:00:00",
               "customer_google_oauth_id": "7Z6CbaOsoDg9AYds",
               "customer_id": 1955,
               "customer_is_residential_trial_eligible": true,
@@ -1354,6 +1400,13 @@
                 "active_residential_service_id": {
                   "example": "1955-8012-871",
                   "type": "string"
+                },
+                "active_service_types": {
+                  "items": {
+                    "example": "",
+                    "type": "string"
+                  },
+                  "type": "array"
                 },
                 "country_id": {
                   "example": "us",
@@ -1391,6 +1444,10 @@
                   "format": "date-time",
                   "type": "string"
                 },
+                "customer_default_residential_free_trial_bytes": {
+                  "example": 1073741824,
+                  "type": "integer"
+                },
                 "customer_discord_id": {
                   "example": "dis_ckf3malOP1s",
                   "type": "string"
@@ -1413,6 +1470,10 @@
                 },
                 "customer_first_name": {
                   "example": "Steve",
+                  "type": "string"
+                },
+                "customer_general_terms_agreement_datetime": {
+                  "format": "date-time",
                   "type": "string"
                 },
                 "customer_google_oauth_id": {
@@ -7421,6 +7482,26 @@
                         }
                       },
                       "type": "object"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "properties": {
+                            "active_service_types": {
+                              "example": [
+                                "isp",
+                                "residential"
+                              ],
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
                     }
                   ]
                 }
@@ -8387,6 +8468,145 @@
         "x-codegen-request-body-name": "body"
       }
     },
+    "/public/user/proxy/list/options": {
+      "post": {
+        "description": "This endpoint returns a list of all active proxy users on the customer's account,\nalong with a boolean flag indicating whether each proxy user has access to export/use\nthe specified proxies based on their access type and ACL rules.\n\n**Access Logic:**\n- **Unrestricted (all)**: Proxy user has access to all proxies on the account\n- **Service Restricted**: Proxy user has access only if they have ACL entries for all services\n  containing the specified proxies\n- **Proxy Restricted**: Proxy user has access only if they have ACL entries for all\n  specified proxies\n\n**Note:** This endpoint is intentionally a POST request (rather than GET) to support\nlarge lists of proxy IDs in the request body.\n",
+        "parameters": [
+          {
+            "description": "Content type for the request body as application/json.",
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "schema": {
+              "default": "application/json",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "proxy_ids": {
+                    "description": "List of proxy UUIDs to check access against.\nEither proxy_ids or search_filter must be provided, but not both.\n",
+                    "example": [
+                      "19efadd4-5814-4986-90be-4460e7d05c29",
+                      "1847e66a-a56e-4bc9-94e2-88a8cf3d0ad3"
+                    ],
+                    "items": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "search_filter": {
+                    "description": "Search filter object to find proxies (same format as /proxy/list_by_search endpoint).\nEither proxy_ids or search_filter must be provided, but not both.\n",
+                    "example": {
+                      "country_id": "US",
+                      "proxy_status": "in_use",
+                      "service_id": "API-1234-5678"
+                    },
+                    "properties": {
+
+                    },
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "description": "List of proxy users with access information.",
+                      "items": {
+                        "properties": {
+                          "has_access": {
+                            "description": "Indicates whether this proxy user has permission to access/export\nall of the specified proxies based on their access type and ACL rules.\n",
+                            "example": true,
+                            "type": "boolean"
+                          },
+                          "proxy_user_id": {
+                            "description": "The unique identifier for the proxy user.",
+                            "example": "stevejobs",
+                            "type": "string"
+                          },
+                          "proxy_user_is_default": {
+                            "description": "Indicates if this is the default proxy user for the account.",
+                            "example": false,
+                            "type": "boolean"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "message": {
+                      "description": "Success message.",
+                      "example": "Proxy user list options successfully retrieved.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successfully retrieved proxy user list options."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Either proxy_ids or search_filter must be provided, but not both.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad request - invalid parameters or missing required fields."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "No proxies found matching the specified criteria.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "No proxies found matching the specified criteria."
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ],
+        "summary": "Get Proxy User List Options",
+        "tags": [
+          "Proxy"
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
     "/public/user/proxy/list_by_id": {
       "post": {
         "description": "This endpoint retrieves a list of proxies assigned to the current user (or a specified\ncustomer) based on the proxy IDs.\n\nThis endpoint is intentionally a POST even though it only retrieves data since it needs to larger lists of UUIDs.\n",
@@ -9144,6 +9364,14 @@
             }
           },
           {
+            "description": "Filter proxies by proxy user access. Only returns proxies that the specified proxy user has access to.",
+            "in": "query",
+            "name": "proxy_user_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "$ref": "#/components/parameters/per_page"
           },
           {
@@ -9525,7 +9753,7 @@
                     "type": "array"
                   },
                   "proxy_user_access_type": {
-                    "description": "Access control type for the proxy user:\n- \"all\": Unrestricted access\n- \"service_restricted\": Access restricted by ProxyUserAcl service entries\n- \"proxy_restricted\": Access restricted by ProxyUserAcl proxy entries\n",
+                    "description": "Access control type for the proxy user:\n- \"all\": Unrestricted access\n- \"service_restricted\": Access restricted by ProxyUserAcl service entries\n- \"proxy_restricted\": Access restricted by ProxyUserAcl proxy entries\n\n**Note:** Default proxy users (proxy_user_is_default=true) must always have access_type \"all\" and cannot be changed to restricted access types.\n",
                     "enum": [
                       "all",
                       "service_restricted",
@@ -9773,7 +10001,7 @@
     },
     "/public/user/proxy_user_acl/create": {
       "post": {
-        "description": "This endpoint allows you to create a new Proxy User ACL entry to grant access to specific services or proxies.\n\n- The target Proxy User must not be deleted.\n- For service access: proxy_user_access_type must be `service_restricted`.\n- For proxy access: proxy_user_access_type must be `proxy_restricted`.\n",
+        "description": "This endpoint allows you to create a new Proxy User ACL entry to grant access to specific services or proxies.\n\n- The target Proxy User must not be deleted.\n- The target Proxy User must not be a default proxy user (default proxy users have access to all proxies).\n- For service access: proxy_user_access_type must be `service_restricted`.\n- For proxy access: proxy_user_access_type must be `proxy_restricted`.\n",
         "parameters": [
           {
             "description": "Content type for the request body as application/json.",

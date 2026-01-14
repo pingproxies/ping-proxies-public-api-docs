@@ -2,6 +2,99 @@
 title: Product Update Log
 description: "What we've changed and added to Ping Proxies. A straightforward timeline of our improvements."
 ---
+<Update label="January 2026">
+
+  ## IPv6 Website Compatibility Checker
+
+  We've released a free tool that lets you instantly check whether any website supports IPv6 connections. Simply enter a URL and get immediate results showing IPv6 compatibility status, resolved addresses, and connection details.
+
+  This tool addresses a common pain point—manually testing IPv6 support is tedious and time-consuming. Whether you're planning IPv6 proxy deployments, auditing target sites, or troubleshooting connectivity issues, this checker gives you the answers in seconds.
+
+  [Try the IPv6 Compatibility Checker →](https://pingproxies.com/ipv6-website-compatibility-checker)
+
+  ### Key Features
+
+  * **Instant compatibility detection** for any website URL
+  * **DNS resolution details** showing AAAA records and IPv6 addresses
+  * **Connection testing** to verify actual IPv6 reachability
+  * **No account required**—completely free to use
+
+  ## Proxy Formatter Tool
+
+  We've launched a utility that converts proxy lists between different formats with a single click. Paste your proxies in any common format and instantly export them in the format your tools require.
+
+  Reformatting proxy lists manually is repetitive work that eats into productive time. This tool handles the conversion automatically, supporting formats like `ip:port:user:pass`, `user:pass@ip:port`, URL-encoded strings, and more.
+
+  [Try the Proxy Formatter →](https://pingproxies.com/proxy-formatter)
+
+  ### Key Features
+
+  * **Multi-format support** for all common proxy string formats
+  * **Batch conversion** for processing entire proxy lists at once
+  * **Protocol prefixes** with optional HTTP/HTTPS/SOCKS5 formatting
+  * **One-click copy** to clipboard for immediate use
+
+</Update>
+
+<Update label="December 2025">
+
+  ## Proxy User ACL Rules
+
+  <Frame>
+  <iframe
+    className="w-full aspect-video rounded-xl"
+    width="90%"
+    src="https://www.youtube.com/embed/j_bXIV-tVLI"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+  </Frame>
+
+  We've introduced Proxy User Access Control Lists (ACLs), giving you fine-grained control over which proxies each proxy user can access. This feature enables precise permission management for teams, projects, AI agents, or customers operating on your account.
+
+  Previously, proxy users had broad access across your account. With ACL rules, you can now restrict users to specific services or individual proxies, ensuring your setup aligns with operational, security, and compliance requirements.
+
+  [Read the Access Control Guide →](/api-explainers/proxy-user-access-control)
+
+  ### Key Features
+
+  * **Service-restricted access** limits users to specific proxy services
+  * **Proxy-restricted access** limits users to individual proxies you choose
+  * **Flexible rule creation** through the dashboard or [API](/api-objects/proxy-user-acl)
+  * **Built-in proxy filtering** to easily select which resources to grant
+  * **Available to all users** at no additional cost
+
+  ## Enhanced Proxy Error Reporting
+
+  <Frame>
+  <iframe
+    className="w-full aspect-video rounded-xl"
+    width="90%"
+    src="https://www.youtube.com/embed/IuxHYX7Wbeg"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+  </Frame>
+
+  We've shipped a major upgrade to our Online Proxy Tester with clearer diagnostics, improved error interpretation, and global testing capabilities. This update helps you identify and resolve proxy issues faster with complete visibility into connection behavior.
+
+  The tool now shows exactly where failures occur in the request chain, explains why they happen in plain language, and suggests how to fix them. Over 115 error types have been rewritten into human-readable explanations with actionable hints.
+
+  [Try the Proxy Tester →](https://pingproxies.com/proxy-tester)
+
+  ### Key Features
+
+  * **Connection trace visualization** showing the full Client → Proxy Server → Target Server path
+  * **Human-readable error explanations** for 115+ error types
+  * **Hint solutions** for authentication, upstream, and network-related issues
+  * **Multi-region testing** to detect geo-specific failures and routing inconsistencies
+  * **API support** for automated testing and global error reporting
+  * **Shareable results** with expanded technical metadata
+
+</Update>
+
 <Update label="September 2025">
 
   ## Proxy Testing Capability
