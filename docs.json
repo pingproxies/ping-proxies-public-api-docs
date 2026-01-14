@@ -248,7 +248,8 @@
               "api-reference/proxy/search-proxies",
               "api-reference/proxy/proxy-edit",
               "api-reference/proxy/retrieve-proxy-list-by-id",
-              "api-reference/proxy/retrieve-proxy-list-by-search"
+              "api-reference/proxy/retrieve-proxy-list-by-search",
+              "api-reference/proxy/retrieve-proxy-list-options"
             ]
           },
           {
