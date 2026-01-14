@@ -29,6 +29,7 @@ The City object is connected to several other objects in the Ping Proxies API:
 - **Continent**: Through the country hierarchy, cities are associated with continents
 - **Proxies**: Proxies can be geo-located in specific cities
 - **Residential Proxies**: Residential proxy generation can target specific cities
+- **Mobile Proxies**: Mobile proxy generation can target specific cities
 
 ```mermaid
 graph TD
@@ -37,6 +38,7 @@ graph TD
     Subdivision --> City
     City --> Proxy
     City --> GeneratedResidentialProxy
+    City --> GeneratedMobileProxy
 ```
 
 ## Related Endpoints
@@ -46,6 +48,7 @@ graph TD
 | `GET /public/user/city/retrieve/{city_id}` | Retrieve a specific city by ID |
 | `GET /public/user/city/search` | Search cities using various filters |
 | `GET /public/user/residential/list?city_alias={city_alias}` | Generate residential proxies for a specific city |
+| `GET /public/user/mobile/list?city_alias={city_alias}` | Generate mobile proxies for a specific city |
 
 ## Example Response
 
@@ -69,10 +72,10 @@ graph TD
 
 ## Usage Notes
 
-- The `city_alias` is particularly important for residential proxy targeting
+- The `city_alias` is particularly important for residential/mobile proxy targeting
 - The `city_is_populous` flag indicates cities that are among the top ten largest in their timezone with at least 300,000 population
 - Geographic targeting by city provides the most granular level of geographic control for proxy selection
-- Not all cities are available for residential proxy targeting - generally only those with `city_is_populous` set to true
+- Not all cities are available for residential/mobile proxy targeting - generally only those with `city_is_populous` set to true
 - The `city_timezone` attribute is useful for time-sensitive operations that need to account for local time
 - When searching for cities, you can filter by country using the `country_id` parameter or by subdivision using the `subdivision_id` parameter
 - The combination of city latitude and longitude can be used for geolocation services and mapping integrations

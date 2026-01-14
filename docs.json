@@ -206,6 +206,7 @@
               "api-objects/service-adjustment",
               "api-objects/proxy",
               "api-objects/residential-ledger",
+              "api-objects/mobile-ledger",
               "api-objects/log-summary",
               "api-objects/log",
               "api-objects/product",

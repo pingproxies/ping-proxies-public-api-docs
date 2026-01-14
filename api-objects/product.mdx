@@ -98,8 +98,8 @@ The Product object is connected to several other objects in the Ping Proxies API
 - A value of `-1` for `product_stock` means the product has infinite stock (typically for residential products)
 - The `product_protocol` indicates which IP versions are supported (IPv4, IPv6, or both)
 - The `product_prices` array shows all available pricing options and billing cycles
-- For `residential` products, pricing is bandwidth-based rather than per-IP
-- The `product_is_per_ip` flag distinguishes between per-IP pricing (datacenter/ISP) and bandwidth-based pricing (residential)
+- For `residential` and `mobile` products, pricing is bandwidth-based rather than per-IP
+- The `product_is_per_ip` flag distinguishes between per-IP pricing (datacenter/ISP) and bandwidth-based pricing (residential/mobile)
 - Products with `country_id` are region-specific, while those without may be global
 - The `price_amount` and `price_tier_amount` are in cents (e.g., 350 means $3.50)
 
@@ -110,4 +110,5 @@ The Product object is connected to several other objects in the Ping Proxies API
 | `datacenter` | Commercial datacenter proxies with high speed |
 | `isp` | Static residential ISP proxies with carrier legitimacy |
 | `residential` | Dynamic residential proxies from real consumer connections |
+| `mobile` | Dynamic mobile proxies from real mobile devices |
 | `credit` | Account credit that can be applied to purchases |
