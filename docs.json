@@ -57,6 +57,18 @@
                 ]
               },
               {
+                "icon": "mobile",
+                "group": "Mobile Proxies",
+                "pages": [
+                  "general/explaining-mobile-proxies",
+                  "general/generating-mobile-proxies",
+                  "general/using-smartpath-mobile",
+                  "general/sticky-vs-rotating-mobile-proxies",
+                  "general/geolocation-targeting-mobile",
+                  "general/isp-asn-targeting-mobile"
+                ]
+              },
+              {
                 "icon": "lock",
                 "group": "Proxy Authentication",
                 "pages": [

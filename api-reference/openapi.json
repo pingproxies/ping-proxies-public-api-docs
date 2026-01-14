@@ -1137,7 +1137,8 @@
             "active_service_types": [
               [
                 "isp",
-                "residential"
+                "residential",
+                "mobile"
               ]
             ],
             "country_id": "us",
@@ -1690,7 +1691,8 @@
             "enum": [
               "datacenter",
               "isp",
-              "residential"
+              "residential",
+              "mobile"
             ],
             "example": "residential",
             "type": "string"
@@ -1868,7 +1870,8 @@
                 "enum": [
                   "datacenter",
                   "isp",
-                  "residential"
+                  "residential",
+                  "mobile"
                 ],
                 "example": "residential",
                 "type": "string"
@@ -2060,7 +2063,8 @@
                   "enum": [
                     "datacenter",
                     "isp",
-                    "residential"
+                    "residential",
+                    "mobile"
                   ],
                   "example": "residential",
                   "type": "string"
@@ -2196,7 +2200,8 @@
             "enum": [
               "datacenter",
               "isp",
-              "residential"
+              "residential",
+              "mobile"
             ],
             "example": "residential",
             "type": "string"
@@ -2295,7 +2300,8 @@
                 "enum": [
                   "datacenter",
                   "isp",
-                  "residential"
+                  "residential",
+                  "mobile"
                 ],
                 "example": "residential",
                 "type": "string"
@@ -2408,7 +2414,8 @@
                   "enum": [
                     "datacenter",
                     "isp",
-                    "residential"
+                    "residential",
+                    "mobile"
                   ],
                   "example": "residential",
                   "type": "string"
@@ -2635,7 +2642,8 @@
             "enum": [
               "datacenter",
               "isp",
-              "residential"
+              "residential",
+              "mobile"
             ],
             "example": "isp",
             "type": "string"
@@ -2887,7 +2895,8 @@
                 "enum": [
                   "datacenter",
                   "isp",
-                  "residential"
+                  "residential",
+                  "mobile"
                 ],
                 "example": "isp",
                 "type": "string"
@@ -3097,7 +3106,8 @@
                   "enum": [
                     "datacenter",
                     "isp",
-                    "residential"
+                    "residential",
+                    "mobile"
                   ],
                   "example": "isp",
                   "type": "string"
@@ -4137,6 +4147,7 @@
               "datacenter",
               "isp",
               "residential",
+              "mobile",
               "off_catalog"
             ],
             "example": "isp",
@@ -4676,6 +4687,7 @@
                   "datacenter",
                   "isp",
                   "residential",
+                  "mobile",
                   "off_catalog"
                 ],
                 "example": "isp",
@@ -4852,6 +4864,7 @@
                     "datacenter",
                     "isp",
                     "residential",
+                    "mobile",
                     "off_catalog"
                   ],
                   "example": "isp",
@@ -5654,7 +5667,8 @@
               "enum": [
                 "datacenter",
                 "isp",
-                "residential"
+                "residential",
+                "mobile"
               ],
               "type": "string"
             }
@@ -5750,7 +5764,8 @@
                                 "enum": [
                                   "datacenter",
                                   "isp",
-                                  "residential"
+                                  "residential",
+                                  "mobile"
                                 ],
                                 "type": "string"
                               },
@@ -5874,7 +5889,8 @@
               "enum": [
                 "datacenter",
                 "isp",
-                "residential"
+                "residential",
+                "mobile"
               ],
               "type": "string"
             }
@@ -6344,7 +6360,8 @@
                     "enum": [
                       "datacenter",
                       "isp",
-                      "residential"
+                      "residential",
+                      "mobile"
                     ],
                     "type": "string"
                   },
@@ -6787,7 +6804,8 @@
                     "enum": [
                       "datacenter",
                       "isp",
-                      "residential"
+                      "residential",
+                      "mobile"
                     ],
                     "example": "isp",
                     "type": "string"
@@ -7490,7 +7508,8 @@
                             "active_service_types": {
                               "example": [
                                 "isp",
-                                "residential"
+                                "residential",
+                                "mobile"
                               ],
                               "items": {
                                 "type": "string"
@@ -7768,7 +7787,8 @@
               "enum": [
                 "datacenter",
                 "isp",
-                "residential"
+                "residential",
+                "mobile"
               ],
               "type": "string"
             }
@@ -8014,7 +8034,8 @@
               "enum": [
                 "datacenter",
                 "isp",
-                "residential"
+                "residential",
+                "mobile"
               ],
               "type": "string"
             }
@@ -8145,7 +8166,8 @@
                 "credit",
                 "datacenter",
                 "isp",
-                "residential"
+                "residential",
+                "mobile"
               ],
               "type": "string"
             }
@@ -11266,7 +11288,8 @@
               "enum": [
                 "datacenter",
                 "isp",
-                "residential"
+                "residential",
+                "mobile"
               ],
               "type": "string"
             }
