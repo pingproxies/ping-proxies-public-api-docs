@@ -57,6 +57,16 @@ Response:
       "product_protocol": null,
       "product_stock": null,
       "product_type": "residential"
+    },
+    "mobile_global": {
+      "country_id": null,
+      "product_cycle_options": ["1:month"],
+      "product_is_available": true,
+      "product_is_per_ip": false,
+      "product_name": "Mobile Proxies (Global)",
+      "product_protocol": null,
+      "product_stock": null,
+      "product_type": "mobile"
     }
   },
   "message": "Checkout catalog successfully retrieved."
@@ -165,6 +175,7 @@ Response:
     "proxies": [],
     "proxy_edited": [],
     "residential_ledger_created": [],
+    "mobile_ledger_created": [],
     "service": {
       "country_id": "us",
       "customer_id": 1976,
@@ -289,9 +300,9 @@ Response:
 ```
 
 
-## Residential Bandwidth Management
+## Residential and Mobile Bandwidth Management
 
-For residential proxies, which use a bandwidth-based model instead of a per-proxy model, you can monitor your bandwidth usage:
+For residential and mobile proxies, which use a bandwidth-based model instead of a per-proxy model, you can monitor your bandwidth usage:
 
 ```bash
 curl --request GET \
@@ -299,6 +310,8 @@ curl --request GET \
   --header 'X-API-Public-Key: your_public_key' \
   --header 'X-API-Private-Key: your_private_key'
 ```
+
+Use `/1.0/public/user/mobile/summary` for mobile bandwidth
 
 Response:
 

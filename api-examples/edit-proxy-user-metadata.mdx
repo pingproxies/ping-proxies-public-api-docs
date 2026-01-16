@@ -91,7 +91,8 @@ if __name__ == "__main__":
 # - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 # - proxy_user_is_strict_security: Enable strict security
 # - ip_address_authentications: List of allowed IP addresses
-# - proxy_user_residential_bytes_limit: Set bandwidth limits
+# - proxy_user_residential_bytes_limit: Set residential bandwidth limits
+# - proxy_user_mobile_bytes_limit: Set mobile bandwidth limits
 # For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ```
 
@@ -183,7 +184,8 @@ main();
 // - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 // - proxy_user_is_strict_security: Enable strict security
 // - ip_address_authentications: List of allowed IP addresses
-// - proxy_user_residential_bytes_limit: Set bandwidth limits
+// - proxy_user_residential_bytes_limit: Set residential bandwidth limits
+// - proxy_user_mobile_bytes_limit: Set mobile bandwidth limits
 // For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ```
 
@@ -279,7 +281,8 @@ if ($result) {
 // - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 // - proxy_user_is_strict_security: Enable strict security
 // - ip_address_authentications: List of allowed IP addresses
-// - proxy_user_residential_bytes_limit: Set bandwidth limits
+// - proxy_user_residential_bytes_limit: Set residential bandwidth limits
+// - proxy_user_mobile_bytes_limit: Set mobile bandwidth limits
 // For access control, use the Proxy User ACL endpoints to manage service/proxy access
 ?>
 ```
@@ -394,7 +397,8 @@ func main() {
 	// - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
 	// - proxy_user_is_strict_security: Enable strict security
 	// - ip_address_authentications: List of allowed IP addresses
-	// - proxy_user_residential_bytes_limit: Set bandwidth limits
+	// - proxy_user_residential_bytes_limit: Set residential bandwidth limits
+// - proxy_user_mobile_bytes_limit: Set mobile bandwidth limits
 	// For access control, use the Proxy User ACL endpoints to manage service/proxy access
 }
 ```
@@ -509,7 +513,8 @@ public class UpdateProxyUserMetadata {
         // - proxy_user_access_type: Change access control type ("all", "service_restricted", "proxy_restricted")
         // - proxy_user_is_strict_security: Enable strict security
         // - ip_address_authentications: List of allowed IP addresses
-        // - proxy_user_residential_bytes_limit: Set bandwidth limits
+        // - proxy_user_residential_bytes_limit: Set residential bandwidth limits
+// - proxy_user_mobile_bytes_limit: Set mobile bandwidth limits
         // For access control, use the Proxy User ACL endpoints to manage service/proxy access
     }
 }

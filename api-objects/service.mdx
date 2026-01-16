@@ -55,6 +55,7 @@ graph TD
     Service --> ServiceAdjustments
     Service --> Invoices
     Service --> ResidentialLedger[Residential Ledger]
+    Service --> MobileLedger[Mobile Ledger]
     Product --> Service
 ```
 
@@ -114,6 +115,6 @@ Residential and Mobile services have several unique characteristics:
 - Instead, they add bandwidth to your account's residential or mobile bandwidth pool
 - Bandwidth added through residential/mobile services never expires, even if the subscription is canceled
 - Each purchase creates a `residential_ledger` or `mobile_ledger` entry recording the bandwidth addition
-- Residential/Mobile services can be paused and unpaused, a feature not available for other service types
+- Residential and Mobile services can be paused and unpaused, a feature not available for other service types
 - When paused, billing stops but you retain access to any previously purchased bandwidth
-- You can access this bandwidth through dynamic residential/mobile proxies using the residential endpoints
+- You can access this bandwidth through dynamic residential proxies and mobile proxies using the corresponding endpoints
