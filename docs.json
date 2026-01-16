@@ -222,7 +222,7 @@
             "group": "Explainers",
             "pages": [
               "api-explainers/proxy-types",
-              "api-explainers/residential-bandwidth",
+              "api-explainers/residential-mobile-bandwidth",
               "api-explainers/analytics",
               "api-explainers/billing",
               "api-explainers/common-object-relationships",
