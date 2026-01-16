@@ -3303,9 +3303,7 @@
             "example": {
               "resell_order_id": "APPL-9876-5432"
             },
-            "properties": {
-
-            },
+            "properties": {},
             "type": "object"
           },
           "proxy_user_password": {
@@ -3617,9 +3615,7 @@
                 "example": {
                   "resell_order_id": "APPL-9876-5432"
                 },
-                "properties": {
-
-                },
+                "properties": {},
                 "type": "object"
               },
               "proxy_user_password": {
@@ -3757,9 +3753,7 @@
                   "example": {
                     "resell_order_id": "APPL-9876-5432"
                   },
-                  "properties": {
-
-                  },
+                  "properties": {},
                   "type": "object"
                 },
                 "proxy_user_password": {
@@ -4090,9 +4084,7 @@
             "example": {
               "resell_customer_id": "APPL-9876-5432"
             },
-            "properties": {
-
-            },
+            "properties": {},
             "type": "object"
           },
           "service_name": {
@@ -4177,9 +4169,7 @@
                 "2024-09-14 18:30:00"
               ]
             },
-            "properties": {
-
-            },
+            "properties": {},
             "type": "object"
           },
           "service_adjustment_id": {
@@ -4206,18 +4196,14 @@
             "example": {
               "service_expiry_datetime": "2024-09-14 18:30:00"
             },
-            "properties": {
-
-            },
+            "properties": {},
             "type": "object"
           },
           "service_adjustment_pre": {
             "example": {
               "service_expiry_datetime": "2023-09-14 18:30:00"
             },
-            "properties": {
-
-            },
+            "properties": {},
             "type": "object"
           },
           "service_adjustment_status": {
@@ -4300,9 +4286,7 @@
                     "2024-09-14 18:30:00"
                   ]
                 },
-                "properties": {
-
-                },
+                "properties": {},
                 "type": "object"
               },
               "service_adjustment_id": {
@@ -4329,18 +4313,14 @@
                 "example": {
                   "service_expiry_datetime": "2024-09-14 18:30:00"
                 },
-                "properties": {
-
-                },
+                "properties": {},
                 "type": "object"
               },
               "service_adjustment_pre": {
                 "example": {
                   "service_expiry_datetime": "2023-09-14 18:30:00"
                 },
-                "properties": {
-
-                },
+                "properties": {},
                 "type": "object"
               },
               "service_adjustment_status": {
@@ -4437,9 +4417,7 @@
                       "2024-09-14 18:30:00"
                     ]
                   },
-                  "properties": {
-
-                  },
+                  "properties": {},
                   "type": "object"
                 },
                 "service_adjustment_id": {
@@ -4466,18 +4444,14 @@
                   "example": {
                     "service_expiry_datetime": "2024-09-14 18:30:00"
                   },
-                  "properties": {
-
-                  },
+                  "properties": {},
                   "type": "object"
                 },
                 "service_adjustment_pre": {
                   "example": {
                     "service_expiry_datetime": "2023-09-14 18:30:00"
                   },
-                  "properties": {
-
-                  },
+                  "properties": {},
                   "type": "object"
                 },
                 "service_adjustment_status": {
@@ -4630,9 +4604,7 @@
                 "example": {
                   "resell_customer_id": "APPL-9876-5432"
                 },
-                "properties": {
-
-                },
+                "properties": {},
                 "type": "object"
               },
               "service_name": {
@@ -4807,9 +4779,7 @@
                   "example": {
                     "resell_customer_id": "APPL-9876-5432"
                   },
-                  "properties": {
-
-                  },
+                  "properties": {},
                   "type": "object"
                 },
                 "service_name": {
@@ -6375,9 +6345,7 @@
                   },
                   "service_fulfillment_filter": {
                     "description": "An optional filter object for advanced product/service configurations.",
-                    "properties": {
-
-                    },
+                    "properties": {},
                     "type": "object"
                   }
                 },
@@ -6614,9 +6582,7 @@
                               "example": {
                                 "asn_id": 7018
                               },
-                              "properties": {
-
-                              },
+                              "properties": {},
                               "type": "object"
                             },
                             "service_id": {
@@ -6652,12 +6618,8 @@
                               "type": "string"
                             },
                             "service_metadata": {
-                              "example": {
-
-                              },
-                              "properties": {
-
-                              },
+                              "example": {},
+                              "properties": {},
                               "type": "object"
                             },
                             "service_name": {
@@ -6824,9 +6786,7 @@
                     "example": {
                       "asn_id": 7018
                     },
-                    "properties": {
-
-                    },
+                    "properties": {},
                     "type": "object"
                   }
                 },
@@ -6936,12 +6896,8 @@
                               },
                               "service_fulfillment_filter": {
                                 "description": "Additional filters for fulfillment (if any).",
-                                "example": {
-
-                                },
-                                "properties": {
-
-                                },
+                                "example": {},
+                                "properties": {},
                                 "type": "object"
                               }
                             },
@@ -7618,7 +7574,7 @@
                         }
                       }
                     },
-                    "message": "IP Address geolocation succesfully retrieved."
+                    "message": "IP Address geolocation successfully retrieved."
                   },
                   "properties": {
                     "data": {
@@ -7663,36 +7619,26 @@
                           "description": "Internal geolocation data derived from internal databases.",
                           "properties": {
                             "asn": {
-                              "properties": {
-
-                              },
+                              "properties": {},
                               "type": "object"
                             },
                             "city": {
-                              "properties": {
-
-                              },
+                              "properties": {},
                               "type": "object"
                             },
                             "continent": {
-                              "properties": {
-
-                              },
+                              "properties": {},
                               "type": "object"
                             },
                             "country": {
-                              "properties": {
-
-                              },
+                              "properties": {},
                               "type": "object"
                             },
                             "ip_address": {
                               "type": "string"
                             },
                             "subdivision": {
-                              "properties": {
-
-                              },
+                              "properties": {},
                               "type": "object"
                             }
                           },
@@ -8367,7 +8313,7 @@
                       "type": "integer"
                     },
                     "message": {
-                      "example": "Product search with stock succesfully completed.",
+                      "example": "Product search with stock successfully completed.",
                       "type": "string"
                     },
                     "page": {
@@ -8529,9 +8475,7 @@
                       "proxy_status": "in_use",
                       "service_id": "API-1234-5678"
                     },
-                    "properties": {
-
-                    },
+                    "properties": {},
                     "type": "object"
                   }
                 },
@@ -9468,9 +9412,7 @@
             "description": "City ID of the Proxy Test Server",
             "in": "query",
             "name": "city_id",
-            "schema": {
-
-            }
+            "schema": {}
           },
           {
             "description": "Country ID of the Proxy Test Server",
@@ -9571,9 +9513,7 @@
                   },
                   "proxy_user_metadata": {
                     "description": "Arbitrary metadata object for the Proxy User.\nConstraints\n- Supports string, boolean, float and integer values.\n- Non-nested JSON object\n- Max 30 keys\n- Each value ≤ 300 chars\n- Total size ≤ 32KB\nDefaults to `{}` if not provided.\n",
-                    "properties": {
-
-                    },
+                    "properties": {},
                     "type": "object"
                   },
                   "proxy_user_password": {
@@ -9793,9 +9733,7 @@
                     "example": {
                       "internal_customer_id": "94266dc6-b29f-4499-a7a8-35232d186706"
                     },
-                    "properties": {
-
-                    },
+                    "properties": {},
                     "type": "object"
                   },
                   "proxy_user_password": {
@@ -11104,9 +11042,7 @@
                   },
                   "service_metadata": {
                     "description": "Arbitrary metadata object associated with the service.\nConstraints\n  - Must be a valid, non-nested JSON object.\n  - Maximum 30 keys.\n  - Each value's string representation ≤ 300 characters.\n  - Total size ≤ 32KB.\n",
-                    "properties": {
-
-                    },
+                    "properties": {},
                     "type": "object"
                   }
                 },

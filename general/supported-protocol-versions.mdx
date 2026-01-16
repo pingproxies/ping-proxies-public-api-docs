@@ -32,7 +32,26 @@ For security reasons on our residential network, unencrypted HTTP connections ar
 | HTTP/2   |    ✅     |         ✅         |       ✅      |      ✅         |
 | HTTP/3   |    ✅     |         ❌         |       ✅      |      ✅         |
 
-Our Residential proxies  support SOCKS5, HTTP/1, HTTP/2 and HTTP/3. We provide TLS certificates for our residential backconnects so all communication with the proxy can be encrypted - inlucding SOCKS5 if you so desire. Unlike competitors we support HTTP upgrades via ALPN. Simply set your proxy string to use the "HTTPS" scheme and your client will do the rest of the work, upgrading you to the best protocol for the job under the hood.
+Our Residential proxies support SOCKS5, HTTP/1, HTTP/2 and HTTP/3. We provide TLS certificates for our residential backconnects so all communication with the proxy can be encrypted - including SOCKS5 if you so desire. Unlike competitors we support HTTP upgrades via ALPN. Simply set your proxy string to use the "HTTPS" scheme and your client will do the rest of the work, upgrading you to the best protocol for the job under the hood.
+
+<Note>
+For HTTP/2, we support Prior Knowledge and ALPN upgrades. We do not support HTTP/1 upgrades to HTTP/2 for security reasons.
+</Note>
+
+### Mobile
+<Note>
+For security reasons on our mobile network, unencrypted HTTP connections are only supported to `ip-api.com`. For all other destinations you must use HTTPS (port 443). If you need HTTP access to additional targets, please contact support@pingproxies.com.
+</Note>
+
+
+| Protocol | Supported | HTTP to Proxy | HTTPS to Proxy |  HTTP to Target |
+|----------|-----------|--------------------|---------------|-----------------|
+| SOCKS5   |    ✅     |         ✅         |       ✅      |      ✅         |
+| HTTP/1   |    ✅     |         ✅         |       ✅      |      ✅         |
+| HTTP/2   |    ✅     |         ✅         |       ✅      |      ✅         |
+| HTTP/3   |    ✅     |         ❌         |       ✅      |      ✅         |
+
+Our Mobile proxies support SOCKS5, HTTP/1, HTTP/2 and HTTP/3. We provide TLS certificates for our mobile backconnects so all communication with the proxy can be encrypted - including SOCKS5 if you so desire. Unlike competitors we support HTTP upgrades via ALPN. Simply set your proxy string to use the "HTTPS" scheme and your client will do the rest of the work, upgrading you to the best protocol for the job under the hood.
 
 <Note>
 For HTTP/2, we support Prior Knowledge and ALPN upgrades. We do not support HTTP/1 upgrades to HTTP/2 for security reasons.
@@ -53,7 +72,7 @@ CONNECT tunnels should be used in the majority of cases but especially when conn
 When acting as a MITM, your requests are forwarded with minimal changes (we strip proxy specific headers). MITM proxies can be used to send requests to both cleartext and TLS capable endpoints. When communicating with a TLS capable endpoint and using as a MITM proxy, we can see the contents of your requests. If you do not desire this, use a CONNECT tunnel.
 
 <Note>
-MITM proxy requests sent to TLS capable endpoints might be modified for compatability with the target. If you send us HTTP/2 but the target only supports HTTP/1, we will adjust the protocol version.
+MITM proxy requests sent to TLS capable endpoints might be modified for compatibility with the target. If you send us HTTP/2 but the target only supports HTTP/1, we will adjust the protocol version.
 </Note>
 
 Typical proxy clients follow this simple rule: HTTPS requests go through a CONNECT tunnel, HTTP requests are sent MITM-style. We support other use-cases so that when writing your own clients, we can fit any use-case.

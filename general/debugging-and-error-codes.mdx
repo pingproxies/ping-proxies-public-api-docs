@@ -53,7 +53,7 @@ These errors are broken down into sub-categories.
 - Tunneling Errors  (4000 - 4999)
 - General Errors (9000 - 9999)
 
-We also expose a single HTTP-style error code `301`, returned only when you try to reach a HTTP target on our residential network, which only allows HTTPS targets.
+We also expose a single HTTP-style error code `301`, returned only when you try to reach a HTTP target on our residential/mobile network, which only allows HTTPS targets.
 
 Below is a comprehensive list of all error codes and their descriptions:
 
@@ -79,9 +79,9 @@ Below is a comprehensive list of all error codes and their descriptions:
 |    3004         | Protocol method not supported |
 |    3006         | Invalid proxy username parameter specified |
 |    3100 - 3200         | Could not to establish connection to target |
-|    3400 - 3500 | Could not find residential node with given routing parameters |
+|    3400 - 3500 | Could not find residential/mobile node with given routing parameters |
 |    4001 - 4102  | Internal server error occurred |
-|    4103         | Connection was unused for too long (5 mintues+) |
+|    4103         | Connection was unused for too long (5 minutes+) |
 | 9100 - 9104     | Connection closed early |
 |    9108         | General DNS failure |
 |    9109         | Domain name could not be resolved |
