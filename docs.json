@@ -57,6 +57,18 @@
                 ]
               },
               {
+                "icon": "mobile",
+                "group": "Mobile Proxies",
+                "pages": [
+                  "general/explaining-mobile-proxies",
+                  "general/generating-mobile-proxies",
+                  "general/using-smartpath-mobile",
+                  "general/sticky-vs-rotating-mobile-proxies",
+                  "general/geolocation-targeting-mobile",
+                  "general/isp-asn-targeting-mobile"
+                ]
+              },
+              {
                 "icon": "lock",
                 "group": "Proxy Authentication",
                 "pages": [
@@ -194,6 +206,7 @@
               "api-objects/service-adjustment",
               "api-objects/proxy",
               "api-objects/residential-ledger",
+              "api-objects/mobile-ledger",
               "api-objects/log-summary",
               "api-objects/log",
               "api-objects/product",
@@ -209,7 +222,7 @@
             "group": "Explainers",
             "pages": [
               "api-explainers/proxy-types",
-              "api-explainers/residential-bandwidth",
+              "api-explainers/residential-mobile-bandwidth",
               "api-explainers/analytics",
               "api-explainers/billing",
               "api-explainers/common-object-relationships",
@@ -290,6 +303,27 @@
             "pages": [
               "api-reference/residential-ledger/retrieve-residential-ledger",
               "api-reference/residential-ledger/search-residential-ledger"
+            ]
+          },
+          {
+            "group": "Mobile",
+            "pages": [
+              "api-reference/mobile/create-mobile-list",
+              "api-reference/mobile/retrieve-mobile-service-summary"
+            ]
+          },
+          {
+            "group": "Mobile Availability",
+            "pages": [
+              "api-reference/mobile-availability/search-mobile-availability",
+              "api-reference/mobile-availability/count-mobile-availability"
+            ]
+          },
+          {
+            "group": "Mobile Ledger",
+            "pages": [
+              "api-reference/mobile-ledger/retrieve-mobile-ledger",
+              "api-reference/mobile-ledger/search-mobile-ledger"
             ]
           },
           {

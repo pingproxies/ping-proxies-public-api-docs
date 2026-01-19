@@ -10,8 +10,9 @@ The Ping Proxies API provides comprehensive analytics and usage tracking capabil
 Ping Proxies employs multiple complementary systems to track and analyze proxy usage:
 
 - **Raw Logs (`log`)**: Detailed individual request data, retained for 7 days
-- **Log Summaries (`log_summary`)**: Aggregated daily usage patterns, retained for 90+ days  
+- **Log Summaries (`log_summary`)**: Aggregated daily usage patterns, retained for 90+ days
 - **Residential Ledger (`residential_ledger`)**: Residential bandwidth accounting records, retained indefinitely
+- **Mobile Ledger (`mobile_ledger`)**: Mobile bandwidth accounting records, retained indefinitely
 - **Analytics Graphs**: Visualizations generated from logs and summaries, with indefinite historical data access
 
 The `/analytics/graph` endpoint processes data from both logs and log summaries to provide comprehensive visualizations regardless of the age of the data being analyzed.
@@ -102,6 +103,31 @@ Example residential ledger object:
 }
 ```
 
+### Mobile Ledger (`mobile_ledger`)
+
+The mobile ledger specifically tracks bandwidth usage for mobile proxies, which operate on a bandwidth-based billing model rather than a per-proxy model.
+
+- Tracks daily mobile bandwidth usage at the customer account level
+- Records various types of bandwidth changes:
+  - Usage (decrements)
+  - Top-ups (increments when purchasing additional bandwidth)
+  - Service purchases (addition of bandwidth with new mobile services)
+  - Refunds and adjustments (manual or automatic credits)
+- Provides a complete audit trail of all changes to your mobile bandwidth allocation
+- Critical for billing and quota management
+
+Example mobile ledger object:
+
+```json
+{
+  "mobile_ledger_id": "123e4567-e89b-12d3-a456-426614174000",
+  "mobile_ledger_bytes": 128290101,
+  "mobile_ledger_requests": 1244,
+  "mobile_ledger_period_date": "2025-04-01",
+  "mobile_ledger_reason": "usage"
+}
+```
+
 ## Data Flow Process
 
 The tracking system follows specific data flows depending on the proxy type:
@@ -121,9 +147,18 @@ Residential proxies involve an additional tracking layer due to their bandwidth-
    - The corresponding `log_summary` is incremented or created
    - The customer's `residential_ledger` usage record is incremented or created
 
+### Mobile Proxy Requests
+
+Mobile proxies involve an additional tracking layer due to their bandwidth-based billing model:
+
+1. When a request is made through a mobile proxy:
+   - A `log` record is created
+   - The corresponding `log_summary` is incremented or created
+   - The customer's `mobile_ledger` usage record is incremented or created
+
 ## Accessing Analytics Data
 
-### Residential Ledger Endpoints
+### Residential & Mobile Ledger Endpoints
 
 To monitor residential bandwidth usage:
 
@@ -133,6 +168,15 @@ GET /public/user/residential_ledger/retrieve/{residential_ledger_id}
 ```
 
 These endpoints allow you to track daily customer usage and top-ups for residential proxies.
+
+To monitor mobile bandwidth usage:
+
+```
+GET /public/user/mobile_ledger/search
+GET /public/user/mobile_ledger/retrieve/{mobile_ledger_id}
+```
+
+These endpoints allow you to track daily customer usage and top-ups for mobile proxies.
 
 ### Analytics Graph Endpoint
 
@@ -168,7 +212,7 @@ GET /public/user/log_summary/retrieve/{log_summary_id}
 
 ## Endpoint Selection Guide
 
-Use `/analytics/graph` for most monitoring needs. Use `/log` or `/log_summary` for detailed breakdowns by hostname, proxy user, or network. Use `/residential_ledger` for residential bandwidth tracking.
+Use `/analytics/graph` for most monitoring needs. Use `/log` or `/log_summary` for detailed breakdowns by hostname, proxy user, or network. Use `/residential_ledger` for residential bandwidth tracking and `/mobile_ledger` for mobile bandwidth tracking.
 
 ## Reference Table: Analytics Endpoints
 
@@ -180,5 +224,8 @@ Use `/analytics/graph` for most monitoring needs. Use `/log` or `/log_summary` f
 | `/log_summary/retrieve/{log_summary_id}` | Get specific log summary | 90+ days | Daily aggregation |
 | `/residential_ledger/search` | Search residential usage records | Indefinite | Daily usage |
 | `/residential_ledger/retrieve/{residential_ledger_id}` | Get specific residential usage entry | Indefinite | Daily usage |
+| `/mobile_ledger/search` | Search mobile usage records | Indefinite | Daily usage |
+| `/mobile_ledger/retrieve/{mobile_ledger_id}` | Get specific mobile usage entry | Indefinite | Daily usage |
 | `/analytics/graph` | Visualize usage patterns | Indefinite | Configurable intervals |
 | `/residential/summary` | Get overall residential bandwidth status | Current | Account-level summary |
+| `/mobile/summary` | Get overall mobile bandwidth status | Current | Account-level summary |

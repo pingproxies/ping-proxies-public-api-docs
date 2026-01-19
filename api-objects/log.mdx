@@ -12,7 +12,7 @@ The Log object represents an individual proxy request in the Ping Proxies system
 | `log_id` | string | Unique identifier for the log entry |
 | `proxy_user_id` | string | ID of the proxy user that made the request |
 | `service_id` | string | ID of the service associated with the proxy |
-| `log_network` | string | Network type (datacenter, isp, residential) |
+| `log_network` | string | Network type (datacenter, isp, residential, mobile) |
 | `log_protocol` | string | Protocol used (http, socks) |
 | `log_hostname` | string | The target domain of the request |
 | `log_client_ip_address` | string | IP address of the client that made the request |
@@ -72,7 +72,7 @@ The Log object is connected to several other objects in the Ping Proxies system.
 - Logs provide the most detailed view of proxy activity but are only available for a short time period (7 days)
 - For each request through a proxy, a corresponding log entry is created and simultaneously aggregated into a log summary
 - Multiple filtering options are available to analyze logs by user, domain, location, and more
-- For residential proxies, logs contribute to bandwidth usage calculations in the `residential_ledger`
+- For residential/mobile proxies, logs contribute to bandwidth usage calculations in the `residential_ledger` and `mobile_ledger`
 - Log entries include information about the client making the request, which helps with troubleshooting and identifying potential abuse
 - For long-term analysis, use `log_summary` objects which retain aggregated data for 90+ days
 - While individual logs are removed after 7 days, the aggregated data in log summaries remains accessible

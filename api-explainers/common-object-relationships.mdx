@@ -95,9 +95,9 @@ A service represents a purchased group of proxies, and may contain multiple prox
 }
 ```
 
-## Residential Proxy Generation and Object Relationships
+## Residential/Mobile Proxy Generation and Object Relationships
 
-Residential proxies differ from datacenter and ISP proxies in that they're generated on demand rather than being persistent objects. When generating residential proxies, you specify geographic and network attributes to target specific types of exit nodes.
+Residential and mobile proxies differ from datacenter and ISP proxies in that they're generated on demand rather than being persistent objects. When generating residential or mobile proxies, you specify geographic and network attributes to target specific types of exit nodes.
 
 ### Residential Proxy Example
 
@@ -120,7 +120,28 @@ Response:
 }
 ```
 
-You can also filter residential proxies by ASN to target specific network providers.
+### Mobile Proxy Example
+
+```bash
+# Generate 5 mobile proxies in London, UK
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/mobile/list?country_id=gb&city_alias=london&list_count=5' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+Response:
+```json
+{
+  "data": [
+    "socks5h://stevejobs_c_gb_city_london_s_DDINPY7TQ0781XEO:apple1984@mobile.pingproxies.com:8000",
+    "socks5h://stevejobs_c_gb_city_london_s_XIINPY7TQ0781XEA:apple1984@mobile.pingproxies.com:8000"
+  ],
+  "message": "Mobile list successfully created."
+}
+```
+
+You can also filter residential and mobile proxies by ASN to target specific network providers.
 
 ## Exploring Available Options
 

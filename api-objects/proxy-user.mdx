@@ -15,6 +15,8 @@ The Proxy User object represents an authentication entity used to access proxies
 | `proxy_user_is_strict_security` | boolean | Whether IP authentication is required |
 | `proxy_user_residential_bytes_limit` | integer | Maximum residential bandwidth allocation in bytes |
 | `proxy_user_residential_bytes_used` | integer | Used residential bandwidth in bytes |
+| `proxy_user_mobile_bytes_limit` | integer | Maximum mobile bandwidth allocation in bytes |
+| `proxy_user_mobile_bytes_used` | integer | Used mobile bandwidth in bytes |
 | `proxy_user_metadata` | object | Custom metadata for tracking and organization |
 | `ip_address_authentications` | array | List of IP addresses authorized to use this proxy user |
 
@@ -85,6 +87,9 @@ graph TD
     "proxy_user_residential_bytes_limit": 134142432,
     "proxy_user_residential_bytes_used": 31223,
     "residential_bytes_left": 134111209,
+    "proxy_user_mobile_bytes_limit": 134142432,
+    "proxy_user_mobile_bytes_used": 31223,
+    "mobile_bytes_left": 134111209,
     "ip_address_authentications": [
       "193.222.13.1"
     ],
@@ -99,7 +104,7 @@ graph TD
 
 - Each customer account can have multiple proxy users (limited by `customer_proxy_user_limit`)
 - The default proxy user is automatically created with each account
-- Proxy users can be used for both traditional proxies and residential services
+- Proxy users can be used for traditional proxies, mobile and residential services
 - Use proxy users to organize access to different proxy groups or for different teams
 - Metadata allows for custom organization (e.g., by department, project, or client)
 - For access control, use the `proxy_user_access_type` field in combination with [Proxy User ACL](/api-objects/proxy-user-acl) entries

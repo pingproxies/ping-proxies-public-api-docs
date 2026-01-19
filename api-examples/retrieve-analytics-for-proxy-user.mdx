@@ -28,7 +28,7 @@ def get_proxy_user_analytics(proxy_user_id, network="residential", days_ago=30, 
     
     Args:
         proxy_user_id: ID of the proxy user to analyze
-        network: Network type to filter (datacenter, isp, residential)
+        network: Network type to filter (datacenter, isp, residential, mobile)
         days_ago: Number of days to look back
         interval: Time interval for data grouping (minute, hour, day, month)
         
@@ -99,7 +99,7 @@ def print_analytics_summary(analytics_data):
 if __name__ == "__main__":
     # Configure parameters
     PROXY_USER_ID = "your_proxy_user_id"  # Replace with your actual proxy user ID
-    NETWORK_TYPE = "residential"          # Options: datacenter, isp, residential
+    NETWORK_TYPE = "residential"          # Options: datacenter, isp, residential, mobile
     DAYS_TO_ANALYZE = 30                  # Number of days to look back
     INTERVAL = "day"                      # Options: minute, hour, day, month
     
@@ -216,7 +216,7 @@ function printAnalyticsSummary(analyticsData) {
 async function main() {
   // Configure parameters
   const PROXY_USER_ID = 'your_proxy_user_id';  // Replace with your actual proxy user ID
-  const NETWORK_TYPE = 'residential';          // Options: datacenter, isp, residential
+  const NETWORK_TYPE = 'residential';          // Options: datacenter, isp, residential, mobile
   const DAYS_TO_ANALYZE = 30;                  // Number of days to look back
   const INTERVAL = 'day';                      // Options: minute, hour, day, month
   
@@ -246,7 +246,7 @@ $baseUrl = 'https://api.pingproxies.com/1.0/public';
  * Retrieve analytics for a specific proxy user on a given network
  * 
  * @param string $proxyUserId ID of the proxy user to analyze
- * @param string $network Network type to filter (datacenter, isp, residential)
+ * @param string $network Network type to filter (datacenter, isp, residential, mobile)
  * @param int $daysAgo Number of days to look back
  * @param string $interval Time interval for data grouping (minute, hour, day, month)
  * @return array|null Analytics data or null on error
@@ -343,7 +343,7 @@ function printAnalyticsSummary($analyticsData) {
 // Example usage
 // Configure parameters
 $PROXY_USER_ID = 'your_proxy_user_id';  // Replace with your actual proxy user ID
-$NETWORK_TYPE = 'residential';          // Options: datacenter, isp, residential
+$NETWORK_TYPE = 'residential';          // Options: datacenter, isp, residential, mobile
 $DAYS_TO_ANALYZE = 30;                  // Number of days to look back
 $INTERVAL = 'day';                      // Options: minute, hour, day, month
 
@@ -519,7 +519,7 @@ func PrintAnalyticsSummary(analytics *AnalyticsResponse) {
 func main() {
 	// Configure parameters
 	proxyUserID := "your_proxy_user_id"  // Replace with your actual proxy user ID
-	networkType := "residential"         // Options: datacenter, isp, residential
+	networkType := "residential"         // Options: datacenter, isp, residential, mobile
 	daysToAnalyze := 30                  // Number of days to look back
 	intervalType := "day"                // Options: minute, hour, day, month
 	
@@ -603,7 +603,7 @@ public class ProxyUserAnalytics {
      * Retrieve analytics for a specific proxy user on a given network
      * 
      * @param proxyUserId ID of the proxy user to analyze
-     * @param network Network type to filter (datacenter, isp, residential)
+     * @param network Network type to filter (datacenter, isp, residential, mobile)
      * @param daysAgo Number of days to look back
      * @param interval Time interval for data grouping (minute, hour, day, month)
      * @return Analytics data
@@ -696,7 +696,7 @@ public class ProxyUserAnalytics {
         try {
             // Configure parameters
             String PROXY_USER_ID = "your_proxy_user_id";  // Replace with your actual proxy user ID
-            String NETWORK_TYPE = "residential";          // Options: datacenter, isp, residential
+            String NETWORK_TYPE = "residential";          // Options: datacenter, isp, residential, mobile
             int DAYS_TO_ANALYZE = 30;                     // Number of days to look back
             String INTERVAL = "day";                      // Options: minute, hour, day, month
             
@@ -724,6 +724,6 @@ public class ProxyUserAnalytics {
 ### Analytics Parameters
 
 1. **Proxy User ID**: Target a specific proxy user for usage analysis
-2. **Network Type**: Filter by network infrastructure (residential, ISP, or datacenter)
+2. **Network Type**: Filter by network infrastructure (residential, mobile, ISP, or datacenter)
 3. **Time Period**: Define start and end dates for the analysis window
 4. **Interval Granularity**: Group data by minute, hour, day, or month

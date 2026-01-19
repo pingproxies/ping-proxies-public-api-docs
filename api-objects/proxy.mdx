@@ -12,7 +12,7 @@ The Proxy object represents an individual proxy instance in the Ping Proxies sys
 | `proxy_id` | string | Unique identifier for the proxy (UUID format) |
 | `proxy_ip_address` | string | Main IPv4 address of the proxy |
 | `proxy_protocol` | string | IP protocol of the proxy (ipv4, ipv6, dual) |
-| `proxy_type` | string | Type of proxy (datacenter, isp, residential) |
+| `proxy_type` | string | Type of proxy (datacenter, isp, residential, mobile) |
 | `proxy_http_port` | integer | HTTP port number for the proxy |
 | `proxy_socks5_port` | integer | SOCKS5 port number for the proxy |
 | `proxy_status` | string | Current status of the proxy (available, in_use, reserved, etc.) |
@@ -114,5 +114,6 @@ Each proxy type has unique characteristics:
 - **Datacenter Proxies**: Static proxies hosted in data centers
 - **ISP Proxies**: Static proxies with residential-type IP addresses from major ISPs
 - **Residential Proxies**: Dynamic proxies from real residential connections
+- **Mobile Proxies**: Dynamic proxies from real mobile phones
 
-While datacenter and ISP proxies are represented as persistent proxy objects, residential proxies are generated dynamically and don't have persistent proxy objects.
+While datacenter and ISP proxies are represented as persistent proxy objects, residential and mobile proxies are generated dynamically and don't have persistent proxy objects.

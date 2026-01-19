@@ -1,13 +1,13 @@
 ---
-title: 'Residential Bandwidth'
-description: 'Understanding and managing residential bandwidth allocation in the Ping Proxies API'
+title: 'Residential & Mobile Bandwidth'
+description: 'Understanding and managing residential/mobile bandwidth allocation in the Ping Proxies API'
 ---
 
-Unlike datacenter and ISP proxies that operate on a per-proxy model, residential proxies use a bandwidth-based allocation system. This guide explains how residential bandwidth is managed in the Ping Proxies API.
+Unlike datacenter and ISP proxies that operate on a per-proxy model, residential and mobile proxies use a bandwidth-based allocation system. This guide explains how residential and mobile bandwidth is managed in the Ping Proxies API.
 
 ## Bandwidth Fundamentals
 
-Residential bandwidth in Ping Proxies works as follows:
+Residential and mobile bandwidth in Ping Proxies works as follows:
 
 - **Account-Wide Pool**: Bandwidth is added to your customer account as a shared resource
 - **No Expiration**: Once bandwidth is added to your account, it never expires until it is consumed
@@ -42,6 +42,30 @@ Response:
 }
 ```
 
+To check your current mobile bandwidth status:
+
+```bash
+curl --request GET \
+  --url 'https://api.pingproxies.com/1.0/public/user/mobile/summary' \
+  --header 'X-API-Public-Key: your_public_key' \
+  --header 'X-API-Private-Key: your_private_key'
+```
+
+Response:
+
+```json
+{
+  "data": {
+    "mobile_bytes": 10737418240,     // Total allocated bandwidth (10 GB)
+    "mobile_bytes_used": 3221225472, // Used bandwidth (3 GB)
+    "mobile_bytes_left": 7516192768, // Remaining bandwidth (7 GB)
+    "mobile_requests": 145022,       // Total number of requests
+    "proxy_user_ids": ["default_user", "stevejobs"] // Any other proxy users which have access to the bandwidth
+  },
+  "message": "Mobile summary successfully generated."
+}
+```
+
 ### Setting Proxy User Bandwidth Limits
 
 While the total bandwidth is purchased through the dashboard, you can control how much bandwidth each proxy user can consume via the API:
@@ -58,6 +82,8 @@ curl --request PATCH \
 ```
 
 This sets a 2 GB limit for the "stevejobs" proxy user, preventing them from using more than that amount from the account's total residential bandwidth.
+
+`proxy_user_mobile_bytes_limit` can be used to set this for mobile.
 
 ### Creating Proxy Users with Bandwidth Limits
 
@@ -78,6 +104,8 @@ curl --request POST \
 
 This creates a new proxy user with a 3 GB bandwidth limit. You can use `null` for unlimited bandwidth.
 
+`proxy_user_mobile_bytes_limit` can be used to set this for mobile.
+
 ### Viewing Individual Proxy User Bandwidth Usage
 
 To check a specific proxy user's bandwidth usage:
@@ -95,9 +123,14 @@ Response includes bandwidth fields:
 {
   "data": {
     "proxy_user_id": "research_team",
+    // Residential
     "proxy_user_residential_bytes_limit": 3221225472,
     "proxy_user_residential_bytes_used": 1073741824,
     "residential_bytes_left": 2147483648,
+    // Mobile
+    "proxy_user_mobile_bytes_limit": 3221225472,
+    "proxy_user_mobile_bytes_used": 1073741824,
+    "mobile_bytes_left": 2147483648,
     // ... other proxy user fields
   },
   "message": "Proxy User successfully retrieved."
@@ -109,7 +142,7 @@ Response includes bandwidth fields:
 While bandwidth limits can be managed via the API, purchasing additional bandwidth must be done through the dashboard:
 
 1. Log into your Ping Proxies dashboard
-2. Click "Add Bandwidth" next to your residential bandwidth total on the summary page
+2. Click "Add Bandwidth" next to your residential or mobile bandwidth total on the summary page
 4. Choose the amount of bandwidth to add
 5. Complete the purchase
 

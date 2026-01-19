@@ -3,21 +3,21 @@ title: 'Proxy Types Overview'
 description: 'This guide explains the different proxy types available through Ping Proxies, helping you choose the right option for your needs.'
 ---
 
-Ping Proxies offers Dedicated Datacenter, Dedicated Static Residential ISP, and Residential Peer proxies.
+Ping Proxies offers Dedicated Datacenter, Dedicated Static Residential ISP, Residential Peer, and Mobile proxies.
 
-| Feature | Datacenter | Static Residential ISP | Residential |
-|---------|------------|------------------------|-------------|
-| IP Type | Datacenter | ISP-assigned consumer | Real residential |
-| Ownership | Dedicated | Dedicated | Shared |
-| Speed | Very fast | Very fast | Moderate (varies) |
-| Stability | Highly stable | Highly stable | Variable |
-| Detection Risk | Higher | Low | Very low |
-| IP Rotation | Fixed IPs | Fixed IPs | Supports rotation |
-| Geo-targeting | Country-level | Country-level | City & carrier-level |
-| Pricing Model | Per proxy | Per proxy | Bandwidth-based |
-| Access Control | Proxy User Service Restriction | Proxy User Service Restriction | Proxy User Bandwidth Limit |
-| API Access | /proxy/search | /proxy/search | /residedential/list |
-| API Proxy Type | `datacenter` | `isp` | `residential` |
+| Feature | Datacenter | Static Residential ISP | Residential | Mobile |
+|---------|------------|------------------------|-------------|--------|
+| IP Type | Datacenter | ISP-assigned consumer | Real residential | Mobile carrier |
+| Ownership | Dedicated | Dedicated | Shared | Shared |
+| Speed | Very fast | Very fast | Moderate (varies) | Moderate (varies) |
+| Stability | Highly stable | Highly stable | Variable | Variable |
+| Detection Risk | Higher | Low | Very low | Very low |
+| IP Rotation | Fixed IPs | Fixed IPs | Supports rotation | Supports rotation |
+| Geo-targeting | Country-level | Country-level | City & carrier-level | City & carrier-level |
+| Pricing Model | Per proxy | Per proxy | Bandwidth-based | Bandwidth-based |
+| Access Control | Proxy User Service Restriction | Proxy User Service Restriction | Proxy User Bandwidth Limit | Proxy User Bandwidth Limit |
+| API Access | /proxy/search | /proxy/search | /residential/list | /mobile/list |
+| API Proxy Type | `datacenter` | `isp` | `residential` | `mobile` |
 
 ### Datacenter Proxies
 - **Source**: Commercial datacenters
@@ -37,11 +37,18 @@ Ping Proxies offers Dedicated Datacenter, Dedicated Static Residential ISP, and 
 - **Pricing**: Bandwidth-based (pay for what you use)
 - **Best For**: Accessing geo-restricted content, price comparison, brand protection
 
+### Mobile Proxies
+- **Source**: Real mobile devices
+- **Key Benefits**: Maximum legitimacy, rotating IPs, carrier-level targeting
+- **Pricing**: Bandwidth-based (pay for what you use)
+- **Best For**: Mobile app testing, mobile-specific content access, carrier-specific testing
+
 ## Choosing the Right Type
 
 - Choose **Datacenter** for raw speed and reliability at lower cost
 - Choose **Static Residential ISP** for the best balance of legitimacy and performance
 - Choose **Residential** for maximum legitimacy and rotating IPs
+- Choose **Mobile** for mobile carrier IPs and mobile-specific use cases
 
 ## Getting Available Products
 

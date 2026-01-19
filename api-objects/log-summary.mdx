@@ -12,7 +12,7 @@ The Log Summary object represents aggregated usage data for proxies in the Ping 
 | `log_summary_id` | string | Unique identifier for the log summary |
 | `proxy_user_id` | string | ID of the proxy user whose activity is summarized |
 | `customer_id` | integer | ID of the customer account associated with the summary |
-| `log_summary_network` | string | Network type (`datacenter`, `isp`, or `residential`) |
+| `log_summary_network` | string | Network type (`datacenter`, `isp`, `residential` or `mobile`) |
 | `log_summary_hostname` | string | Domain that was accessed through the proxy |
 | `log_summary_requests` | integer | Total number of requests during the period |
 | `log_summary_bytes` | integer | Total bandwidth usage in bytes |
@@ -28,6 +28,7 @@ The Log Summary object connects several other entities in the Ping Proxies syste
 - **Proxy User**: Log summaries track usage for specific proxy users
 - **Logs**: Raw logs are aggregated into log summaries
 - **Residential Ledger**: Both log summaries and residential ledger track bandwidth usage, but serve different purposes (analytics vs. billing)
+- **Mobile Ledger**: Both log summaries and mobile ledger track bandwidth usage, but serve different purposes (analytics vs. billing)
 
 ## Related Endpoints
 
@@ -53,9 +54,9 @@ This provides an efficient way to analyze historical usage patterns without stor
 - Log Summaries are automatically generated daily for active proxy users
 - They provide a more efficient way to analyze usage trends compared to raw logs
 - The `log_summary_hostname` field is only available for summaries less than 90 days old
-- For residential proxies, the `log_summary_bytes` directly correlates with bandwidth consumption
+- For residential/mobile proxies, the `log_summary_bytes` directly correlates with bandwidth consumption
 - Use the `/analytics/graph` endpoint for visualizing log summary data over time with flexible time intervals (minute, hour, day, month)
-- Log Summaries and Residential Ledger track related data but serve different purposes:
+- Log Summaries and Residential/Mobile Ledgers track related data but serve different purposes:
   - Log Summaries focus on usage patterns and analytics across all proxy types
-  - Residential Ledger specifically tracks bandwidth changes for billing purposes
+  - Residential/Mobile Ledgers specifically tracks bandwidth changes for billing purposes
   - While not directly linked, the data from both should reconcile in aggregate

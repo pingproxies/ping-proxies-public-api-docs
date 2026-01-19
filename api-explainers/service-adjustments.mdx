@@ -57,7 +57,7 @@ Service adjustments can be of various types, each representing a different kind 
 | `update` | General update to service attributes |
 | `proxy_replacement` | Replacing proxies with new ones |
 | `extension` | Extending the service period |
-| `top_up` | Adding additional bandwidth to a residential service |
+| `top_up` | Adding additional bandwidth to a residential or mobile service |
 | `top_up_and_extension` | Both extending service and adding bandwidth |
 | `cancel` | Cancellation of a service |
 
@@ -110,7 +110,7 @@ Service adjustments are created automatically in response to various events:
    - Manually editing a service through the dashboard
    - Making changes via the API
    - Canceling a service
-   - Adding bandwidth to a residential service
+   - Adding bandwidth to a residential or mobile service
 
 2. **Administrative Actions**:
    - Support staff making changes to services
@@ -137,3 +137,4 @@ When retrieving a service adjustment with a proxy replacement, the response will
 - **Invoices**: Adjustments that involve billing changes reference the corresponding invoice
 - **Proxy Replacements**: When proxies are replaced, the adjustment contains replacement details
 - **Residential Ledger**: For residential services, bandwidth adjustments may link to ledger entries
+- **Mobile Ledger**: For mobile services, bandwidth adjustments may link to ledger entries
