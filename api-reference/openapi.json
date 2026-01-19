@@ -983,6 +983,10 @@
             "example": "1955-8012-871",
             "type": "string"
           },
+          "active_mobile_service_id": {
+            "example": "1955-8012-871",
+            "type": "string"
+          },
           "active_service_types": {
             "items": {
               "example": "",
@@ -1125,6 +1129,10 @@
           "residential_bytes_left": {
             "example": 10737418240,
             "type": "integer"
+          },
+          "mobile_bytes_left": {
+            "example": 10737418240,
+            "type": "integer"
           }
         },
         "type": "object"
@@ -1134,6 +1142,7 @@
         "example": {
           "data": {
             "active_residential_service_id": "1955-8012-871",
+            "active_mobile_service_id": "1955-8012-871",
             "active_service_types": [
               [
                 "isp",
@@ -1174,7 +1183,8 @@
             "free_trial_is_pending": false,
             "kyc_is_pending": false,
             "proxy_count": 100,
-            "residential_bytes_left": 10737418240
+            "residential_bytes_left": 10737418240,
+            "mobile_bytes_left": 10737418240
           },
           "message": "Customer successfully retrieved."
         },
@@ -1183,6 +1193,10 @@
             "description": "Retrieved Customer item details.",
             "properties": {
               "active_residential_service_id": {
+                "example": "1955-8012-871",
+                "type": "string"
+              },
+              "active_mobile_service_id": {
                 "example": "1955-8012-871",
                 "type": "string"
               },
@@ -1328,6 +1342,10 @@
               "residential_bytes_left": {
                 "example": 10737418240,
                 "type": "integer"
+              },
+              "mobile_bytes_left": {
+                "example": 10737418240,
+                "type": "integer"
               }
             },
             "type": "object"
@@ -1345,10 +1363,12 @@
           "data": [
             {
               "active_residential_service_id": "1955-8012-871",
+              "active_mobile_service_id": "1955-8012-871",
               "active_service_types": [
                 [
                   "isp",
-                  "residential"
+                  "residential",
+                  "mobile"
                 ]
               ],
               "country_id": "us",
@@ -1384,7 +1404,8 @@
               "free_trial_is_pending": false,
               "kyc_is_pending": false,
               "proxy_count": 100,
-              "residential_bytes_left": 10737418240
+              "residential_bytes_left": 10737418240,
+              "mobile_bytes_left": 10737418240
             }
           ],
           "item_count": 1,
@@ -1399,6 +1420,10 @@
             "items": {
               "properties": {
                 "active_residential_service_id": {
+                  "example": "1955-8012-871",
+                  "type": "string"
+                },
+                "active_mobile_service_id": {
                   "example": "1955-8012-871",
                   "type": "string"
                 },
@@ -1542,6 +1567,10 @@
                   "type": "integer"
                 },
                 "residential_bytes_left": {
+                  "example": 10737418240,
+                  "type": "integer"
+                },
+                "mobile_bytes_left": {
                   "example": 10737418240,
                   "type": "integer"
                 }
@@ -3318,7 +3347,19 @@
             "example": 31223,
             "type": "integer"
           },
+          "proxy_user_mobile_bytes_limit": {
+            "example": 134142432,
+            "type": "integer"
+          },
+          "proxy_user_mobile_bytes_used": {
+            "example": 31223,
+            "type": "integer"
+          },
           "residential_bytes_left": {
+            "example": 1,
+            "type": "integer"
+          },
+          "mobile_bytes_left": {
             "example": 1,
             "type": "integer"
           },
@@ -3550,6 +3591,9 @@
             "proxy_user_residential_bytes_limit": 134142432,
             "proxy_user_residential_bytes_used": 31223,
             "residential_bytes_left": 1,
+            "proxy_user_mobile_bytes_limit": 134142432,
+            "proxy_user_mobile_bytes_used": 31223,
+            "mobile_bytes_left": 1,
             "restricted_proxy_ids": [
               "d5f6b186-3850-43e5-ac07-55d2ff5eb06e"
             ],
@@ -3630,7 +3674,19 @@
                 "example": 31223,
                 "type": "integer"
               },
+              "proxy_user_mobile_bytes_limit": {
+                "example": 134142432,
+                "type": "integer"
+              },
+              "proxy_user_mobile_bytes_used": {
+                "example": 31223,
+                "type": "integer"
+              },
               "residential_bytes_left": {
+                "example": 1,
+                "type": "integer"
+              },
+              "mobile_bytes_left": {
                 "example": 1,
                 "type": "integer"
               },
@@ -3682,6 +3738,9 @@
               "proxy_user_residential_bytes_limit": 134142432,
               "proxy_user_residential_bytes_used": 31223,
               "residential_bytes_left": 1,
+              "proxy_user_mobile_bytes_limit": 134142432,
+              "proxy_user_mobile_bytes_used": 31223,
+              "mobile_bytes_left": 1,
               "restricted_proxy_ids": [
                 "d5f6b186-3850-43e5-ac07-55d2ff5eb06e"
               ],
@@ -3769,6 +3828,18 @@
                   "type": "integer"
                 },
                 "residential_bytes_left": {
+                  "example": 1,
+                  "type": "integer"
+                },
+                "proxy_user_mobile_bytes_limit": {
+                  "example": 134142432,
+                  "type": "integer"
+                },
+                "proxy_user_mobile_bytes_used": {
+                  "example": 31223,
+                  "type": "integer"
+                },
+                "mobile_bytes_left": {
                   "example": 1,
                   "type": "integer"
                 },
@@ -4021,6 +4092,218 @@
           },
           "total_count": {
             "description": "Total of Residential Ledger items that match the search filter.",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "MobileLedger": {
+        "properties": {
+          "customer_id": {
+            "example": 1955,
+            "type": "integer"
+          },
+          "mobile_ledger_bytes": {
+            "example": 128290101,
+            "type": "integer"
+          },
+          "mobile_ledger_creation_datetime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "mobile_ledger_id": {
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "type": "string"
+          },
+          "mobile_ledger_last_update_datetime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "mobile_ledger_period_date": {
+            "example": "2023-10-01",
+            "type": "string"
+          },
+          "mobile_ledger_reason": {
+            "example": "top_up",
+            "type": "string"
+          },
+          "mobile_ledger_requests": {
+            "example": 1244,
+            "type": "integer"
+          },
+          "service_adjustment_id": {
+            "example": 10,
+            "type": "integer"
+          },
+          "service_id": {
+            "example": "API-1234-5678",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "MobileLedgerSuccessfulRetrieveResponse": {
+        "description": "Mobile Ledger retrieve was successful.",
+        "example": {
+          "data": {
+            "customer_id": 1955,
+            "mobile_ledger_bytes": 128290101,
+            "mobile_ledger_creation_datetime": "2023-04-01 12:00:00",
+            "mobile_ledger_id": "123e4567-e89b-12d3-a456-426614174000",
+            "mobile_ledger_last_update_datetime": "2023-04-02 12:00:00",
+            "mobile_ledger_period_date": "2023-10-01",
+            "mobile_ledger_reason": "top_up",
+            "mobile_ledger_requests": 1244,
+            "service_adjustment_id": 10,
+            "service_id": "API-1234-5678"
+          },
+          "message": "Mobile Ledger successfully retrieved."
+        },
+        "properties": {
+          "data": {
+            "description": "Retrieved Mobile Ledger item details.",
+            "properties": {
+              "customer_id": {
+                "example": 1955,
+                "type": "integer"
+              },
+              "mobile_ledger_bytes": {
+                "example": 128290101,
+                "type": "integer"
+              },
+              "mobile_ledger_creation_datetime": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "mobile_ledger_id": {
+                "example": "123e4567-e89b-12d3-a456-426614174000",
+                "type": "string"
+              },
+              "mobile_ledger_last_update_datetime": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "mobile_ledger_period_date": {
+                "example": "2023-10-01",
+                "type": "string"
+              },
+              "mobile_ledger_reason": {
+                "example": "top_up",
+                "type": "string"
+              },
+              "mobile_ledger_requests": {
+                "example": 1244,
+                "type": "integer"
+              },
+              "service_adjustment_id": {
+                "example": 10,
+                "type": "integer"
+              },
+              "service_id": {
+                "example": "API-1234-5678",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "message": {
+            "description": "Status message for the retrieval.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "MobileLedgerSuccessfulSearchResponse": {
+        "description": "Mobile Ledger search was successful.",
+        "example": {
+          "data": [
+            {
+              "customer_id": 1955,
+              "mobile_ledger_bytes": 128290101,
+              "mobile_ledger_creation_datetime": "2023-04-01 12:00:00",
+              "mobile_ledger_id": "123e4567-e89b-12d3-a456-426614174000",
+              "mobile_ledger_last_update_datetime": "2023-04-02 12:00:00",
+              "mobile_ledger_period_date": "2023-10-01",
+              "mobile_ledger_reason": "top_up",
+              "mobile_ledger_requests": 1244,
+              "service_adjustment_id": 10,
+              "service_id": "API-1234-5678"
+            }
+          ],
+          "item_count": 1,
+          "message": "Mobile Ledger search successful.",
+          "page": 1,
+          "per_page": 10,
+          "total_count": 1
+        },
+        "properties": {
+          "data": {
+            "description": "Array of Mobile Ledger items matching the search criteria up to the limit of per_page paramater.",
+            "items": {
+              "properties": {
+                "customer_id": {
+                  "example": 1955,
+                  "type": "integer"
+                },
+                "mobile_ledger_bytes": {
+                  "example": 128290101,
+                  "type": "integer"
+                },
+                "mobile_ledger_creation_datetime": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "mobile_ledger_id": {
+                  "example": "123e4567-e89b-12d3-a456-426614174000",
+                  "type": "string"
+                },
+                "mobile_ledger_last_update_datetime": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "mobile_ledger_period_date": {
+                  "example": "2023-10-01",
+                  "type": "string"
+                },
+                "mobile_ledger_reason": {
+                  "example": "top_up",
+                  "type": "string"
+                },
+                "mobile_ledger_requests": {
+                  "example": 1244,
+                  "type": "integer"
+                },
+                "service_adjustment_id": {
+                  "example": 10,
+                  "type": "integer"
+                },
+                "service_id": {
+                  "example": "API-1234-5678",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "item_count": {
+            "description": "Total number of Mobile Ledger items returned in the data field.",
+            "type": "integer"
+          },
+          "message": {
+            "description": "Status message for the search.",
+            "type": "string"
+          },
+          "page": {
+            "description": "Current page number of the search results returned.",
+            "type": "integer"
+          },
+          "per_page": {
+            "description": "Number of Mobile Ledger items returned per page.",
+            "type": "integer"
+          },
+          "total_count": {
+            "description": "Total of Mobile Ledger items that match the search filter.",
             "type": "integer"
           }
         },
@@ -6200,7 +6483,7 @@
                             "type": "integer"
                           },
                           "product_type": {
-                            "description": "Type of product (e.g., isp, datacenter).",
+                            "description": "Type of product (e.g., isp, datacenter, residential, mobile).",
                             "example": "datacenter",
                             "type": "string"
                           }
@@ -7405,7 +7688,35 @@
                       "properties": {
                         "data": {
                           "properties": {
+                            "active_mobile_service_id": {
+                              "example": "130-8201-332",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "properties": {
                             "residential_bytes_left": {
+                              "example": 313344,
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "properties": {
+                            "mobile_bytes_left": {
                               "example": 313344,
                               "type": "integer"
                             }
@@ -8872,7 +9183,8 @@
               "enum": [
                 "isp",
                 "datacenter",
-                "residential"
+                "residential",
+                "mobile"
               ],
               "type": "string"
             }
@@ -9206,7 +9518,8 @@
               "enum": [
                 "isp",
                 "datacenter",
-                "residential"
+                "residential",
+                "mobile"
               ],
               "type": "string"
             }
@@ -9458,7 +9771,7 @@
     },
     "/public/user/proxy_user/create": {
       "post": {
-        "description": "This endpoint allows you to create a new proxy user.\n\nThe `proxy_user_id` and `proxy_user_password` can be provided or, if omitted, will be randomly generated.\n\nAdditional considerations when creating a Proxy User:\n- `proxy_user_access_type`: Controls access restrictions (\"all\", \"service_restricted\", \"proxy_restricted\")\n- `proxy_user_is_strict_security`: If true, the Proxy User requires an IP address authentication list.\n- `ip_address_authentications` must be a list of valid IP addresses. Each IP address can only be used by one Proxy User.\n- `proxy_user_residential_bytes_limit`: An integer limiting residential traffic (must not be negative).\n\nFor access control, use the ProxyUserAcl endpoints to grant specific service or proxy access when using \"service_restricted\" or \"proxy_restricted\" access types.\n",
+        "description": "This endpoint allows you to create a new proxy user.\n\nThe `proxy_user_id` and `proxy_user_password` can be provided or, if omitted, will be randomly generated.\n\nAdditional considerations when creating a Proxy User:\n- `proxy_user_access_type`: Controls access restrictions (\"all\", \"service_restricted\", \"proxy_restricted\")\n- `proxy_user_is_strict_security`: If true, the Proxy User requires an IP address authentication list.\n- `ip_address_authentications` must be a list of valid IP addresses. Each IP address can only be used by one Proxy User.\n- `proxy_user_residential_bytes_limit`: An integer limiting residential traffic (must not be negative).\n- `proxy_user_mobile_bytes_limit`: An integer limiting mobile traffic (must not be negative).\n\nFor access control, use the ProxyUserAcl endpoints to grant specific service or proxy access when using \"service_restricted\" or \"proxy_restricted\" access types.\n",
         "parameters": [
           {
             "description": "Content type for the request body as application/json.",
@@ -9526,6 +9839,11 @@
                   },
                   "proxy_user_residential_bytes_limit": {
                     "description": "Residential bytes limit for the Proxy User (must not be negative).",
+                    "example": 1000000,
+                    "type": "integer"
+                  },
+                  "proxy_user_mobile_bytes_limit": {
+                    "description": "Mobile bytes limit for the Proxy User (must not be negative).",
                     "example": 1000000,
                     "type": "integer"
                   }
@@ -9743,6 +10061,11 @@
                   },
                   "proxy_user_residential_bytes_limit": {
                     "description": "The residential bytes limit for the Proxy User (must be ≥ current usage).",
+                    "example": 1000000,
+                    "type": "integer"
+                  },
+                  "proxy_user_mobile_bytes_limit": {
+                    "description": "The mobile bytes limit for the Proxy User (must be ≥ current usage).",
                     "example": 1000000,
                     "type": "integer"
                   }
@@ -10877,6 +11200,625 @@
         "summary": "Search Residential Ledger",
         "tags": [
           "Residential Ledger"
+        ]
+      }
+    },
+    "/public/user/mobile/list": {
+      "get": {
+        "description": "This endpoint creates a list of mobile proxies based on filter parameters.\nThe search parameters allow the user to filter the proxies by location, session type, and format (e.g., http, socks5, socks5h).\n",
+        "parameters": [
+          {
+            "description": "Number of proxies to return in the list.",
+            "in": "query",
+            "name": "list_count",
+            "schema": {
+              "default": 100,
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Desired format for the proxies (e.g., \"http\", \"https\", \"socks5\", \"socks5h\", or \"standard\").",
+            "in": "query",
+            "name": "list_format",
+            "schema": {
+              "default": "standard",
+              "enum": [
+                "standard",
+                "http",
+                "https",
+                "socks5",
+                "socks5h"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the proxy_user you want to use to authenticate with the proxies.",
+            "in": "query",
+            "name": "proxy_user_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Session type of the mobile proxies you want returned in the search list.",
+            "in": "query",
+            "name": "list_session_type",
+            "schema": {
+              "default": "sticky",
+              "enum": [
+                "sticky",
+                "rotating"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "ISO Country Code [(ISO 3166-1 alpha-2)](https://www.iban.com/country-codes) to generate mobile proxies in.",
+            "in": "query",
+            "name": "country_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the City to generate mobile proxies in.",
+            "in": "query",
+            "name": "city_id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Alias of the City to generate mobile proxies in.",
+            "in": "query",
+            "name": "city_alias",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of the Zip Code to generate mobile proxies in.",
+            "in": "query",
+            "name": "zip_code_id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "ID of the US Subdivision to generate the mobile proxies in.",
+            "in": "query",
+            "name": "subdivision_id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Is SmartPath enabled for the mobile proxies you want returned in the search list.",
+            "in": "query",
+            "name": "list_smartpath_enabled",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "The session ttl of the mobile proxies you want returned in the search list",
+            "in": "query",
+            "name": "list_session_ttl",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Desired mode for mobile network optimization",
+            "in": "query",
+            "name": "list_mode",
+            "schema": {
+              "default": "general",
+              "enum": [
+                "general",
+                "size",
+                "speed"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "description": "List of mobile proxies.",
+                      "example": [
+                        "socks5h://1_oGDQZ_c_gb_city_norwich_m_general_s_DDINPY7TQ0781XEO:vxqaFAA99F@mobile.pingproxies.com:8000",
+                        "socks5h://1_oGDQZ_c_gb_city_norwich_m_general_s_XIINPY7TQ0781XEA:vxqaFAA99F@mobile.pingproxies.com:8000"
+                      ],
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "message": {
+                      "description": "Success message.",
+                      "example": "Mobile list successfully generated.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Mobile list successfully generated."
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ],
+        "summary": "Generated Mobile List",
+        "tags": [
+          "Mobile"
+        ]
+      }
+    },
+    "/public/user/mobile/summary": {
+      "get": {
+        "description": "This endpoint provides a detailed summary of a mobile service.\nIt returns information such as service details, usage statistics, and associated proxy users.\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "properties": {
+                        "mobile_bytes": {
+                          "example": 10024144,
+                          "type": "integer"
+                        },
+                        "mobile_bytes_left": {
+                          "example": 7003114,
+                          "type": "integer"
+                        },
+                        "mobile_bytes_used": {
+                          "example": 3021030,
+                          "type": "integer"
+                        },
+                        "mobile_requests": {
+                          "example": 5012,
+                          "type": "integer"
+                        },
+                        "proxy_user_ids": {
+                          "items": {
+                            "example": "stevejobs",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "message": {
+                      "example": "Mobile summary successfully generated.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful retrieval of mobile service summary."
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ],
+        "summary": "Retrieve Mobile Service Summary",
+        "tags": [
+          "Mobile"
+        ]
+      }
+    },
+    "/public/user/mobile_availability/count": {
+      "get": {
+        "description": "Get the total count of mobile availability nodes with optional filtering capabilities.\nFilters are applied when parameters are present and not null.\n",
+        "parameters": [
+          {
+            "description": "Filter by 2-character country code",
+            "in": "query",
+            "name": "country_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by state/province identifier",
+            "in": "query",
+            "name": "subdivision_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by city name",
+            "in": "query",
+            "name": "city_name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by Autonomous System Number",
+            "in": "query",
+            "name": "asn_id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Filter by postal/ZIP code",
+            "in": "query",
+            "name": "zip_code_alias",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "properties": {
+                        "total_mobile_availability_node_count": {
+                          "description": "Total number of nodes available for given filter parameters",
+                          "example": 1500,
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "message": {
+                      "example": "Mobile Availability count successful.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Mobile availability count retrieval successful"
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ],
+        "summary": "Get Mobile Availability Count",
+        "tags": [
+          "Mobile Availability"
+        ]
+      }
+    },
+    "/public/user/mobile_availability/search": {
+      "get": {
+        "description": "Search mobile availability records with optional grouping capabilities.\nUse `group_by` parameter to aggregate results by specified field(s).\n",
+        "parameters": [
+          {
+            "description": "Filter by 2-character country code",
+            "in": "query",
+            "name": "country_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by state/province identifier",
+            "in": "query",
+            "name": "subdivision_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by city name",
+            "in": "query",
+            "name": "city_name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by Autonomous System Number",
+            "in": "query",
+            "name": "asn_id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Filter by postal/ZIP code",
+            "in": "query",
+            "name": "zip_code_alias",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by node count",
+            "in": "query",
+            "name": "mobile_availability_node_count",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Group results by specified field(s). Multiple fields separated by commas.\nWhen grouping is used, returns aggregated node counts for each group.\n",
+            "in": "query",
+            "name": "group_by",
+            "schema": {
+              "enum": [
+                "country",
+                "subdivision",
+                "city",
+                "asn",
+                "zip_code"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Sort results by field. Add '_desc' for descending or '_asc' for ascending.\nDefault is descending order.\n",
+            "in": "query",
+            "name": "sort_by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "properties": {
+                        "mobile_options": {
+                          "items": {
+                            "properties": {
+                              "asn_id": {
+                                "description": "Filter by Autonomous System Number",
+                                "example": 15169,
+                                "type": "integer"
+                              },
+                              "city_name": {
+                                "description": "Filter by city name",
+                                "example": "San Francisco",
+                                "type": "string"
+                              },
+                              "country_id": {
+                                "description": "Filter by 2-character country code",
+                                "example": "US",
+                                "type": "string"
+                              },
+                              "mobile_availability_node_count": {
+                                "description": "Filter by node count",
+                                "example": 100,
+                                "type": "integer"
+                              },
+                              "subdivision_id": {
+                                "description": "Filter by state/province identifier",
+                                "example": "CA",
+                                "type": "string"
+                              },
+                              "zip_code_alias": {
+                                "description": "Filter by postal/ZIP code",
+                                "example": "94107",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "total_mobile_availability_node_count": {
+                          "description": "Total number of nodes available for given filter parameters",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "message": {
+                      "example": "Mobile Options search successful",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Search mobile node count successful"
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ],
+        "summary": "Search Mobile Availability",
+        "tags": [
+          "Mobile Availability"
+        ]
+      }
+    },
+    "/public/user/mobile_ledger/retrieve/{mobile_ledger_id}": {
+      "get": {
+        "description": "Retrieves a specific Mobile Ledger based on the provided ID for the current user's account.\n",
+        "parameters": [
+          {
+            "description": "ID of the Mobile Ledger to retrieve",
+            "in": "path",
+            "name": "mobile_ledger_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/MobileLedgerSuccessfulRetrieveResponse"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Successful Mobile Ledger Retrieve"
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ],
+        "summary": "Retrieve Mobile Ledger",
+        "tags": [
+          "Mobile Ledger"
+        ]
+      }
+    },
+    "/public/user/mobile_ledger/search": {
+      "get": {
+        "description": "Search for entries in the Mobile Ledger using various filters.\n",
+        "parameters": [
+          {
+            "description": "Unique identifier of the Mobile Ledger entry.",
+            "in": "query",
+            "name": "mobile_ledger_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Service identifier associated with the ledger entry.",
+            "in": "query",
+            "name": "service_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Adjustment identifier associated with the ledger entry.",
+            "in": "query",
+            "name": "service_adjustment_id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Reason for the ledger entry.",
+            "in": "query",
+            "name": "mobile_ledger_reason",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Number of requests recorded in the ledger entry.",
+            "in": "query",
+            "name": "mobile_ledger_requests",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Data usage in bytes recorded in the ledger entry.",
+            "in": "query",
+            "name": "mobile_ledger_bytes",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The date of the ledger entry.",
+            "in": "query",
+            "name": "mobile_ledger_period_date",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Creation datetime of the ledger entry.",
+            "in": "query",
+            "name": "mobile_ledger_creation_datetime",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Last update datetime of the ledger entry.",
+            "in": "query",
+            "name": "mobile_ledger_last_update_datetime",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/sort_by"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/MobileLedgerSuccessfulSearchResponse"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Successful Mobile Ledger search"
+          }
+        },
+        "security": [
+          {
+            "APIPrivateKey": [],
+            "APIPublicKey": []
+          }
+        ],
+        "summary": "Search Mobile Ledger",
+        "tags": [
+          "Mobile Ledger"
         ]
       }
     },

@@ -306,6 +306,27 @@
             ]
           },
           {
+            "group": "Mobile",
+            "pages": [
+              "api-reference/mobile/create-mobile-list",
+              "api-reference/mobile/retrieve-mobile-service-summary"
+            ]
+          },
+          {
+            "group": "Mobile Availability",
+            "pages": [
+              "api-reference/mobile-availability/search-mobile-availability",
+              "api-reference/mobile-availability/count-mobile-availability"
+            ]
+          },
+          {
+            "group": "Mobile Ledger",
+            "pages": [
+              "api-reference/mobile-ledger/retrieve-mobile-ledger",
+              "api-reference/mobile-ledger/search-mobile-ledger"
+            ]
+          },
+          {
             "group": "Service",
             "pages": [
               "api-reference/service/retrieve-service",
